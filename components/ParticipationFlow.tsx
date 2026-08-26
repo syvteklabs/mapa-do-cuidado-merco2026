@@ -166,15 +166,18 @@ export default function ParticipationFlow() {
         {step === "location" && (
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-                Onde você está?
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                Em qual município você mora?
               </h2>
+              <p className="text-gray-600 text-sm">
+                Precisamos saber de qual região você está compartilhando sua experiência.
+              </p>
             </div>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  Estado
+                  Estado (UF)
                 </label>
                 <select
                   value={formData.estado}
@@ -269,11 +272,10 @@ export default function ParticipationFlow() {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Qual é a sua experiência?
+                Como foi sua experiência?
               </h2>
               <p className="text-gray-600 text-sm">
-                Selecione a opção que melhor descreve sua experiência com o
-                cuidado.
+                Selecione o que melhor descreve sua experiência com os caminhos do cuidado.
               </p>
             </div>
 
@@ -293,7 +295,23 @@ export default function ParticipationFlow() {
                   {cat.label}
                 </button>
               ))}
+              <button
+                onClick={() =>
+                  updateFormData("resposta_categoria", "prefer_not_answer")
+                }
+                className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors border-2 ${
+                  formData.resposta_categoria === "prefer_not_answer"
+                    ? "bg-gray-400 text-white border-2 border-gray-400"
+                    : "bg-white border-2 border-gray-300 text-gray-900 hover:border-gray-400 active:bg-gray-50"
+                }`}
+              >
+                Prefiro não responder
+              </button>
             </div>
+
+            <p className="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg">
+              Esta pergunta é opcional. Se preferir não responder, você ainda poderá contribuir com sua participação.
+            </p>
 
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">

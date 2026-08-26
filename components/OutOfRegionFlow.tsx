@@ -33,18 +33,18 @@ export default function OutOfRegionFlow({
           </p>
         </div>
 
-        <div className="flex gap-3 pt-4">
+        <div className="space-y-3 pt-4">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex-1 bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors"
+            className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors"
           >
-            Registrar interesse
+            Registrar interesse na expansão
           </button>
           <button
-            onClick={onContinue}
-            className="flex-1 bg-gray-200 text-gray-900 py-4 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
+            onClick={() => window.history.back()}
+            className="w-full bg-gray-200 text-gray-900 py-4 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
           >
-            Continuar minha participação
+            Voltar e escolher outro município
           </button>
         </div>
       </div>
