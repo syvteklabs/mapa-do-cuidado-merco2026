@@ -5,6 +5,7 @@ import { useErrorRecovery } from "@/lib/hooks/useErrorRecovery";
 import Link from "next/link";
 import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
+import PrivacyDisclosure from "./PrivacyDisclosure";
 
 export default function ParticipationFlow() {
   const {
@@ -50,7 +51,10 @@ export default function ParticipationFlow() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <Link href="/" className="text-sm text-blue-600 hover:text-blue-700">
+          <Link
+            href="/"
+            className="text-sm text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 inline-block"
+          >
             ← Voltar
           </Link>
         </div>
@@ -98,21 +102,21 @@ export default function ParticipationFlow() {
 
             <div className="space-y-4 text-left">
               <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0">⏱️</span>
+                <span className="text-2xl flex-shrink-0" aria-hidden="true">⏱️</span>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Rápido</p>
                   <p className="text-sm text-gray-600">Apenas 2 minutos</p>
                 </div>
               </div>
               <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0">🔒</span>
+                <span className="text-2xl flex-shrink-0" aria-hidden="true">🔒</span>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Anônimo</p>
                   <p className="text-sm text-gray-600">Nenhum dado pessoal é coletado</p>
                 </div>
               </div>
               <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0">📊</span>
+                <span className="text-2xl flex-shrink-0" aria-hidden="true">📊</span>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Agregado</p>
                   <p className="text-sm text-gray-600">Suas respostas formam um mapa coletivo</p>
@@ -120,9 +124,12 @@ export default function ParticipationFlow() {
               </div>
             </div>
 
+            {/* Privacy Disclosure */}
+            <PrivacyDisclosure variant="full" />
+
             <button
               onClick={() => nextStep("location")}
-              className="w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors"
+              className="w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               Começar agora
             </button>

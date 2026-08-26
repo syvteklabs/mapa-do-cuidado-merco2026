@@ -61,12 +61,12 @@ export default function Header() {
           </Link>
 
           {/* Navigation */}
-          <nav className="flex gap-1">
+          <nav aria-label="Navegação principal" className="flex gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                className={`px-3 py-2 text-sm font-medium rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                   isActive(item.href)
                     ? "bg-blue-50 text-blue-700 border-b-2 border-blue-600"
                     : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
