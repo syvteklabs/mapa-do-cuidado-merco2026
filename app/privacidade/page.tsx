@@ -212,6 +212,91 @@ export default function PrivacyPage() {
               </div>
             </div>
 
+            {/* Technical Data Collection */}
+            <div className="space-y-4 border-t border-gray-200 pt-12 bg-amber-50 border-2 border-amber-200 rounded-lg p-6">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Dados técnicos de acesso
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                Além dos dados de participação, coletamos dados técnicos <strong>necessários para manter o serviço</strong> funcionando:
+              </p>
+              <ul className="space-y-3 text-gray-700 mt-4">
+                <li className="flex items-start gap-3">
+                  <span className="font-bold flex-shrink-0">•</span>
+                  <div>
+                    <p className="font-semibold">Endereço IP</p>
+                    <p className="text-sm text-gray-600">Registrado automaticamente em logs de servidor para segurança e diagnóstico. Não é vinculado ao seu formulário.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold flex-shrink-0">•</span>
+                  <div>
+                    <p className="font-semibold">User-Agent (navegador e dispositivo)</p>
+                    <p className="text-sm text-gray-600">Coletado para entender se usuários acessam via mobile ou desktop. Não identifica você pessoalmente.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold flex-shrink-0">•</span>
+                  <div>
+                    <p className="font-semibold">Cookies técnicos</p>
+                    <p className="text-sm text-gray-600">Apenas para funcionalidade essencial (sessão, autenticação Next.js). <strong>Sem cookies de rastreamento.</strong></p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold flex-shrink-0">•</span>
+                  <div>
+                    <p className="font-semibold">Timestamps de requisição</p>
+                    <p className="text-sm text-gray-600">Quando você acessou o site. Armazenado em logs, não vinculado a dados de participação.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold flex-shrink-0">•</span>
+                  <div>
+                    <p className="font-semibold">Status de requisições HTTP</p>
+                    <p className="text-sm text-gray-600">Se seu pedido foi bem-sucedido ou não. Usado para monitorar saúde do sistema.</p>
+                  </div>
+                </li>
+              </ul>
+              <p className="text-sm text-gray-600 mt-4 italic">
+                <strong>Importante:</strong> Dados técnicos de acesso <strong>nunca são combinados com seus dados de participação</strong> no formulário. São mantidos separadamente e deletados conforme politica de retenção de logs padrão do servidor.
+              </p>
+            </div>
+
+            {/* Analytics & Tracking */}
+            <div className="space-y-4 border-t border-gray-200 pt-12 bg-green-50 border-2 border-green-200 rounded-lg p-6">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Analytics e rastreamento
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                <strong>Este site NÃO utiliza:</strong>
+              </p>
+              <ul className="space-y-2 text-gray-700 mt-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✗</span>
+                  <span>Google Analytics ou similares</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✗</span>
+                  <span>Pixels de rastreamento (Facebook, LinkedIn, etc.)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✗</span>
+                  <span>Cookies de terceiros</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✗</span>
+                  <span>Serviços de analytics comportamental</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✗</span>
+                  <span>Eventos de participação enviados para plataformas de medição</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 mt-4">
+                Seus dados de formulário <strong>nunca são rastreados, perfilados ou compartilhados com terceiros</strong>.
+              </p>
+            </div>
+
             {/* Data Storage & Deletion */}
             <div className="space-y-4 border-t border-gray-200 pt-12">
               <h2 className="text-3xl font-bold text-gray-900">
@@ -219,13 +304,16 @@ export default function PrivacyPage() {
               </h2>
               <div className="space-y-3 text-gray-700">
                 <p>
-                  <strong>Onde os dados são armazenados:</strong> Em servidores seguros da Supabase, com criptografia em trânsito e em repouso.
+                  <strong>Dados de participação (contribuições):</strong> Armazenados indefinidamente em Supabase com criptografia, pois são agregados e anônimos.
                 </p>
                 <p>
-                  <strong>Quanto tempo são mantidos:</strong> Indefinidamente, pois são agregados e anônimos. Sem dados pessoais, não há direito de exclusão individual de contribuições específicas.
+                  <strong>Dados de expansão (interesse em novos territórios):</strong> Armazenados enquanto relevante para futuras expansões. Você pode solicitar exclusão por email.
                 </p>
                 <p>
-                  <strong>Política de retenção:</strong> Dados agregados são mantidos em perpetuidade para servir como histórico do mapeamento. Dados brutos são excluídos após agregação para evitar reidentificação.
+                  <strong>Dados técnicos de acesso (IPs, logs):</strong> Mantidos por até 30 dias conforme política padrão de retenção de logs do servidor, depois deletados automaticamente.
+                </p>
+                <p>
+                  <strong>Sem direito de exclusão individual:</strong> Como seus dados de participação são completamente anônimos, não podemos identificar e deletar sua contribuição específica. Dados já agregados não podem ser revertidos.
                 </p>
               </div>
             </div>
@@ -253,6 +341,33 @@ export default function PrivacyPage() {
                   <span>Acesso restrito ao sistema (apenas equipe autorizada)</span>
                 </li>
               </ul>
+            </div>
+
+            {/* Cookies and Participation */}
+            <div className="space-y-4 border-t border-gray-200 pt-12 bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Cookies e participação
+              </h2>
+              <p className="text-gray-700">
+                <strong>Recusar cookies não impede sua participação.</strong> Todos os cookies neste site são técnicos e opcionais. Se você não aceitar cookies, poderá:
+              </p>
+              <ul className="space-y-2 text-gray-700 mt-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✓</span>
+                  <span>Navegar em todas as páginas normalmente</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✓</span>
+                  <span>Acessar o formulário de participação sem restrições</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0">✓</span>
+                  <span>Enviar sua contribuição anônima normalmente</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 mt-4">
+                A recusa de cookies só afeta funcionalidades opcionais como autenticação (se implementada) ou persistência de preferências.
+              </p>
             </div>
 
             {/* Contact */}

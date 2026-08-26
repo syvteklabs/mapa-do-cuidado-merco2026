@@ -1,0 +1,148 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aperibé",
+        "id": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.7486, -20.9669]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bom Jesus do Itabapoana",
+        "id": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.7778, -21.1356]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cambuci",
+        "id": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.7014, -21.5261]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Italva",
+        "id": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.9483, -21.1958]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Itaocara",
+        "id": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-42.0611, -21.7739]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Itaperuna",
+        "id": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.8833, -21.2278]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Laje do Muriaé",
+        "id": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.6392, -20.8389]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Miracema",
+        "id": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.9831, -21.4494]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Natividade",
+        "id": 9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.4328, -21.5128]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Porciúncula",
+        "id": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.9231, -20.9228]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Santo Antônio de Pádua",
+        "id": 11
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-42.1947, -21.5331]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "São José de Ubá",
+        "id": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.9789, -21.3142]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Varre-Sai",
+        "id": 13
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-41.8492, -20.7531]
+      }
+    }
+  ]
+}

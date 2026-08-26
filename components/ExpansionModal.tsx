@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useExpansionForm } from "@/lib/hooks/useExpansionForm";
 import { ESTADOS_BR } from "@/lib/hooks/useParticipationForm";
 import { useEffect } from "react";
+import { CheckIcon } from "./Icons";
 
 interface ExpansionModalProps {
   isOpen: boolean;
@@ -219,7 +220,11 @@ export default function ExpansionModal({
         {/* Step: Confirmation */}
         {step === "confirmation" && (
           <div className="p-6 sm:p-8 text-center">
-            <div className="mb-4 text-5xl">✓</div>
+            <div className="mb-6 flex justify-center">
+              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                <CheckIcon className="w-8 h-8 text-green-600" aria-hidden={true} />
+              </div>
+            </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-3">
               Interesse registrado.
             </h2>

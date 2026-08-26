@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { animationClasses } from "@/lib/animations";
 
 interface MunicipalityRankItem {
   name: string;
@@ -123,7 +124,7 @@ export default function MunicipalitiesRanking({
 
         {/* Ranking Items */}
         <div className="divide-y divide-gray-200 max-h-96 overflow-y-auto">
-          {ranking.map((item) => (
+          {ranking.map((item, index) => (
             <div
               key={item.name}
               onClick={() => {
@@ -134,7 +135,10 @@ export default function MunicipalitiesRanking({
                 selectedMunicipio === item.name
                   ? "bg-blue-50 border-l-4 border-blue-600"
                   : "hover:bg-gray-50 border-l-4 border-transparent"
-              } ${isTV ? "py-5 px-8" : ""}`}
+              } ${isTV ? "py-5 px-8" : ""} ${animationClasses.fadeInUp}`}
+              style={{
+                animationDelay: `${Math.min(index * 50, 200)}ms`,
+              }}
             >
               <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center mb-2">
                 {/* Rank */}

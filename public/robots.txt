@@ -1,0 +1,29 @@
+# SyVtek Care - Mapa do Cuidado
+# Allow all crawlers but exclude demo/demo pages
+
+User-agent: *
+Allow: /
+Disallow: /sistema-visual
+Disallow: /guia-espacamento
+
+# Specific crawler rules
+User-agent: Googlebot
+Allow: /
+Disallow: /sistema-visual
+Disallow: /guia-espacamento
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Disallow: /sistema-visual
+Disallow: /guia-espacamento
+Crawl-delay: 1
+
+# Prevent bad bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://mapa-do-cuidado-merco2026.vercel.app/sitemap.xml
