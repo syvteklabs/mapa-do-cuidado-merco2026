@@ -417,7 +417,7 @@ export default function DashboardPreview() {
                 </div>
 
                 {/* Map - Primary Element */}
-                <div className={`${isTV ? "h-[600px]" : "h-[450px] sm:h-[500px]"} rounded-lg overflow-hidden border-2 border-gray-200 shadow-md`}>
+                <div className="rounded-lg overflow-hidden border-2 border-gray-200 shadow-md" style={{ height: isTV ? '600px' : '500px' }}>
                   <NoroestMap
                     municipiosStats={municipiosStats}
                     municipiosCategories={municipiosCategories}

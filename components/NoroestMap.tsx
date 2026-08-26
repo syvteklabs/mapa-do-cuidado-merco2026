@@ -20,7 +20,7 @@ export default function NoroestMap({
   height = "h-full",
 }: NoroestMapProps) {
   return (
-    <div className={`w-full ${height} rounded-lg overflow-hidden border border-gray-200 shadow-sm`}>
+    <div className={`w-full ${height}`} style={{ minHeight: '400px' }}>
       <MapContent
         municipiosStats={municipiosStats}
         municipiosCategories={municipiosCategories}
