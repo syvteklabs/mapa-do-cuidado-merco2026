@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import HeroMap from "@/components/HeroMap";
 import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
+import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 
 export default function Home() {
   return (
@@ -93,6 +94,9 @@ export default function Home() {
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <HowItWorks />
         </section>
+
+        {/* Research and Innovation */}
+        <ResearchAndInnovation />
 
         {/* Brand Footer */}
         <section className="bg-gradient-to-r from-gray-50 to-indigo-50 border-t border-gray-200 py-8 mt-8">

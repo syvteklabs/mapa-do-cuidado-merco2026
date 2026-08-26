@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ResearchAndInnovationFooter from "./ResearchAndInnovationFooter";
 
 export default function Footer() {
   return (
@@ -50,7 +51,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
+        {/* Research and Innovation Footer */}
+        <div className="border-t border-gray-200 pt-6 mb-6">
+          <ResearchAndInnovationFooter />
+        </div>
+
+        {/* Copyright */}
         <div className="border-t border-gray-200 pt-6">
           <p className="text-center text-xs text-gray-500">
             © 2026 SyVtek Care. Todos os direitos reservados.
