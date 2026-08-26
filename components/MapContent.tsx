@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 
 interface MunicipalityData {
   name: string;
@@ -13,6 +13,7 @@ interface MunicipalityData {
   count: number;
   categoryTopName?: string;
   categoryTopCount?: number;
+  lastParticipationDate?: string;
 }
 
 interface MapContentProps {
@@ -24,19 +25,19 @@ interface MapContentProps {
 }
 
 const MUNICIPIOS_COORDS: MunicipalityData[] = [
-  { name: "Aperibé", lat: -20.9669, lng: -41.7486, count: 0 },
-  { name: "Bom Jesus do Itabapoana", lat: -21.1356, lng: -41.7778, count: 0 },
-  { name: "Cambuci", lat: -21.5261, lng: -41.7014, count: 0 },
-  { name: "Italva", lat: -21.1958, lng: -41.9483, count: 0 },
-  { name: "Itaocara", lat: -21.7739, lng: -42.0611, count: 0 },
-  { name: "Itaperuna", lat: -21.2278, lng: -41.8833, count: 0 },
-  { name: "Laje do Muriaé", lat: -20.8389, lng: -41.6392, count: 0 },
-  { name: "Miracema", lat: -21.4494, lng: -41.9831, count: 0 },
-  { name: "Natividade", lat: -21.5128, lng: -41.4328, count: 0 },
-  { name: "Porciúncula", lat: -20.9228, lng: -41.9231, count: 0 },
-  { name: "Santo Antônio de Pádua", lat: -21.5331, lng: -42.1947, count: 0 },
-  { name: "São José de Ubá", lat: -21.3142, lng: -41.9789, count: 0 },
-  { name: "Varre-Sai", lat: -20.7531, lng: -41.8492, count: 0 },
+  { name: "Aperibé", lat: -20.9669, lng: -41.7486, count: 0, lastParticipationDate: undefined },
+  { name: "Bom Jesus do Itabapoana", lat: -21.1356, lng: -41.7778, count: 0, lastParticipationDate: undefined },
+  { name: "Cambuci", lat: -21.5261, lng: -41.7014, count: 0, lastParticipationDate: undefined },
+  { name: "Italva", lat: -21.1958, lng: -41.9483, count: 0, lastParticipationDate: undefined },
+  { name: "Itaocara", lat: -21.7739, lng: -42.0611, count: 0, lastParticipationDate: undefined },
+  { name: "Itaperuna", lat: -21.2278, lng: -41.8833, count: 0, lastParticipationDate: undefined },
+  { name: "Laje do Muriaé", lat: -20.8389, lng: -41.6392, count: 0, lastParticipationDate: undefined },
+  { name: "Miracema", lat: -21.4494, lng: -41.9831, count: 0, lastParticipationDate: undefined },
+  { name: "Natividade", lat: -21.5128, lng: -41.4328, count: 0, lastParticipationDate: undefined },
+  { name: "Porciúncula", lat: -20.9228, lng: -41.9231, count: 0, lastParticipationDate: undefined },
+  { name: "Santo Antônio de Pádua", lat: -21.5331, lng: -42.1947, count: 0, lastParticipationDate: undefined },
+  { name: "São José de Ubá", lat: -21.3142, lng: -41.9789, count: 0, lastParticipationDate: undefined },
+  { name: "Varre-Sai", lat: -20.7531, lng: -41.8492, count: 0, lastParticipationDate: undefined },
 ];
 
 // Accessibility-enhanced color scale with patterns and icons
@@ -105,9 +106,43 @@ export default function MapContent({
 }: MapContentProps) {
   const [showLegend, setShowLegend] = useState(true);
   const [localSelectedMunicipio, setLocalSelectedMunicipio] = useState<string | null>(selectedMunicipio);
+  const [showDetailPanel, setShowDetailPanel] = useState(false);
   const mapRef = useRef(null);
 
   const mapCenter: LatLngExpression = [-21.2, -41.85];
+
+  const municipioNames = useMemo(() => MUNICIPIOS_COORDS.map((m) => m.name), []);
+
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (!localSelectedMunicipio) return;
+
+      const currentIndex = municipioNames.indexOf(localSelectedMunicipio);
+      let nextIndex = currentIndex;
+
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : municipioNames.length - 1;
+      } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+        e.preventDefault();
+        nextIndex = currentIndex < municipioNames.length - 1 ? currentIndex + 1 : 0;
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        handleClearSelection();
+        return;
+      }
+
+      if (nextIndex !== currentIndex) {
+        const nextMunicipio = municipioNames[nextIndex];
+        setLocalSelectedMunicipio(nextMunicipio);
+        onMunicipioSelect(nextMunicipio);
+        setShowDetailPanel(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, [localSelectedMunicipio, municipioNames, onMunicipioSelect]);
 
   const enrichedMunicipios = useMemo(() => {
     return MUNICIPIOS_COORDS.map((mun) => {
@@ -160,11 +195,28 @@ export default function MapContent({
   const handleMarkerClick = (municipio: string) => {
     setLocalSelectedMunicipio(municipio);
     onMunicipioSelect(municipio);
+    setShowDetailPanel(true);
   };
 
   const handleClearSelection = () => {
     setLocalSelectedMunicipio(null);
     onMunicipioSelect(null);
+    setShowDetailPanel(false);
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "—";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  const getSelectedMunicipio = () => {
+    if (!localSelectedMunicipio) return null;
+    return enrichedMunicipios.find((m) => m.name === localSelectedMunicipio);
   };
 
   return (
@@ -332,24 +384,164 @@ export default function MapContent({
         </button>
       )}
 
-      {/* Selection info box */}
-      <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 sm:p-4 z-40 border border-gray-200 max-w-xs">
-        <div className="text-xs sm:text-sm">
-          <p className="text-gray-600 mb-2 font-medium line-clamp-2">
-            {localSelectedMunicipio
-              ? `📍 ${localSelectedMunicipio}`
-              : "👆 Clique no mapa"}
-          </p>
-          {localSelectedMunicipio && (
+      {/* Selection info box - Quick indicator */}
+      {localSelectedMunicipio && !showDetailPanel && (
+        <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 sm:p-4 z-40 border border-gray-200 max-w-xs">
+          <div className="text-xs sm:text-sm">
+            <p className="text-gray-600 mb-2 font-medium line-clamp-2">
+              📍 {localSelectedMunicipio}
+            </p>
             <button
-              onClick={handleClearSelection}
+              onClick={() => setShowDetailPanel(true)}
               className="text-xs px-2 py-1.5 sm:px-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-medium"
             >
-              Limpar
+              Ver detalhes
             </button>
-          )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Detailed selection panel */}
+      {showDetailPanel && localSelectedMunicipio && getSelectedMunicipio() && (
+        <div className="absolute bottom-0 right-0 top-0 sm:top-4 sm:right-4 w-full sm:w-96 bg-white rounded-t-lg sm:rounded-lg shadow-2xl z-50 border border-gray-200 flex flex-col max-h-screen sm:max-h-[85vh] overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-4 sm:p-5 flex-shrink-0">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
+                  {getSelectedMunicipio()!.name}
+                </h2>
+                <p className="text-xs text-gray-600">
+                  Informações da participação
+                </p>
+              </div>
+              <button
+                onClick={handleClearSelection}
+                className="text-gray-400 hover:text-gray-600 text-xl flex-shrink-0 p-1"
+                aria-label="Fechar painel"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5">
+            {/* Main metrics */}
+            <div className="space-y-4">
+              <div>
+                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
+                  Participações
+                </p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {getSelectedMunicipio()!.count}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold text-gray-600 uppercase mb-1">
+                  % do total territorial
+                </p>
+                <div className="flex items-end gap-2">
+                  <p className="text-2xl font-bold text-blue-600">
+                    {totalParticipations > 0
+                      ? ((getSelectedMunicipio()!.count / totalParticipations) * 100).toFixed(1)
+                      : "0"}
+                    %
+                  </p>
+                  {getSelectedMunicipio()!.count > 0 && (
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-600 rounded-full h-2 transition-all"
+                        style={{
+                          width: `${(getSelectedMunicipio()!.count / maxCount) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Separator */}
+            <div className="border-t border-gray-200" />
+
+            {/* Theme or data info */}
+            {dataView === "needs" && getSelectedMunicipio()!.count > 0 ? (
+              <div>
+                <p className="text-xs font-semibold text-gray-600 uppercase mb-2">
+                  Tema principal
+                </p>
+                <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
+                  <p className="font-semibold text-amber-900">
+                    {getSelectedMunicipio()!.categoryTopName || "—"}
+                  </p>
+                  <p className="text-sm text-amber-700 mt-1">
+                    {getSelectedMunicipio()!.categoryTopCount} menção(ões)
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="text-xs font-semibold text-gray-600 uppercase mb-2">
+                  Status
+                </p>
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-sm text-blue-900">
+                    {getSelectedMunicipio()!.count > 0
+                      ? "Participações ativas"
+                      : "Sem participações"}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Last participation */}
+            <div>
+              <p className="text-xs font-semibold text-gray-600 uppercase mb-2">
+                Última participação
+              </p>
+              <p className="text-sm text-gray-700">
+                {formatDate(getSelectedMunicipio()!.lastParticipationDate)}
+              </p>
+            </div>
+
+            {/* Participatory sample warning */}
+            {getSelectedMunicipio()!.count > 0 && (
+              <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+                <p className="text-xs font-semibold text-yellow-900 mb-1">
+                  ⚠️ Amostra participativa
+                </p>
+                <p className="text-xs text-yellow-800 leading-relaxed">
+                  Os dados refletem experiências compartilhadas voluntariamente e não representam a totalidade da população.
+                </p>
+              </div>
+            )}
+
+            {/* No data state */}
+            {getSelectedMunicipio()!.count === 0 && (
+              <div className="bg-gray-50 border border-gray-300 rounded-lg p-3">
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Nenhuma participação registrada neste município ainda.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="border-t border-gray-200 p-4 sm:p-5 flex-shrink-0">
+            <p className="text-xs text-gray-600 mb-3">
+              Navegue: ↑ ↓ ou ← → | Fechar: ESC
+            </p>
+            <button
+              onClick={handleClearSelection}
+              className="w-full px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg font-medium transition text-sm"
+            >
+              Fechar painel
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Custom styles */}
       <style>{`
