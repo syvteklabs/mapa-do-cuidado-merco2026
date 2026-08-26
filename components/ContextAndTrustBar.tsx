@@ -1,5 +1,7 @@
 "use client";
 
+import { animationClasses } from "@/lib/animations";
+
 interface TrustItem {
   icon: React.ReactNode;
   title: string;
@@ -87,7 +89,10 @@ export default function ContextAndTrustBar() {
         {items.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col items-start gap-3 py-4 px-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/50 hover:border-blue-200/70 transition-colors"
+            className={`flex flex-col items-start gap-3 py-4 px-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/50 hover:border-blue-200/70 transition-colors ${animationClasses.fadeInUp}`}
+            style={{
+              animationDelay: `${index * 75}ms`,
+            }}
           >
             {/* Icon */}
             <div className="text-blue-600 flex-shrink-0">{item.icon}</div>

@@ -1,3 +1,5 @@
+import { animationClasses } from "@/lib/animations";
+
 export default function ResearchAndInnovation() {
   const institutions = [
     {
@@ -39,7 +41,10 @@ export default function ResearchAndInnovation() {
           {institutions.map((institution, idx) => (
             <div
               key={idx}
-              className="bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-300 flex flex-col"
+              className={`bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-300 flex flex-col ${animationClasses.fadeInUp}`}
+              style={{
+                animationDelay: `${idx * 100}ms`,
+              }}
             >
               <div className="mb-4">
                 <div className="inline-block">
