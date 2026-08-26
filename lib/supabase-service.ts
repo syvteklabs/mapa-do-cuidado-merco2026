@@ -132,6 +132,16 @@ export class SupabaseService {
         return { success: false, error: stateError.message };
       }
 
+      // Contributions by municipality
+      const { data: byMunicipio, error: municipioError } = await client
+        .from("mapa_contribuicoes")
+        .select("municipio, id");
+
+      if (municipioError) {
+        console.error("Error fetching by municipality:", municipioError);
+        return { success: false, error: municipioError.message };
+      }
+
       // Count by category
       const { data: byCategoryRaw, error: categoryError } = await client
         .from("mapa_contribuicoes")
@@ -144,11 +154,18 @@ export class SupabaseService {
 
       // Aggregate results
       const statePcts = new Map<string, number>();
+      const municipioPcts = new Map<string, number>();
       const categoryPcts = new Map<string, number>();
 
       if (byState) {
         byState.forEach(({ estado }) => {
           statePcts.set(estado, (statePcts.get(estado) || 0) + 1);
+        });
+      }
+
+      if (byMunicipio) {
+        byMunicipio.forEach(({ municipio }) => {
+          municipioPcts.set(municipio, (municipioPcts.get(municipio) || 0) + 1);
         });
       }
 
@@ -166,6 +183,7 @@ export class SupabaseService {
         data: {
           total: totalContributions || 0,
           byState: Object.fromEntries(statePcts),
+          byMunicipio: Object.fromEntries(municipioPcts),
           byCategory: Object.fromEntries(categoryPcts),
         },
       };
