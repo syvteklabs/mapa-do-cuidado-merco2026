@@ -40,10 +40,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Obter total de participações
+    const statsResult = await supabaseService.getContribuicoesStats();
+    const total = statsResult.success ? statsResult.data?.total || 0 : 0;
+
     return NextResponse.json(
       {
         success: true,
         message: "Contribuição salva com sucesso",
+        total: total,
       },
       { status: 201 }
     );

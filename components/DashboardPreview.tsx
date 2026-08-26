@@ -36,6 +36,11 @@ export default function DashboardPreview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const [highlightedCity, setHighlightedCity] = useState<string | null>(null);
+  const [showNewContributionMessage, setShowNewContributionMessage] = useState<{
+    municipio: string;
+    visible: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -73,6 +78,27 @@ export default function DashboardPreview() {
     return () => clearInterval(interval);
   }, []);
 
+  // Processar destaque de URL
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const destaqueParam = params.get("destaque");
+      if (destaqueParam) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setHighlightedCity(destaqueParam);
+        setShowNewContributionMessage({
+          municipio: destaqueParam,
+          visible: true,
+        });
+        const cleanup = setTimeout(() => {
+          setHighlightedCity(null);
+          setShowNewContributionMessage(null);
+        }, 5000);
+        return () => clearTimeout(cleanup);
+      }
+    }
+  }, []);
+
   const formatLastUpdate = (date: Date | null) => {
     if (!date) return "Nunca";
     return date.toLocaleTimeString("pt-BR", {
@@ -87,6 +113,15 @@ export default function DashboardPreview() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      <style>{`
+        @keyframes pulse-highlight {
+          0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+          50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+        }
+        .pulse-highlight {
+          animation: pulse-highlight 2s infinite;
+        }
+      `}</style>
       {/* Header */}
       <header className="bg-white border-b-4 border-blue-600 shadow-lg">
         <div className="max-w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -125,6 +160,14 @@ export default function DashboardPreview() {
           </div>
         )}
 
+        {showNewContributionMessage?.visible && (
+          <div className={`bg-green-50 border-4 border-green-500 rounded-lg p-8 mb-8 animate-pulse ${isTV ? "p-12 text-3xl" : ""}`}>
+            <p className={`text-green-700 font-bold text-center ${isTV ? "text-4xl" : "text-lg"}`}>
+              ✓ Uma nova experiência foi compartilhada em <span className="text-green-900">{showNewContributionMessage.municipio}</span>
+            </p>
+          </div>
+        )}
+
         {stats && (
           <div className="space-y-8 sm:space-y-12">
             {/* Total Contributions */}
@@ -142,6 +185,66 @@ export default function DashboardPreview() {
               </div>
             </div>
 
+            {/* Dynamic Indicators */}
+            {stats.total > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {/* Total Participations */}
+                <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-6 text-center">
+                  <p className={`text-blue-600 font-semibold ${isTV ? "text-xl mb-2" : "text-xs mb-1"}`}>
+                    Participações
+                  </p>
+                  <p className={`font-bold text-blue-900 ${isTV ? "text-5xl" : "text-3xl"}`}>
+                    {stats.total}
+                  </p>
+                </div>
+
+                {/* Municipalities Represented */}
+                <div className="bg-green-50 border-2 border-green-300 rounded-lg p-6 text-center">
+                  <p className={`text-green-600 font-semibold ${isTV ? "text-xl mb-2" : "text-xs mb-1"}`}>
+                    Municípios
+                  </p>
+                  <p className={`font-bold text-green-900 ${isTV ? "text-5xl" : "text-3xl"}`}>
+                    {Object.keys(stats.byMunicipio || {}).length}
+                  </p>
+                </div>
+
+                {/* Top Municipality */}
+                {stats.byMunicipio && Object.keys(stats.byMunicipio).length > 0 && (
+                  <div className="bg-purple-50 border-2 border-purple-300 rounded-lg p-6 text-center col-span-2 sm:col-span-1">
+                    <p className={`text-purple-600 font-semibold ${isTV ? "text-xl mb-2" : "text-xs mb-1"}`}>
+                      Mais Ativo
+                    </p>
+                    <p className={`font-bold text-purple-900 line-clamp-2 ${isTV ? "text-2xl mb-1" : "text-sm mb-1"}`}>
+                      {Object.entries(stats.byMunicipio).reduce((a, b) => b[1] > a[1] ? b : a)[0]}
+                    </p>
+                    <p className={`text-purple-600 font-semibold ${isTV ? "text-2xl" : "text-lg"}`}>
+                      {Object.entries(stats.byMunicipio).reduce((a, b) => b[1] > a[1] ? b : a)[1]}
+                    </p>
+                  </div>
+                )}
+
+                {/* Predominant Category */}
+                {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
+                  <div className="bg-orange-50 border-2 border-orange-300 rounded-lg p-6 text-center col-span-2 sm:col-span-1">
+                    <p className={`text-orange-600 font-semibold ${isTV ? "text-xl mb-2" : "text-xs mb-1"}`}>
+                      Necessidade Percebida
+                    </p>
+                    <p className={`font-bold text-orange-900 line-clamp-2 ${isTV ? "text-xl" : "text-xs"}`}>
+                      {(() => {
+                        const entries = Object.entries(stats.byCategory).sort((a, b) => b[1] - a[1]);
+                        if (entries.length === 0) return "—";
+                        const maxCount = entries[0][1];
+                        const tied = entries.filter(e => e[1] === maxCount);
+                        return tied.length > 1
+                          ? "Percepções variadas"
+                          : entries[0][0].replace(/-/g, " ");
+                      })()}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Municípios Grid */}
             <div>
               <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-5xl" : "text-2xl"}`}>
@@ -151,12 +254,16 @@ export default function DashboardPreview() {
                 {MUNICIPIOS_NOROESTE.map((municipio) => (
                   <div
                     key={municipio}
-                    className={`bg-white border-2 border-gray-400 rounded-lg p-4 sm:p-6 text-center ${isTV ? "p-8" : ""}`}
+                    className={`bg-white border-2 rounded-lg p-4 sm:p-6 text-center transition-all duration-300 ${
+                      highlightedCity === municipio
+                        ? "pulse-highlight border-blue-600 bg-blue-50"
+                        : "border-gray-400"
+                    } ${isTV ? "p-8" : ""}`}
                   >
                     <p className={`text-gray-900 font-semibold line-clamp-3 ${isTV ? "text-2xl mb-3" : "text-sm mb-2"}`}>
                       {municipio}
                     </p>
-                    <p className={`text-gray-600 ${isTV ? "text-3xl" : "text-xl"}`}>
+                    <p className={`${highlightedCity === municipio ? "text-blue-600 font-bold" : "text-gray-600"} ${isTV ? "text-3xl" : "text-xl"}`}>
                       {municipiosStats[municipio] || 0}
                     </p>
                   </div>

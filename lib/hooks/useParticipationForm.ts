@@ -86,6 +86,7 @@ export function useParticipationForm() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [participationNumber, setParticipationNumber] = useState<number | null>(null);
 
   const nextStep = useCallback((nextStepValue: ParticipationStep) => {
     setError(null);
@@ -129,6 +130,12 @@ export function useParticipationForm() {
         throw new Error("Falha ao enviar resposta");
       }
 
+      const data = await response.json();
+      // Obter o total de participações da resposta
+      if (data.total) {
+        setParticipationNumber(data.total);
+      }
+
       nextStep("confirmation");
     } catch (err) {
       const errorMessage =
@@ -154,6 +161,7 @@ export function useParticipationForm() {
     formData,
     isLoading,
     error,
+    participationNumber,
     nextStep,
     updateFormData,
     submitForm,

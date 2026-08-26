@@ -9,6 +9,7 @@ export default function ParticipationFlow() {
     formData,
     isLoading,
     error,
+    participationNumber,
     nextStep,
     updateFormData,
     submitForm,
@@ -271,26 +272,34 @@ export default function ParticipationFlow() {
             <div>
               <div className="mb-4 text-5xl">✓</div>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-                Obrigado!
+                Sua voz entrou no mapa.
               </h2>
-              <p className="text-lg text-gray-600">
-                Sua experiência foi registrada de forma anônima e segura.
+              <p className="text-lg text-gray-600 mb-2">
+                Sua experiência agora faz parte do Mapa do Cuidado.
+              </p>
+              {participationNumber && (
+                <p className="text-2xl font-bold text-blue-600 mb-3">
+                  Você é a participação nº {participationNumber} deste mapa.
+                </p>
+              )}
+              <p className="text-gray-600 italic">
+                &quot;Quando uma experiência é compartilhada, o cuidado deixa de ser invisível.&quot;
               </p>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-left">
               <p className="text-sm text-gray-600">
-                Sua contribuição ajuda a entender melhor os caminhos do cuidado
-                em nossa região.
+                Sua contribuição anônima e voluntária ajuda a construir um mapa
+                real dos caminhos do cuidado em nossa região.
               </p>
             </div>
 
             <div className="space-y-3">
               <Link
-                href="/mapa"
+                href={`/mapa?destaque=${encodeURIComponent(formData.municipio)}`}
                 className="block w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-center hover:bg-blue-700 active:bg-blue-800 transition-colors"
               >
-                Ver o Mapa do Cuidado
+                Ver minha cidade no mapa
               </Link>
               <button
                 onClick={reset}
