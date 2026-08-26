@@ -14,6 +14,7 @@ import ScopeAndExpansion from "@/components/ScopeAndExpansion";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import InstitutionalTransparency from "@/components/InstitutionalTransparency";
+import ProjectStatus from "@/components/ProjectStatus";
 
 interface StatsData {
   total: number;
@@ -133,6 +134,9 @@ export default function Home() {
 
         {/* Scope and Expansion - Territory and future growth */}
         <ScopeAndExpansion />
+
+        {/* Project Status - Where we are today */}
+        <ProjectStatus />
 
         {/* How It Works - Four step process */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
