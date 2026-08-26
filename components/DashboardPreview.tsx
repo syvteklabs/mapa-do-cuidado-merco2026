@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ExpansionInterest from "./ExpansionInterest";
 import ExpansionTerritoriesSection from "./ExpansionTerritoriesSection";
 import DemoBanner from "./DemoBanner";
+import NoroestMap from "./NoroestMap";
 import { DEMO_STATS } from "@/lib/demo-data";
 
 interface DashboardStats {
@@ -279,6 +280,14 @@ export default function DashboardPreview() {
                 )}
               </div>
             )}
+
+            {/* Mapa Interativo */}
+            <div>
+              <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-5xl" : "text-2xl"}`}>
+                Mapa Geográfico - Participações por Município
+              </h2>
+              <NoroestMap municipiosStats={municipiosStats} />
+            </div>
 
             {/* Municípios Grid */}
             <div>
