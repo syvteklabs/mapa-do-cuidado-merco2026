@@ -38,9 +38,10 @@ export default function ParticipationFlow() {
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
 
   const progressSteps = [
-    { id: "location", label: "Localização" },
-    { id: "question", label: "Experiência" },
-    { id: "sending", label: "Salvando" },
+    { id: "location", label: "1. Município" },
+    { id: "question", label: "2. Experiência" },
+    { id: "perception", label: "3. Percepção" },
+    { id: "review", label: "4. Revisar e enviar" },
   ];
   const currentProgress =
     progressSteps.findIndex((s) => s.id === step) + 1;
@@ -61,7 +62,7 @@ export default function ParticipationFlow() {
       </header>
 
       {/* Progress Bar */}
-      {step !== "start" && step !== "confirmation" && (
+      {step !== "confirmation" && (
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 px-4 py-4">
           <div className="max-w-2xl mx-auto">
             <div className="flex gap-2 mb-3">
@@ -76,7 +77,7 @@ export default function ParticipationFlow() {
             </div>
             <div className="flex justify-between items-center">
               <p className="text-sm font-semibold text-gray-700">
-                {progressSteps[currentProgress - 1]?.label || "Progresso"}
+                {step === "start" ? "Preparado?" : progressSteps[currentProgress - 1]?.label || "Progresso"}
               </p>
               <p className="text-xs font-medium text-gray-600">
                 {currentProgress} de {totalProgress}
@@ -90,43 +91,68 @@ export default function ParticipationFlow() {
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12">
         {/* Step: Start */}
         {step === "start" && (
-          <div className="text-center space-y-8">
-            <div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-                Sua experiência importa
+          <div className="space-y-8">
+            {/* Title and Introduction */}
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
+                Sua experiência ajuda a construir este mapa.
               </h1>
-              <p className="text-lg text-gray-700 mb-8">
-                Compartilhe como você percebe os caminhos do cuidado na sua região
+              <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
+                Você responderá algumas perguntas rápidas sobre como percebeu um caminho de cuidado
+                na sua região.
               </p>
             </div>
 
-            <div className="space-y-4 text-left">
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0" aria-hidden="true">⏱️</span>
-                <div>
-                  <p className="font-semibold text-gray-900 text-sm">Rápido</p>
-                  <p className="text-sm text-gray-600">Apenas 2 minutos</p>
-                </div>
-              </div>
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0" aria-hidden="true">🔒</span>
-                <div>
-                  <p className="font-semibold text-gray-900 text-sm">Anônimo</p>
-                  <p className="text-sm text-gray-600">Nenhum dado pessoal é coletado</p>
-                </div>
-              </div>
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0" aria-hidden="true">📊</span>
-                <div>
-                  <p className="font-semibold text-gray-900 text-sm">Agregado</p>
-                  <p className="text-sm text-gray-600">Suas respostas formam um mapa coletivo</p>
-                </div>
+            {/* Steps Visualization */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 sm:p-8">
+              <h2 className="font-semibold text-gray-900 mb-6 text-sm">Processo em 4 etapas:</h2>
+              <div className="space-y-4">
+                {progressSteps.map((step, index) => (
+                  <div key={step.id} className="flex gap-4 items-start">
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm sm:text-base">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 pt-1.5">
+                      <p className="font-semibold text-gray-900 text-sm sm:text-base">
+                        {step.label}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Privacy Disclosure */}
-            <PrivacyDisclosure variant="full" />
+            {/* Privacy Block - Summarized */}
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+              <h3 className="font-semibold text-gray-900 text-sm mb-3">Sua privacidade é protegida:</h3>
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4">
+                Não solicitamos nome, telefone, endereço, localização exata ou informações clínicas.
+              </p>
+              <Link
+                href="/privacidade"
+                className="text-sm font-semibold text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 inline-block"
+              >
+                Entenda como protegemos sua participação →
+              </Link>
+            </div>
 
+            {/* Quick Facts */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <p className="text-2xl font-bold text-blue-600">2 min</p>
+                <p className="text-sm text-gray-600 mt-1">Leva apenas 2 minutos</p>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <p className="text-2xl font-bold text-blue-600">100%</p>
+                <p className="text-sm text-gray-600 mt-1">Anônimo</p>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <p className="text-2xl font-bold text-blue-600">Agregado</p>
+                <p className="text-sm text-gray-600 mt-1">Seus dados formam um mapa</p>
+              </div>
+            </div>
+
+            {/* CTA Button */}
             <button
               onClick={() => nextStep("location")}
               className="w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
