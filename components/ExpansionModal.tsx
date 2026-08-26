@@ -1,37 +1,62 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Link from "next/link";
 import { useExpansionForm } from "@/lib/hooks/useExpansionForm";
 import { ESTADOS_BR } from "@/lib/hooks/useParticipationForm";
+import { useEffect } from "react";
 
-export default function ExpansionPage() {
+interface ExpansionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialCity?: string;
+  initialState?: string;
+}
+
+export default function ExpansionModal({
+  isOpen,
+  onClose,
+  initialCity,
+  initialState,
+}: ExpansionModalProps) {
   const { step, formData, isLoading, error, updateFormData, submitForm, reset } =
     useExpansionForm();
 
+  useEffect(() => {
+    if (isOpen && initialCity) {
+      updateFormData("cidade", initialCity);
+    }
+    if (isOpen && initialState) {
+      updateFormData("estado", initialState);
+    }
+  }, [isOpen, initialCity, initialState, updateFormData]);
+
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <Header />
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
         {/* Step: Form */}
         {step === "form" && (
-          <div className="space-y-8">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Lista de Expansão
-              </h1>
-              <p className="text-gray-600 mb-4">
-                Registre seu interesse e ajude a indicar os próximos territórios onde
-                o Mapa do Cuidado poderá chegar.
-              </p>
-            </div>
-
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-left">
-              <p className="text-sm text-gray-700">
-                Sua região ainda não faz parte deste primeiro ciclo, mas queremos
-                conhecer o interesse dos territórios que virão em seguida.
-              </p>
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                  Lista de Expansão
+                </h2>
+                <p className="text-gray-600">
+                  Registre seu interesse e ajude a indicar os próximos territórios
+                </p>
+              </div>
+              <button
+                onClick={handleClose}
+                className="text-gray-400 hover:text-gray-600 text-2xl"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="space-y-4">
@@ -159,66 +184,56 @@ export default function ExpansionPage() {
                   {error}
                 </div>
               )}
-            </div>
 
-            <div className="flex gap-3">
-              <Link
-                href="/"
-                className="flex-1 bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors text-center"
-              >
-                Voltar
-              </Link>
-              <button
-                onClick={submitForm}
-                disabled={isLoading || !formData.consentimento_contato}
-                className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              >
-                {isLoading ? "Registrando..." : "Registrar Interesse"}
-              </button>
+              {/* Buttons */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={handleClose}
+                  className="flex-1 bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={submitForm}
+                  disabled={isLoading || !formData.consentimento_contato}
+                  className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                >
+                  {isLoading ? "Registrando..." : "Registrar Interesse"}
+                </button>
+              </div>
             </div>
           </div>
         )}
 
         {/* Step: Confirmation */}
         {step === "confirmation" && (
-          <div className="text-center space-y-8">
-            <div>
-              <div className="mb-4 text-5xl">✓</div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-                Interesse registrado.
-              </h2>
-              <p className="text-lg text-gray-600 mb-2">
-                Sua participação ajuda a mostrar onde novas experiências de cuidado
-                podem ser construídas.
-              </p>
-            </div>
+          <div className="p-6 sm:p-8 text-center">
+            <div className="mb-4 text-5xl">✓</div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">
+              Interesse registrado.
+            </h2>
+            <p className="text-lg text-gray-600 mb-8">
+              Sua participação ajuda a mostrar onde novas experiências de cuidado
+              podem ser construídas.
+            </p>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-left">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8 text-left">
               <p className="text-sm text-gray-600">
-                Obrigado por demonstrar interesse na expansão do Mapa do Cuidado para
-                sua região. Em breve, entraremos em contato para explorar as
+                Obrigado por demonstrar interesse na expansão do Mapa do Cuidado
+                para sua região. Em breve, entraremos em contato para explorar as
                 possibilidades juntos.
               </p>
             </div>
 
-            <div className="space-y-3">
-              <Link
-                href="/"
-                className="block w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-center hover:bg-blue-700 active:bg-blue-800 transition-colors"
-              >
-                Voltar para a página inicial
-              </Link>
-              <button
-                onClick={reset}
-                className="w-full bg-gray-200 text-gray-900 py-4 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
-              >
-                Registrar Outro Interesse
-              </button>
-            </div>
+            <button
+              onClick={handleClose}
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors"
+            >
+              Fechar
+            </button>
           </div>
         )}
-      </main>
-      <Footer />
+      </div>
     </div>
   );
 }

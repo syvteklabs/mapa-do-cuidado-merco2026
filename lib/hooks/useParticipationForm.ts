@@ -65,17 +65,32 @@ export const ESTADOS_BR = [
   { uf: "TO", nome: "Tocantins" },
 ];
 
-// Cidades da região Noroeste Fluminense (prioridade para MVP)
-const CIDADES_MERCO = [
-  { uf: "RJ", cidade: "Campos dos Goytacazes" },
-  { uf: "RJ", cidade: "São Fidélis" },
-  { uf: "RJ", cidade: "Conceição de Macabu" },
-  { uf: "RJ", cidade: "Carapebus" },
-  { uf: "RJ", cidade: "Quissamã" },
-  { uf: "RJ", cidade: "Macaé" },
-  { uf: "RJ", cidade: "Rio das Ostras" },
-  { uf: "RJ", cidade: "Cardoso Moreira" },
+// Municípios da região Noroeste Fluminense (13 municipios)
+export const MUNICIPIOS_NOROESTE = [
+  "Aperibé",
+  "Bom Jesus do Itabapoana",
+  "Cambuci",
+  "Italva",
+  "Itaocara",
+  "Itaperuna",
+  "Laje do Muriaé",
+  "Miracema",
+  "Natividade",
+  "Porciúncula",
+  "Santo Antônio de Pádua",
+  "São José de Ubá",
+  "Varre-Sai",
 ];
+
+// Cidades disponíveis para seleção (todos os estados)
+const CIDADES_MERCO = [
+  ...MUNICIPIOS_NOROESTE.map((cidade) => ({ uf: "RJ", cidade })),
+];
+
+function isFromNoroeste(estado: string, municipio: string): boolean {
+  if (estado !== "RJ") return false;
+  return MUNICIPIOS_NOROESTE.includes(municipio);
+}
 
 export function useParticipationForm() {
   const [step, setStep] = useState<ParticipationStep>("start");
@@ -87,6 +102,7 @@ export function useParticipationForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [participationNumber, setParticipationNumber] = useState<number | null>(null);
+  const [showOutOfRegion, setShowOutOfRegion] = useState(false);
 
   const nextStep = useCallback((nextStepValue: ParticipationStep) => {
     setError(null);
@@ -95,14 +111,25 @@ export function useParticipationForm() {
 
   const updateFormData = useCallback(
     (field: keyof ParticipationFormData, value: string) => {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
+      setFormData((prev) => {
+        const updated = { ...prev, [field]: value };
+        // Check if selected city is from Noroeste
+        if (field === "municipio" || field === "estado") {
+          const estado = field === "estado" ? value : prev.estado;
+          const municipio = field === "municipio" ? value : prev.municipio;
+          setShowOutOfRegion(!isFromNoroeste(estado, municipio));
+        }
+        return updated;
+      });
       setError(null);
     },
     []
   );
+
+  const continueParticipation = useCallback(() => {
+    setShowOutOfRegion(false);
+    // nextStep will be called by the caller
+  }, []);
 
   const submitForm = useCallback(async () => {
     if (!formData.municipio || !formData.resposta_categoria) {
@@ -169,5 +196,7 @@ export function useParticipationForm() {
     categorias: CATEGORIAS,
     estados: ESTADOS_BR,
     cidades: CIDADES_MERCO,
+    showOutOfRegion,
+    continueParticipation,
   };
 }

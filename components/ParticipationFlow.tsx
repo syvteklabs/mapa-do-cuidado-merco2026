@@ -2,6 +2,7 @@
 
 import { useParticipationForm } from "@/lib/hooks/useParticipationForm";
 import Link from "next/link";
+import OutOfRegionFlow from "./OutOfRegionFlow";
 
 export default function ParticipationFlow() {
   const {
@@ -17,6 +18,8 @@ export default function ParticipationFlow() {
     categorias,
     estados,
     cidades,
+    showOutOfRegion,
+    continueParticipation,
   } = useParticipationForm();
 
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
@@ -155,20 +158,32 @@ export default function ParticipationFlow() {
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Cidade/Município
                 </label>
-                <select
-                  value={formData.municipio}
-                  onChange={(e) =>
-                    updateFormData("municipio", e.target.value)
-                  }
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">Selecione uma cidade</option>
-                  {filteredCidades.map((cidade) => (
-                    <option key={cidade.cidade} value={cidade.cidade}>
-                      {cidade.cidade}
-                    </option>
-                  ))}
-                </select>
+                {formData.estado === "RJ" ? (
+                  <select
+                    value={formData.municipio}
+                    onChange={(e) =>
+                      updateFormData("municipio", e.target.value)
+                    }
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Selecione uma cidade</option>
+                    {filteredCidades.map((cidade) => (
+                      <option key={cidade.cidade} value={cidade.cidade}>
+                        {cidade.cidade}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    value={formData.municipio}
+                    onChange={(e) =>
+                      updateFormData("municipio", e.target.value)
+                    }
+                    placeholder="Digite sua cidade"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                )}
               </div>
 
               {error && (
@@ -178,23 +193,36 @@ export default function ParticipationFlow() {
               )}
             </div>
 
-            <div className="flex gap-3">
-              <button
-                onClick={() => nextStep("info")}
-                className="flex-1 bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
-              >
-                Voltar
-              </button>
-              <button
-                onClick={() => {
-                  if (formData.municipio) nextStep("question");
+            {showOutOfRegion && formData.municipio && (
+              <OutOfRegionFlow
+                selectedCity={formData.municipio}
+                selectedState={formData.estado}
+                onContinue={() => {
+                  continueParticipation();
+                  nextStep("question");
                 }}
-                disabled={!formData.municipio}
-                className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              >
-                Próximo
-              </button>
-            </div>
+              />
+            )}
+
+            {!showOutOfRegion && (
+              <div className="flex gap-3">
+                <button
+                  onClick={() => nextStep("info")}
+                  className="flex-1 bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                >
+                  Voltar
+                </button>
+                <button
+                  onClick={() => {
+                    if (formData.municipio) nextStep("question");
+                  }}
+                  disabled={!formData.municipio}
+                  className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                >
+                  Próximo
+                </button>
+              </div>
+            )}
           </div>
         )}
 

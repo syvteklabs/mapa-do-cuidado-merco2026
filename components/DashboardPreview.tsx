@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ExpansionInterest from "./ExpansionInterest";
 
 interface DashboardStats {
   total: number;
@@ -332,6 +333,9 @@ export default function DashboardPreview() {
                 ⚠️ Os dados representam as contribuições voluntárias recebidas durante a experiência. Não constituem diagnóstico oficial nem pesquisa estatisticamente representativa da população.
               </p>
             </div>
+
+            {/* Expansion Interest Section */}
+            <ExpansionInterest />
           </div>
         )}
 
