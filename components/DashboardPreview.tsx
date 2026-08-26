@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import ExpansionInterest from "./ExpansionInterest";
-import ExpansionTerritoriesSection from "./ExpansionTerritoriesSection";
+import ExpansionUnified from "./ExpansionUnified";
 import DemoBanner from "./DemoBanner";
 import NoroestMap from "./NoroestMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
@@ -494,13 +493,19 @@ export default function DashboardPreview() {
               />
             </div>
 
-            {/* Distribuição de Categorias */}
+            {/* Insights - Shared Experiences */}
             {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
-              <div>
-                <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-5xl" : "text-2xl"}`}>
-                  Experiências Compartilhadas
-                </h2>
-                <div className="space-y-4 sm:space-y-6">
+              <div className="space-y-6 sm:space-y-8">
+                <div className="space-y-4">
+                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-2xl"}`}>
+                    Temas e Necessidades Identificadas
+                  </h2>
+                  <p className={`text-gray-700 leading-relaxed font-medium ${isTV ? "text-xl" : "text-base"}`}>
+                    As experiências compartilhadas revelam as necessidades mais frequentemente mencionadas pelos participantes:
+                  </p>
+                </div>
+
+                <div className="space-y-5 sm:space-y-6">
                   {Object.entries(stats.byCategory)
                     .sort((a, b) => b[1] - a[1])
                     .map(([category, count]) => {
@@ -509,27 +514,29 @@ export default function DashboardPreview() {
                           ? Math.round((count / stats.total) * 100)
                           : 0;
                       return (
-                        <div key={category} className="space-y-2">
-                          <div className={`flex items-baseline gap-3 ${isTV ? "gap-4" : ""}`}>
-                            <p className={`font-semibold text-gray-900 flex-1 line-clamp-2 ${isTV ? "text-2xl" : "text-sm"}`}>
+                        <div key={category} className="space-y-3">
+                          <div className="flex items-center justify-between gap-4">
+                            <p className={`font-semibold text-gray-900 flex-1 ${isTV ? "text-xl" : "text-sm"}`}>
                               {category}
                             </p>
-                            <p className={`font-bold text-blue-600 whitespace-nowrap ${isTV ? "text-4xl" : "text-lg"}`}>
-                              {count}
-                            </p>
+                            <div className="flex items-center gap-3 whitespace-nowrap">
+                              <p className={`font-bold text-blue-600 ${isTV ? "text-2xl" : "text-base"}`}>
+                                {count}
+                              </p>
+                              <p className={`font-semibold text-gray-600 min-w-12 text-right ${isTV ? "text-lg" : "text-sm"}`}>
+                                {percentage}%
+                              </p>
+                            </div>
                           </div>
-                          <div className={`w-full bg-gray-300 rounded-full ${isTV ? "h-6" : "h-2"}`}>
+                          <div className={`w-full bg-gray-200 rounded-full ${isTV ? "h-4" : "h-2.5"}`}>
                             <div
-                              className="bg-blue-600 rounded-full transition-all duration-500"
+                              className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
                               style={{
                                 width: `${percentage}%`,
-                                height: isTV ? "24px" : "8px",
+                                height: isTV ? "16px" : "10px",
                               }}
                             />
                           </div>
-                          <p className={`text-right font-semibold text-gray-700 ${isTV ? "text-2xl" : "text-xs"}`}>
-                            {percentage}%
-                          </p>
                         </div>
                       );
                     })}
@@ -549,18 +556,16 @@ export default function DashboardPreview() {
               </div>
             )}
 
-            {/* Disclaimer */}
-            <div className={`bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 sm:p-8 ${isTV ? "p-12 text-2xl" : ""}`}>
-              <p className={`text-yellow-900 leading-relaxed font-semibold ${isTV ? "text-xl" : "text-sm"}`}>
-                ⚠️ Os dados representam as contribuições voluntárias recebidas durante a experiência. Não constituem diagnóstico oficial nem pesquisa estatisticamente representativa da população.
+            {/* Expansion Unified Section */}
+            <ExpansionUnified isTV={isTV} newTerritory={newTerritory} />
+
+            {/* Methodological Note - Less Visual Weight */}
+            <div className={`bg-gray-50 border border-gray-300 rounded-lg p-4 sm:p-6 ${isTV ? "p-8" : ""}`}>
+              <p className={`text-gray-700 leading-relaxed text-sm flex gap-2 items-start`}>
+                <span className="flex-shrink-0 mt-0.5">ℹ️</span>
+                <span>Os dados representam contribuições voluntárias da experiência. Não constituem diagnóstico oficial nem pesquisa estatisticamente representativa.</span>
               </p>
             </div>
-
-            {/* Expansion Territories Section */}
-            <ExpansionTerritoriesSection isTV={isTV} newTerritory={newTerritory} />
-
-            {/* Expansion Interest Section */}
-            <ExpansionInterest />
           </div>
         )}
 
