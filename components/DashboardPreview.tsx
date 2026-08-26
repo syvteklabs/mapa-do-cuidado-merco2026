@@ -48,35 +48,48 @@ export default function DashboardPreview() {
   } | null>(null);
   const [newTerritory, setNewTerritory] = useState<string | null>(null);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [retrying, setRetrying] = useState(false);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch("/api/contribuicoes");
-        if (!response.ok) throw new Error("Falha ao carregar dados");
+        setRetrying(false);
+        // Timeout de 5 segundos para request
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch("/api/contribuicoes", {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error("Servidor retornou erro");
         const data = await response.json();
 
         // Se temos dados de contribuições, usar dados por município
         if (data.data) {
           setStats(data.data);
 
-          // Preparar dados por município (inicializar com 0 e depois preencher com dados reais)
+          // Preparar dados por município
           const byMunicipio: Record<string, number> = {};
           MUNICIPIOS_NOROESTE.forEach((mun) => {
             byMunicipio[mun] = data.data.byMunicipio?.[mun] || 0;
           });
           setMunicipiosStats(byMunicipio);
-
           setLastUpdate(new Date());
+          setError(null);
+          setIsDemoMode(false);
         }
-
-        setError(null);
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
+        const errorMsg = err instanceof Error ? err.message : "Erro desconhecido";
+        setError(`Falha ao conectar com o servidor: ${errorMsg}`);
+
         // Usar dados de demonstração como contingência
         setStats(DEMO_STATS);
         setIsDemoMode(true);
-        setError(null);
+
         // Preparar dados por município
         const byMunicipio: Record<string, number> = {};
         const municipiosMap = DEMO_STATS.byMunicipio as Record<string, number>;
@@ -87,12 +100,22 @@ export default function DashboardPreview() {
         setLastUpdate(new Date());
       } finally {
         setLoading(false);
+        setLoadingTimeout(false);
       }
     };
 
+    // Timeout para mostrar skeleton por no máximo 3 segundos
+    const skeletonTimeout = setTimeout(() => {
+      setLoadingTimeout(true);
+    }, 3000);
+
     fetchStats();
     const interval = setInterval(fetchStats, POLLING_INTERVAL);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearTimeout(skeletonTimeout);
+      clearInterval(interval);
+    };
   }, []);
 
   // Processar destaque de URL
@@ -133,12 +156,72 @@ export default function DashboardPreview() {
   }, []);
 
   const formatLastUpdate = (date: Date | null) => {
-    if (!date) return "Nunca";
-    return date.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+    if (!date) return "Aguardando primeiro carregamento...";
+    const now = new Date();
+    const diffSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffSeconds < 60) {
+      return `Agora mesmo`;
+    } else if (diffSeconds < 3600) {
+      const minutes = Math.floor(diffSeconds / 60);
+      return `${minutes} min atrás`;
+    } else {
+      return date.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+  };
+
+  const handleRetry = () => {
+    setRetrying(true);
+    setError(null);
+    setLoading(true);
+    // Trigger manual fetch
+    const fetchStats = async () => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch("/api/contribuicoes", {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error("Servidor retornou erro");
+        const data = await response.json();
+
+        if (data.data) {
+          setStats(data.data);
+          const byMunicipio: Record<string, number> = {};
+          MUNICIPIOS_NOROESTE.forEach((mun) => {
+            byMunicipio[mun] = data.data.byMunicipio?.[mun] || 0;
+          });
+          setMunicipiosStats(byMunicipio);
+          setLastUpdate(new Date());
+          setError(null);
+          setIsDemoMode(false);
+        }
+      } catch (err) {
+        console.error("Erro ao tentar novamente:", err);
+        setError(
+          `Falha ao conectar. Exibindo dados de demonstração. Tentaremos novamente em ${Math.ceil(POLLING_INTERVAL / 1000)}s.`
+        );
+        setStats(DEMO_STATS);
+        setIsDemoMode(true);
+        const byMunicipio: Record<string, number> = {};
+        const municipiosMap = DEMO_STATS.byMunicipio as Record<string, number>;
+        MUNICIPIOS_NOROESTE.forEach((mun) => {
+          byMunicipio[mun] = municipiosMap[mun] || 0;
+        });
+        setMunicipiosStats(byMunicipio);
+        setLastUpdate(new Date());
+      } finally {
+        setLoading(false);
+        setRetrying(false);
+      }
+    };
+    fetchStats();
   };
 
   // Para TV, usar tamanhos maiores
@@ -190,9 +273,69 @@ export default function DashboardPreview() {
 
       {/* Content */}
       <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Loading State - Skeleton */}
+        {loading && !loadingTimeout && !stats && (
+          <div className="space-y-8">
+            <div className="bg-gradient-to-br from-gray-100 to-gray-50 border-4 border-gray-300 rounded-lg p-8 sm:p-12 animate-pulse">
+              <div className="text-center">
+                <div className="h-6 bg-gray-300 rounded mb-4 w-48 mx-auto" />
+                <div className="h-20 bg-gray-300 rounded w-32 mx-auto" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="bg-gray-100 border-2 border-gray-300 rounded-lg p-6 animate-pulse">
+                  <div className="h-4 bg-gray-300 rounded mb-2" />
+                  <div className="h-8 bg-gray-300 rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
         {error && (
-          <div className={`bg-red-50 border-2 border-red-200 rounded-lg p-6 mb-8 ${isTV ? "text-2xl" : ""}`}>
-            <p className="text-red-700">Erro ao carregar dados: {error}</p>
+          <div
+            className={`bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8 ${
+              isTV ? "text-2xl" : ""
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <span className="text-3xl">⚠️</span>
+              <div className="flex-1">
+                <h3 className="text-red-900 font-bold mb-2">
+                  {isDemoMode
+                    ? "Modo Demonstração Ativado"
+                    : "Erro de Conexão"}
+                </h3>
+                <p className="text-red-700 mb-4">{error}</p>
+                <button
+                  onClick={handleRetry}
+                  disabled={retrying}
+                  className="px-4 py-2 bg-red-600 text-white rounded font-semibold hover:bg-red-700 disabled:bg-gray-400 transition"
+                >
+                  {retrying ? "Tentando novamente..." : "Tentar Novamente"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Loading Timeout - Show demo data with message */}
+        {loading && loadingTimeout && !error && (
+          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-4">
+              <span className="text-3xl">⏳</span>
+              <div>
+                <h3 className="text-yellow-900 font-bold mb-1">
+                  Carregamento demorando...
+                </h3>
+                <p className="text-yellow-700 text-sm">
+                  Estamos tentando conectar ao servidor. Exibindo dados em cache
+                  enquanto aguardamos a resposta.
+                </p>
+              </div>
+            </div>
           </div>
         )}
 
@@ -278,6 +421,23 @@ export default function DashboardPreview() {
                     </p>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Informação sobre dados do Noroeste */}
+            {stats.byState && stats.byState.RJ !== stats.total && (
+              <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+                <div className="flex gap-3">
+                  <span className="text-2xl">ℹ️</span>
+                  <div>
+                    <h3 className="font-bold text-blue-900 mb-1">
+                      Escopo Geográfico
+                    </h3>
+                    <p className="text-blue-800 text-sm">
+                      <strong>{stats.total} participações totais</strong> foram registradas. Deste total, <strong>{stats.byState.RJ}</strong> são do Rio de Janeiro (Noroeste Fluminense) e são exibidas no mapa e na grade de municípios. As demais {stats.total - (stats.byState.RJ || 0)} participações são de fora da região de escopo.
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
 
