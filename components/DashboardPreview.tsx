@@ -310,17 +310,17 @@ export default function DashboardPreview() {
         {/* Loading State - Skeleton */}
         {loading && !loadingTimeout && !stats && (
           <div className="space-y-8">
-            <div className="bg-gradient-to-br from-gray-100 to-gray-50 border-4 border-gray-300 rounded-lg p-8 sm:p-12 animate-pulse">
+            <div className="bg-gradient-to-br from-indigo-100 to-blue-100 border-4 border-indigo-300 rounded-xl p-8 sm:p-12 animate-pulse shadow-lg">
               <div className="text-center">
-                <div className="h-6 bg-gray-300 rounded mb-4 w-48 mx-auto" />
-                <div className="h-20 bg-gray-300 rounded w-32 mx-auto" />
+                <div className="h-6 bg-indigo-300 rounded-lg mb-4 w-48 mx-auto" />
+                <div className="h-20 bg-indigo-300 rounded-lg w-32 mx-auto" />
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="bg-gray-100 border-2 border-gray-300 rounded-lg p-6 animate-pulse">
-                  <div className="h-4 bg-gray-300 rounded mb-2" />
-                  <div className="h-8 bg-gray-300 rounded" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="bg-gradient-to-br from-gray-100 to-gray-50 border-2 border-gray-300 rounded-xl p-6 animate-pulse shadow-md">
+                  <div className="h-4 bg-gray-300 rounded-lg mb-2" />
+                  <div className="h-8 bg-gray-300 rounded-lg" />
                 </div>
               ))}
             </div>
@@ -382,44 +382,48 @@ export default function DashboardPreview() {
         )}
 
         {stats && (
-          <div className="space-y-8 sm:space-y-12">
-            {/* Main Panel Layout - Map + Sidebar */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8">
-              {/* Left Column - Map (2/3 width on desktop, full on mobile) */}
-              <div className="md:col-span-2 space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-xl sm:text-2xl"}`}>
+          <div className="space-y-8 sm:space-y-12 lg:space-y-14">
+            {/* SECTION 1: Map + Quick Stats Grid */}
+            <div className="space-y-6">
+              {/* Title + Toggle - Full Width */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
                     Mapa Geográfico
                   </h2>
-                  {/* Data View Toggle */}
-                  <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1.5 sm:p-2">
-                    <button
-                      onClick={() => setDataView("participations")}
-                      className={`px-3 sm:px-4 py-2 rounded font-medium text-xs sm:text-sm transition whitespace-nowrap ${
-                        dataView === "participations"
-                          ? "bg-blue-600 text-white shadow-sm"
-                          : "text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      📊 Participações
-                    </button>
-                    <button
-                      onClick={() => setDataView("needs")}
-                      className={`px-3 sm:px-4 py-2 rounded font-medium text-xs sm:text-sm transition whitespace-nowrap ${
-                        dataView === "needs"
-                          ? "bg-amber-600 text-white shadow-sm"
-                          : "text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      🎯 Necessidades
-                    </button>
-                  </div>
+                  <p className="text-gray-600 text-sm mt-1">Visualize a distribuição de participações no Noroeste Fluminense</p>
                 </div>
+                {/* Data View Toggle */}
+                <div className="flex items-center gap-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl p-1.5 sm:p-2 shadow-sm border border-gray-200">
+                  <button
+                    onClick={() => setDataView("participations")}
+                    className={`px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                      dataView === "participations"
+                        ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
+                        : "text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    📊 Participações
+                  </button>
+                  <button
+                    onClick={() => setDataView("needs")}
+                    className={`px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                      dataView === "needs"
+                        ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg"
+                        : "text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    🎯 Necessidades
+                  </button>
+                </div>
+              </div>
 
-                {/* Map - Primary Element */}
-                <div className="rounded-lg overflow-hidden border-2 border-gray-200 shadow-md" style={{
-                  height: isTV ? '600px' : 'clamp(350px, 60vh, 500px)',
-                  minHeight: '350px'
+              {/* Main Grid: Large Map + Side Stats */}
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                {/* Map - Large (3/4 on desktop) */}
+                <div className="lg:col-span-3 rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300" style={{
+                  height: isTV ? '700px' : 'clamp(400px, 70vh, 600px)',
+                  minHeight: '400px'
                 }}>
                   <NoroestMap
                     municipiosStats={municipiosStats}
@@ -430,93 +434,82 @@ export default function DashboardPreview() {
                     height="h-full"
                   />
                 </div>
-              </div>
 
-              {/* Right Column - Info Panel (1/3 width on desktop, full on mobile) */}
-              <div className="md:col-span-1 space-y-4 sm:space-y-5">
-                {/* Total Contributions - Large */}
-                <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-blue-100 border-2 border-indigo-300 rounded-lg p-5 sm:p-6 shadow-sm">
-                  <div className="text-center space-y-2">
-                    <p className="font-semibold text-indigo-700 tracking-wide uppercase text-xs sm:text-sm">
-                      Participações
-                    </p>
-                    <p className="font-bold text-indigo-900 text-4xl sm:text-5xl lg:text-6xl">
-                      {stats.total}
-                    </p>
-                    <p className="text-indigo-700 font-medium text-xs sm:text-sm">
-                      histórias compartilhadas
-                    </p>
+                {/* Right Stats Panel (1/4 on desktop) */}
+                <div className="lg:col-span-1 space-y-4">
+                  {/* Total - Large Card */}
+                  <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-300 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div className="text-center space-y-2">
+                      <p className="font-bold text-blue-600 uppercase text-xs tracking-wider">
+                        Total
+                      </p>
+                      <p className={`font-black text-blue-900 ${isTV ? "text-5xl" : "text-4xl sm:text-5xl"}`}>
+                        {stats.total}
+                      </p>
+                      <p className="text-blue-700 font-semibold text-sm">
+                        participações
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Quick Stats - 2 columns */}
-                {stats.total > 0 && (
-                  <>
-                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                      {/* Municipalities */}
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-3 sm:p-4 text-center">
-                        <p className="text-blue-600 font-semibold text-xs mb-2">
-                          Municípios
+                  {/* Quick Stats - 2 cards stacked */}
+                  {stats.total > 0 && (
+                    <>
+                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-400 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                        <p className="text-emerald-600 font-bold text-xs uppercase tracking-wider mb-2">Municípios</p>
+                        <p className="font-black text-emerald-900 text-3xl mb-1">
+                          {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}
+                          <span className="text-xs text-emerald-700 font-semibold">/13</span>
                         </p>
-                        <p className="font-bold text-blue-900 text-2xl sm:text-3xl">
-                          {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}<span className="text-sm">/13</span>
-                        </p>
-                        <p className="text-blue-700 font-medium text-xs mt-1">
-                          ativos
-                        </p>
+                        <p className="text-emerald-700 font-semibold text-xs">ativos</p>
                       </div>
 
-                      {/* Categories */}
-                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-3 sm:p-4 text-center">
-                        <p className="text-emerald-600 font-semibold text-xs mb-2">
-                          Temas
-                        </p>
-                        <p className="font-bold text-emerald-900 text-2xl sm:text-3xl">
+                      <div className="bg-gradient-to-br from-rose-50 to-rose-100 border-2 border-rose-400 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                        <p className="text-rose-600 font-bold text-xs uppercase tracking-wider mb-2">Temas</p>
+                        <p className="font-black text-rose-900 text-3xl">
                           {Object.keys(stats.byCategory || {}).filter(c => (stats.byCategory || {})[c] > 0).length}
                         </p>
-                        <p className="text-emerald-700 font-medium text-xs mt-1">
-                          detectados
-                        </p>
+                        <p className="text-rose-700 font-semibold text-xs">identificados</p>
                       </div>
-                    </div>
 
-                    {/* Geographic Scope Info */}
-                    {stats.byState && stats.byState.RJ !== stats.total && (
-                      <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                        <div className="flex gap-2 text-sm">
-                          <span className="flex-shrink-0 text-lg">📍</span>
-                          <div className="text-xs sm:text-sm">
-                            <p className="font-bold text-blue-900 mb-1">Escopo</p>
-                            <p className="text-blue-800">
-                              <strong>{stats.byState.RJ}</strong> de <strong>{stats.total}</strong> participações no Noroeste RJ
-                            </p>
+                      {/* Scope Info */}
+                      {stats.byState && stats.byState.RJ !== stats.total && (
+                        <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-2xl p-4 shadow-md">
+                          <div className="flex gap-2 text-xs">
+                            <span className="flex-shrink-0 text-xl">📍</span>
+                            <div>
+                              <p className="font-bold text-amber-900 mb-1 text-xs">Noroeste RJ</p>
+                              <p className="text-amber-800 font-semibold">
+                                <strong>{stats.byState.RJ}</strong> de <strong>{stats.total}</strong>
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </>
-                )}
+                      )}
+                    </>
+                  )}
 
-                {/* Selected Municipality Info */}
-                {selectedMunicipio && (
-                  <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4">
-                    <div className="flex items-start gap-2">
-                      <span className="flex-shrink-0 text-xl">📍</span>
-                      <div className="text-sm flex-1">
-                        <p className="font-bold text-amber-900 mb-1">{selectedMunicipio}</p>
-                        <p className="text-amber-800">
-                          {municipiosStats[selectedMunicipio] || 0} participações
-                        </p>
-                        <button
-                          onClick={() => setSelectedMunicipio(null)}
-                          className="mt-2 text-xs font-medium text-amber-600 hover:text-amber-700"
-                        >
-                          Limpar seleção
-                        </button>
+                  {/* Selected Municipality Info */}
+                  {selectedMunicipio && (
+                    <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 border-2 border-cyan-400 rounded-2xl p-4 shadow-lg animate-pulse">
+                      <div className="flex items-start gap-2">
+                        <span className="flex-shrink-0 text-2xl">📍</span>
+                        <div className="text-sm flex-1">
+                          <p className="font-bold text-cyan-900 mb-2 text-base">{selectedMunicipio}</p>
+                          <p className="text-cyan-800 font-semibold text-sm mb-3">
+                            {municipiosStats[selectedMunicipio] || 0} participações
+                          </p>
+                          <button
+                            onClick={() => setSelectedMunicipio(null)}
+                            className="w-full text-xs font-bold text-cyan-700 bg-cyan-200 hover:bg-cyan-300 py-2 px-3 rounded-lg transition-colors"
+                          >
+                            Limpar
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
 
@@ -538,51 +531,77 @@ export default function DashboardPreview() {
 
             {/* Insights - Shared Experiences */}
             {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
-              <div className="space-y-6 sm:space-y-8">
-                <div className="space-y-4">
-                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-2xl"}`}>
-                    Temas e Necessidades Identificadas
+              <div className="space-y-8 sm:space-y-10 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 border-2 border-indigo-300 rounded-3xl p-8 sm:p-10 lg:p-12 shadow-lg">
+                <div className="space-y-3">
+                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
+                    🎯 Temas e Necessidades
                   </h2>
-                  <p className={`text-gray-700 leading-relaxed font-medium ${isTV ? "text-xl" : "text-base"}`}>
-                    As experiências compartilhadas revelam as necessidades mais frequentemente mencionadas pelos participantes:
+                  <p className={`text-gray-700 leading-relaxed font-semibold max-w-3xl ${isTV ? "text-xl" : "text-base"}`}>
+                    Os participantes compartilharam experiências que revelam as principais necessidades do território:
                   </p>
                 </div>
 
-                <div className="space-y-5 sm:space-y-6">
+                <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2">
                   {Object.entries(stats.byCategory)
                     .sort((a, b) => b[1] - a[1])
-                    .map(([category, count]) => {
+                    .map(([category, count], index) => {
                       const percentage =
                         stats.total > 0
                           ? Math.round((count / stats.total) * 100)
                           : 0;
+
+                      const colors = [
+                        "from-blue-100 to-blue-50 border-blue-400",
+                        "from-emerald-100 to-emerald-50 border-emerald-400",
+                        "from-rose-100 to-rose-50 border-rose-400",
+                        "from-amber-100 to-amber-50 border-amber-400",
+                        "from-violet-100 to-violet-50 border-violet-400",
+                      ];
+
+                      const bgColor = colors[index % colors.length];
+
                       return (
-                        <div key={category} className="space-y-3">
-                          <div className="flex items-center justify-between gap-4">
-                            <p className={`font-semibold text-gray-900 flex-1 ${isTV ? "text-xl" : "text-sm"}`}>
-                              {category}
-                            </p>
-                            <div className="flex items-center gap-3 whitespace-nowrap">
-                              <p className={`font-bold text-blue-600 ${isTV ? "text-2xl" : "text-base"}`}>
-                                {count}
+                        <div key={category} className={`bg-gradient-to-br ${bgColor} border-2 rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300`}>
+                          <div className="space-y-3">
+                            <div className="flex items-start justify-between gap-3">
+                              <p className={`font-bold text-gray-900 flex-1 leading-tight ${isTV ? "text-lg" : "text-sm sm:text-base"}`}>
+                                {category}
                               </p>
-                              <p className={`font-semibold text-gray-600 min-w-12 text-right ${isTV ? "text-lg" : "text-sm"}`}>
-                                {percentage}%
-                              </p>
+                              <div className="flex items-center gap-2 whitespace-nowrap">
+                                <p className={`font-black text-blue-600 ${isTV ? "text-2xl" : "text-lg"}`}>
+                                  {count}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div className={`w-full bg-gray-200 rounded-full ${isTV ? "h-4" : "h-2.5"}`}>
-                            <div
-                              className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
-                              style={{
-                                width: `${percentage}%`,
-                                height: isTV ? "16px" : "10px",
-                              }}
-                            />
+
+                            <div className="space-y-2">
+                              <div className={`w-full bg-white/60 rounded-full overflow-hidden ${isTV ? "h-5" : "h-3"}`}>
+                                <div
+                                  className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-full transition-all duration-700 ease-out"
+                                  style={{
+                                    width: `${percentage}%`,
+                                    height: isTV ? "20px" : "12px",
+                                  }}
+                                />
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-600 font-semibold">Frequência</span>
+                                <span className={`font-bold text-gray-700 ${isTV ? "text-lg" : "text-sm"}`}>
+                                  {percentage}% das participações
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       );
                     })}
+                </div>
+
+                {/* Insight Summary */}
+                <div className="bg-white/80 border border-indigo-200 rounded-2xl p-6 text-center">
+                  <p className={`text-indigo-900 font-semibold ${isTV ? "text-xl" : "text-base"}`}>
+                    💡 <strong>{Object.keys(stats.byCategory).length}</strong> temas identificados a partir de <strong>{stats.total}</strong> histórias compartilhadas
+                  </p>
                 </div>
               </div>
             )}
@@ -602,12 +621,18 @@ export default function DashboardPreview() {
             {/* Expansion Unified Section */}
             <ExpansionUnified isTV={isTV} newTerritory={newTerritory} />
 
-            {/* Methodological Note - Less Visual Weight */}
-            <div className={`bg-gray-50 border border-gray-300 rounded-lg p-4 sm:p-6 ${isTV ? "p-8" : ""}`}>
-              <p className={`text-gray-700 leading-relaxed text-sm flex gap-2 items-start`}>
-                <span className="flex-shrink-0 mt-0.5">ℹ️</span>
-                <span>Os dados representam contribuições voluntárias da experiência. Não constituem diagnóstico oficial nem pesquisa estatisticamente representativa.</span>
-              </p>
+            {/* Methodological Note */}
+            <div className="bg-gradient-to-r from-gray-50 to-blue-50 border-2 border-gray-300 rounded-2xl p-6 sm:p-8 shadow-md">
+              <div className="flex gap-4 items-start">
+                <span className="text-3xl flex-shrink-0">📋</span>
+                <div>
+                  <p className="font-bold text-gray-900 mb-2 text-base">Nota Metodológica</p>
+                  <p className="text-gray-700 leading-relaxed text-sm font-medium">
+                    Os dados apresentados representam contribuições <strong>voluntárias e anônimas</strong> sobre experiências no cuidado.
+                    Não constituem diagnóstico oficial, pesquisa estatisticamente representativa, nem substituem processos formais de avaliação de políticas de saúde.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )}
