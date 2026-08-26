@@ -38,10 +38,13 @@ export default function DashboardPreview() {
   const [municipiosStats, setMunicipiosStats] = useState<
     Record<string, number>
   >({});
+  const [municipiosCategories, setMunicipiosCategories] = useState<
+    Record<string, Record<string, number>>
+  >({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-  const [highlightedCity, setHighlightedCity] = useState<string | null>(null);
+  const [selectedMunicipio, setSelectedMunicipio] = useState<string | null>(null);
   const [showNewContributionMessage, setShowNewContributionMessage] = useState<{
     municipio: string;
     visible: boolean;
@@ -50,6 +53,7 @@ export default function DashboardPreview() {
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
+  const [dataView, setDataView] = useState<"participations" | "needs">("participations");
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -73,10 +77,16 @@ export default function DashboardPreview() {
 
           // Preparar dados por município
           const byMunicipio: Record<string, number> = {};
+          const byMunicipioCategories: Record<string, Record<string, number>> = {};
+
           MUNICIPIOS_NOROESTE.forEach((mun) => {
             byMunicipio[mun] = data.data.byMunicipio?.[mun] || 0;
+            // TODO: Extract category data per municipality when available
+            byMunicipioCategories[mun] = {};
           });
+
           setMunicipiosStats(byMunicipio);
+          setMunicipiosCategories(byMunicipioCategories);
           setLastUpdate(new Date());
           setError(null);
           setIsDemoMode(false);
@@ -92,11 +102,14 @@ export default function DashboardPreview() {
 
         // Preparar dados por município
         const byMunicipio: Record<string, number> = {};
+        const byMunicipioCategories: Record<string, Record<string, number>> = {};
         const municipiosMap = DEMO_STATS.byMunicipio as Record<string, number>;
         MUNICIPIOS_NOROESTE.forEach((mun) => {
           byMunicipio[mun] = municipiosMap[mun] || 0;
+          byMunicipioCategories[mun] = {};
         });
         setMunicipiosStats(byMunicipio);
+        setMunicipiosCategories(byMunicipioCategories);
         setLastUpdate(new Date());
       } finally {
         setLoading(false);
@@ -125,13 +138,13 @@ export default function DashboardPreview() {
       const destaqueParam = params.get("destaque");
       if (destaqueParam) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setHighlightedCity(destaqueParam);
+        setSelectedMunicipio(destaqueParam);
         setShowNewContributionMessage({
           municipio: destaqueParam,
           visible: true,
         });
         const cleanup = setTimeout(() => {
-          setHighlightedCity(null);
+          setSelectedMunicipio(null);
           setShowNewContributionMessage(null);
         }, 5000);
         return () => clearTimeout(cleanup);
@@ -194,10 +207,13 @@ export default function DashboardPreview() {
         if (data.data) {
           setStats(data.data);
           const byMunicipio: Record<string, number> = {};
+          const byMunicipioCategories: Record<string, Record<string, number>> = {};
           MUNICIPIOS_NOROESTE.forEach((mun) => {
             byMunicipio[mun] = data.data.byMunicipio?.[mun] || 0;
+            byMunicipioCategories[mun] = {};
           });
           setMunicipiosStats(byMunicipio);
+          setMunicipiosCategories(byMunicipioCategories);
           setLastUpdate(new Date());
           setError(null);
           setIsDemoMode(false);
@@ -210,11 +226,14 @@ export default function DashboardPreview() {
         setStats(DEMO_STATS);
         setIsDemoMode(true);
         const byMunicipio: Record<string, number> = {};
+        const byMunicipioCategories: Record<string, Record<string, number>> = {};
         const municipiosMap = DEMO_STATS.byMunicipio as Record<string, number>;
         MUNICIPIOS_NOROESTE.forEach((mun) => {
           byMunicipio[mun] = municipiosMap[mun] || 0;
+          byMunicipioCategories[mun] = {};
         });
         setMunicipiosStats(byMunicipio);
+        setMunicipiosCategories(byMunicipioCategories);
         setLastUpdate(new Date());
       } finally {
         setLoading(false);
@@ -364,111 +383,119 @@ export default function DashboardPreview() {
 
         {stats && (
           <div className="space-y-8 sm:space-y-12">
-            {/* Total Contributions - Refined */}
-            <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-blue-100 border-2 border-indigo-300 rounded-lg p-8 sm:p-12 shadow-sm">
-              <div className="text-center">
-                <p className={`font-semibold text-indigo-700 mb-2 tracking-wide uppercase ${isTV ? "text-2xl" : "text-xs"}`}>
-                  Total de Participações
-                </p>
-                <p className={`font-bold text-indigo-900 ${isTV ? "text-8xl" : "text-6xl"}`}>
-                  {stats.total}
-                </p>
-                <p className={`text-indigo-700 font-medium mt-3 ${isTV ? "text-2xl" : "text-sm"}`}>
-                  histórias de cuidado compartilhadas
-                </p>
+            {/* Total & Indicators Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Total Contributions - Compact */}
+              <div className="lg:col-span-1 bg-gradient-to-br from-indigo-50 via-blue-50 to-blue-100 border-2 border-indigo-300 rounded-lg p-6 sm:p-8 shadow-sm">
+                <div className="text-center">
+                  <p className={`font-semibold text-indigo-700 mb-2 tracking-wide uppercase text-xs`}>
+                    Total
+                  </p>
+                  <p className={`font-bold text-indigo-900 ${isTV ? "text-6xl" : "text-5xl"}`}>
+                    {stats.total}
+                  </p>
+                  <p className={`text-indigo-700 font-medium mt-2 text-sm`}>
+                    histórias compartilhadas
+                  </p>
+                </div>
+              </div>
+
+              {/* Complementary Indicators - 3 metrics */}
+              {stats.total > 0 && (
+                <>
+                  {/* Municipalities */}
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-6 text-center">
+                    <p className={`text-blue-600 font-semibold mb-2 text-sm`}>
+                      Municípios
+                    </p>
+                    <p className={`font-bold text-blue-900 mb-1 ${isTV ? "text-4xl" : "text-3xl"}`}>
+                      {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}/13
+                    </p>
+                    <p className={`text-blue-700 font-medium text-xs`}>
+                      ativos
+                    </p>
+                  </div>
+
+                  {/* States */}
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-6 text-center">
+                    <p className={`text-emerald-600 font-semibold mb-2 text-sm`}>
+                      Temas
+                    </p>
+                    <p className={`font-bold text-emerald-900 mb-1 ${isTV ? "text-4xl" : "text-3xl"}`}>
+                      {Object.keys(stats.byCategory || {}).filter(c => (stats.byCategory || {})[c] > 0).length}
+                    </p>
+                    <p className={`text-emerald-700 font-medium text-xs`}>
+                      identificados
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Map Section with Data View Toggle */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-2xl"}`}>
+                  Mapa Geográfico
+                </h2>
+                {/* Data View Toggle */}
+                <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setDataView("participations")}
+                    className={`px-4 py-2 rounded font-medium text-sm transition ${
+                      dataView === "participations"
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    Participações
+                  </button>
+                  <button
+                    onClick={() => setDataView("needs")}
+                    className={`px-4 py-2 rounded font-medium text-sm transition ${
+                      dataView === "needs"
+                        ? "bg-amber-600 text-white"
+                        : "text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    Necessidades
+                  </button>
+                </div>
+              </div>
+
+              {/* Map - Large and Primary */}
+              <div className={`${isTV ? "h-[600px]" : "h-[500px]"} rounded-lg overflow-hidden border-2 border-gray-200 shadow-md`}>
+                <NoroestMap
+                  municipiosStats={municipiosStats}
+                  municipiosCategories={municipiosCategories}
+                  selectedMunicipio={selectedMunicipio}
+                  onMunicipioSelect={setSelectedMunicipio}
+                  dataView={dataView}
+                  height="h-full"
+                />
               </div>
             </div>
 
-            {/* Complementary Indicators - 3 metrics only */}
-            {stats.total > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                {/* Municipalities Represented */}
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-6 text-center">
-                  <p className={`text-blue-600 font-semibold mb-3 ${isTV ? "text-xl" : "text-sm"}`}>
-                    Municípios Ativos
-                  </p>
-                  <p className={`font-bold text-blue-900 mb-1 ${isTV ? "text-5xl" : "text-4xl"}`}>
-                    {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}/13
-                  </p>
-                  <p className={`text-blue-700 font-medium ${isTV ? "text-lg" : "text-xs"}`}>
-                    da região do Noroeste
-                  </p>
-                </div>
-
-                {/* States Represented */}
-                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-6 text-center">
-                  <p className={`text-emerald-600 font-semibold mb-3 ${isTV ? "text-xl" : "text-sm"}`}>
-                    Estados Representados
-                  </p>
-                  <p className={`font-bold text-emerald-900 mb-1 ${isTV ? "text-5xl" : "text-4xl"}`}>
-                    {Object.keys(stats.byState || {}).filter(s => (stats.byState || {})[s] > 0).length}
-                  </p>
-                  <p className={`text-emerald-700 font-medium ${isTV ? "text-lg" : "text-xs"}`}>
-                    alcance geográfico
-                  </p>
-                </div>
-
-                {/* Need Categories Identified */}
-                {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
-                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-lg p-6 text-center">
-                    <p className={`text-amber-600 font-semibold mb-3 ${isTV ? "text-xl" : "text-sm"}`}>
-                      Temas Identificados
-                    </p>
-                    <p className={`font-bold text-amber-900 mb-1 ${isTV ? "text-5xl" : "text-4xl"}`}>
-                      {Object.keys(stats.byCategory).filter(c => (stats.byCategory || {})[c] > 0).length}
-                    </p>
-                    <p className={`text-amber-700 font-medium ${isTV ? "text-lg" : "text-xs"}`}>
-                      tipos de necessidades
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Informação sobre dados do Noroeste */}
-            {stats.byState && stats.byState.RJ !== stats.total && (
-              <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                <div className="flex gap-3">
-                  <span className="text-2xl">ℹ️</span>
-                  <div>
-                    <h3 className="font-bold text-blue-900 mb-1">
-                      Escopo Geográfico
-                    </h3>
-                    <p className="text-blue-800 text-sm">
-                      <strong>{stats.total} participações totais</strong> foram registradas. Deste total, <strong>{stats.byState.RJ}</strong> são do Rio de Janeiro (Noroeste Fluminense) e são exibidas no mapa e na grade de municípios. As demais {stats.total - (stats.byState.RJ || 0)} participações são de fora da região de escopo.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Mapa Interativo */}
+            {/* Municípios Grid - Synchronized Selection */}
             <div>
-              <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-5xl" : "text-2xl"}`}>
-                Mapa Geográfico - Participações por Município
-              </h2>
-              <NoroestMap municipiosStats={municipiosStats} />
-            </div>
-
-            {/* Municípios Grid */}
-            <div>
-              <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-5xl" : "text-2xl"}`}>
+              <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-4xl" : "text-xl"}`}>
                 Municípios do Noroeste Fluminense
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
                 {MUNICIPIOS_NOROESTE.map((municipio) => (
                   <div
                     key={municipio}
-                    className={`bg-white border-2 rounded-lg p-4 sm:p-6 text-center transition-all duration-300 ${
-                      highlightedCity === municipio
-                        ? "pulse-highlight border-blue-600 bg-blue-50"
-                        : "border-gray-400"
+                    onClick={() => setSelectedMunicipio(municipio === selectedMunicipio ? null : municipio)}
+                    className={`bg-white border-2 rounded-lg p-4 sm:p-6 text-center cursor-pointer transition-all duration-300 ${
+                      selectedMunicipio === municipio
+                        ? "pulse-highlight border-blue-600 bg-blue-50 shadow-md"
+                        : "border-gray-300 hover:border-gray-400"
                     } ${isTV ? "p-8" : ""}`}
                   >
                     <p className={`text-gray-900 font-semibold line-clamp-3 ${isTV ? "text-2xl mb-3" : "text-sm mb-2"}`}>
                       {municipio}
                     </p>
-                    <p className={`${highlightedCity === municipio ? "text-blue-600 font-bold" : "text-gray-600"} ${isTV ? "text-3xl" : "text-xl"}`}>
+                    <p className={`${selectedMunicipio === municipio ? "text-blue-600 font-bold" : "text-gray-600"} ${isTV ? "text-3xl" : "text-xl"}`}>
                       {municipiosStats[municipio] || 0}
                     </p>
                   </div>

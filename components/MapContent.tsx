@@ -11,13 +11,18 @@ interface MunicipalityData {
   lat: number;
   lng: number;
   count: number;
+  categoryTopName?: string;
+  categoryTopCount?: number;
 }
 
 interface MapContentProps {
   municipiosStats: Record<string, number>;
+  municipiosCategories?: Record<string, Record<string, number>>;
+  selectedMunicipio?: string | null;
+  onMunicipioSelect?: (municipio: string | null) => void;
+  dataView?: "participations" | "needs";
 }
 
-// Coordenadas dos 13 municípios do Noroeste Fluminense
 const MUNICIPIOS_COORDS: MunicipalityData[] = [
   { name: "Aperibé", lat: -20.9669, lng: -41.7486, count: 0 },
   { name: "Bom Jesus do Itabapoana", lat: -21.1356, lng: -41.7778, count: 0 },
@@ -34,10 +39,20 @@ const MUNICIPIOS_COORDS: MunicipalityData[] = [
   { name: "Varre-Sai", lat: -20.7531, lng: -41.8492, count: 0 },
 ];
 
-// Ícone customizado para marcadores
-const createCustomIcon = (count: number, maxCount: number) => {
-  let color = "#cbd5e1"; // cinza
+// Accessibility-enhanced color scale with patterns and icons
+const INTENSITY_LEVELS = [
+  { level: 5, label: "> 75%", color: "#1e40af", icon: "●●●●●", pattern: "solid" },
+  { level: 4, label: "50-75%", color: "#3b82f6", icon: "●●●●", pattern: "medium" },
+  { level: 3, label: "25-50%", color: "#60a5fa", icon: "●●●", pattern: "light" },
+  { level: 2, label: "< 25%", color: "#bfdbfe", icon: "●●", pattern: "very-light" },
+  { level: 1, label: "Sem dados", color: "#cbd5e1", icon: "◯", pattern: "none" },
+];
+
+const createCustomIcon = (count: number, maxCount: number, isSelected: boolean = false) => {
+  let color = "#cbd5e1";
   let size = 30;
+  let borderColor = "white";
+  let borderWidth = 2;
 
   if (count === 0) {
     color = "#cbd5e1";
@@ -45,23 +60,28 @@ const createCustomIcon = (count: number, maxCount: number) => {
   } else {
     const intensity = count / maxCount;
     if (intensity > 0.75) {
-      color = "#1e40af"; // azul escuro
-      size = 42;
+      color = "#1e40af";
+      size = isSelected ? 48 : 42;
     } else if (intensity > 0.5) {
-      color = "#3b82f6"; // azul
-      size = 38;
+      color = "#3b82f6";
+      size = isSelected ? 44 : 38;
     } else if (intensity > 0.25) {
-      color = "#60a5fa"; // azul claro
-      size = 34;
+      color = "#60a5fa";
+      size = isSelected ? 40 : 34;
     } else {
-      color = "#bfdbfe"; // azul muito claro
-      size = 30;
+      color = "#bfdbfe";
+      size = isSelected ? 36 : 30;
     }
+  }
+
+  if (isSelected) {
+    borderColor = "#1e40af";
+    borderWidth = 3;
   }
 
   const svgIcon = `
     <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" fill="${color}" stroke="white" stroke-width="2"/>
+      <circle cx="12" cy="12" r="10" fill="${color}" stroke="${borderColor}" stroke-width="${borderWidth}"/>
       <text x="12" y="14" font-size="8" font-weight="bold" text-anchor="middle" fill="white">
         ${count}
       </text>
@@ -76,23 +96,43 @@ const createCustomIcon = (count: number, maxCount: number) => {
   });
 };
 
-export default function MapContent({ municipiosStats }: MapContentProps) {
+export default function MapContent({
+  municipiosStats,
+  municipiosCategories = {},
+  selectedMunicipio = null,
+  onMunicipioSelect = () => {},
+  dataView = "participations",
+}: MapContentProps) {
   const [showLegend, setShowLegend] = useState(true);
-  const [selectedMunicipio, setSelectedMunicipio] = useState<string | null>(null);
+  const [localSelectedMunicipio, setLocalSelectedMunicipio] = useState<string | null>(selectedMunicipio);
   const mapRef = useRef(null);
 
-  // Centro do Noroeste Fluminense
   const mapCenter: LatLngExpression = [-21.2, -41.85];
 
-  // Enriquecer dados
   const enrichedMunicipios = useMemo(() => {
-    return MUNICIPIOS_COORDS.map((mun) => ({
-      ...mun,
-      count: municipiosStats[mun.name] || 0,
-    }));
-  }, [municipiosStats]);
+    return MUNICIPIOS_COORDS.map((mun) => {
+      const count = municipiosStats[mun.name] || 0;
+      let categoryTopName: string | undefined;
+      let categoryTopCount: number | undefined;
 
-  // Encontrar máximo para escala
+      if (dataView === "needs" && municipiosCategories[mun.name]) {
+        const categories = municipiosCategories[mun.name];
+        const topCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
+        if (topCategory) {
+          categoryTopName = topCategory[0];
+          categoryTopCount = topCategory[1];
+        }
+      }
+
+      return {
+        ...mun,
+        count,
+        categoryTopName,
+        categoryTopCount,
+      };
+    });
+  }, [municipiosStats, municipiosCategories, dataView]);
+
   const maxCount = useMemo(() => {
     return Math.max(...enrichedMunicipios.map((m) => m.count), 1);
   }, [enrichedMunicipios]);
@@ -117,6 +157,16 @@ export default function MapContent({ municipiosStats }: MapContentProps) {
 
   const municipiosComDados = enrichedMunicipios.filter((m) => m.count > 0).length;
 
+  const handleMarkerClick = (municipio: string) => {
+    setLocalSelectedMunicipio(municipio);
+    onMunicipioSelect(municipio);
+  };
+
+  const handleClearSelection = () => {
+    setLocalSelectedMunicipio(null);
+    onMunicipioSelect(null);
+  };
+
   return (
     <div className="relative w-full h-full">
       <MapContainer
@@ -126,14 +176,16 @@ export default function MapContent({ municipiosStats }: MapContentProps) {
         style={{ height: "100%", width: "100%" }}
         className="rounded-lg"
       >
+        {/* Softer base layer */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://tiles.stadiamaps.com/tiles/stamen_tonerlite/{z}/{x}/{y}.png"
+          opacity={0.85}
         />
 
-        {/* Círculos de intensidade */}
-        {enrichedMunicipios.map((mun) => (
-          mun.count > 0 && (
+        {/* Intensity circles */}
+        {enrichedMunicipios.map((mun) =>
+          mun.count > 0 ? (
             <Circle
               key={`circle-${mun.name}`}
               center={[mun.lat, mun.lng] as LatLngExpression}
@@ -145,47 +197,68 @@ export default function MapContent({ municipiosStats }: MapContentProps) {
                 fillOpacity: 0.08,
               }}
             />
-          )
-        ))}
+          ) : null
+        )}
 
-        {/* Marcadores dos municípios */}
+        {/* Municipality markers */}
         {enrichedMunicipios.map((mun) => (
           <Marker
             key={`marker-${mun.name}`}
             position={[mun.lat, mun.lng] as LatLngExpression}
-            icon={createCustomIcon(mun.count, maxCount)}
+            icon={createCustomIcon(mun.count, maxCount, localSelectedMunicipio === mun.name)}
             eventHandlers={{
-              click: () => setSelectedMunicipio(mun.name),
+              click: () => handleMarkerClick(mun.name),
             }}
           >
             <Popup closeButton={true} className="municipality-popup">
-              <div className="w-48">
-                <h3 className="font-bold text-gray-900 text-base mb-2">
+              <div className="w-56">
+                <h3 className="font-bold text-gray-900 text-base mb-3 pb-2 border-b">
                   {mun.name}
                 </h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 text-sm">Participações:</span>
-                    <span className="font-bold text-blue-600">{mun.count}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 text-sm">% do total:</span>
-                    <span className="font-bold text-blue-600">
-                      {totalParticipations > 0
-                        ? ((mun.count / totalParticipations) * 100).toFixed(1)
-                        : "0"}
-                      %
-                    </span>
-                  </div>
-                  {mun.count > 0 && (
-                    <div className="w-full bg-gray-300 rounded-full h-2 mt-3">
-                      <div
-                        className="bg-blue-600 rounded-full h-2 transition-all"
-                        style={{
-                          width: `${(mun.count / maxCount) * 100}%`,
-                        }}
-                      />
-                    </div>
+                <div className="space-y-3">
+                  {dataView === "participations" ? (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 font-medium text-sm">Participações:</span>
+                        <span className="font-bold text-blue-600 text-lg">{mun.count}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 font-medium text-sm">% do total:</span>
+                        <span className="font-bold text-blue-600">
+                          {totalParticipations > 0
+                            ? ((mun.count / totalParticipations) * 100).toFixed(1)
+                            : "0"}
+                          %
+                        </span>
+                      </div>
+                      {mun.count > 0 && (
+                        <div className="space-y-1">
+                          <div className="text-xs text-gray-600">Intensidade relativa</div>
+                          <div className="w-full bg-gray-300 rounded-full h-3">
+                            <div
+                              className="bg-blue-600 rounded-full h-3 transition-all"
+                              style={{
+                                width: `${(mun.count / maxCount) * 100}%`,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 font-medium text-sm">Tema Principal:</span>
+                        <span className="font-bold text-amber-600">{mun.categoryTopName || "—"}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 font-medium text-sm">Menções:</span>
+                        <span className="font-bold text-amber-600 text-lg">{mun.categoryTopCount || 0}</span>
+                      </div>
+                      <div className="text-xs text-gray-500 italic">
+                        {mun.count > 0 ? `Baseado em ${mun.count} participação(ões)` : "Sem dados"}
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -194,109 +267,98 @@ export default function MapContent({ municipiosStats }: MapContentProps) {
         ))}
       </MapContainer>
 
-      {/* Legenda Customizada */}
+      {/* Enhanced Accessible Legend */}
       {showLegend && (
-        <div className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg p-4 max-w-xs z-40 border border-gray-200">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-gray-900 text-sm">Legenda</h3>
+        <div className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg p-5 max-w-sm z-40 border border-gray-200">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-gray-900 text-sm">Legenda de Intensidade</h3>
             <button
               onClick={() => setShowLegend(false)}
               className="text-gray-400 hover:text-gray-600 text-lg"
+              aria-label="Fechar legenda"
             >
               ✕
             </button>
           </div>
 
-          {/* Escala de cores */}
-          <div className="space-y-2 mb-4">
-            <p className="text-xs font-semibold text-gray-600 uppercase">
-              Intensidade
-            </p>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full" style={{ background: "#1e40af" }} />
-                <span className="text-xs text-gray-700">&gt; 75% do máximo</span>
+          {/* Color and pattern scale */}
+          <div className="space-y-3 mb-4">
+            {INTENSITY_LEVELS.map((level) => (
+              <div key={level.level} className="flex items-center gap-3">
+                <div className="flex items-center gap-2 w-12">
+                  <div
+                    className="w-6 h-6 rounded-full border-2 border-gray-300"
+                    style={{ background: level.color }}
+                    role="img"
+                    aria-label={`Nível ${level.level}: ${level.label}`}
+                  />
+                  <span className="text-xs font-bold text-gray-700">{level.icon}</span>
+                </div>
+                <span className="text-xs text-gray-700 font-medium">{level.label}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full" style={{ background: "#3b82f6" }} />
-                <span className="text-xs text-gray-700">50-75% do máximo</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full" style={{ background: "#60a5fa" }} />
-                <span className="text-xs text-gray-700">25-50% do máximo</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full" style={{ background: "#bfdbfe" }} />
-                <span className="text-xs text-gray-700">&lt; 25% do máximo</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full" style={{ background: "#cbd5e1" }} />
-                <span className="text-xs text-gray-700">Sem dados</span>
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Estatísticas rápidas */}
+          {/* Statistics */}
           <div className="border-t pt-3">
-            <p className="text-xs font-semibold text-gray-600 uppercase mb-2">
-              Estatísticas
-            </p>
+            <p className="text-xs font-semibold text-gray-600 uppercase mb-2">Estatísticas</p>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
                 <span className="text-gray-600">Total:</span>
                 <span className="font-bold text-blue-600">{totalParticipations}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Municípios:</span>
+                <span className="text-gray-600">Municípios ativos:</span>
                 <span className="font-bold text-green-600">{municipiosComDados}/13</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Máximo:</span>
+                <span className="text-gray-600">Máximo registrado:</span>
                 <span className="font-bold text-purple-600">{maxCount}</span>
               </div>
             </div>
           </div>
 
-          {/* Dica de interação */}
+          {/* Help text */}
           <div className="border-t pt-3 mt-3">
-            <p className="text-xs text-gray-500">
-              💡 Clique nos marcadores para ver detalhes
+            <p className="text-xs text-gray-500 leading-relaxed">
+              💡 Clique nos marcadores para ver detalhes. Tamanho, cor e padrão indicam intensidade.
             </p>
           </div>
         </div>
       )}
 
-      {/* Botão para mostrar/esconder legenda */}
+      {/* Show legend button */}
       {!showLegend && (
         <button
           onClick={() => setShowLegend(true)}
           className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg p-2 z-40 hover:bg-gray-50 border border-gray-200"
           title="Mostrar legenda"
+          aria-label="Mostrar legenda"
         >
           <span className="text-lg">📋</span>
         </button>
       )}
 
-      {/* Info box superior */}
+      {/* Selection info box */}
       <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-40 border border-gray-200">
         <div className="text-sm">
-          <p className="text-gray-600 mb-2">
-            {selectedMunicipio
-              ? `Selecionado: ${selectedMunicipio}`
-              : "Passe o mouse ou clique para explorar"}
+          <p className="text-gray-600 mb-2 font-medium">
+            {localSelectedMunicipio
+              ? `Selecionado: ${localSelectedMunicipio}`
+              : "Clique para explorar municípios"}
           </p>
-          <div className="flex gap-2">
+          {localSelectedMunicipio && (
             <button
-              onClick={() => setSelectedMunicipio(null)}
-              className="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              onClick={handleClearSelection}
+              className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-medium"
             >
-              Limpar
+              Limpar seleção
             </button>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Estilos customizados */}
+      {/* Custom styles */}
       <style>{`
         .municipality-popup .leaflet-popup-content {
           margin: 0;
@@ -307,7 +369,11 @@ export default function MapContent({ municipiosStats }: MapContentProps) {
           display: none;
         }
         .custom-marker {
-          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+          transition: filter 0.2s;
+        }
+        .custom-marker:hover {
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
         .leaflet-marker-icon {
           border: none !important;
@@ -315,7 +381,12 @@ export default function MapContent({ municipiosStats }: MapContentProps) {
         }
         .leaflet-popup-content-wrapper {
           background-color: #fff;
+          border-radius: 8px;
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          font-family: inherit;
+        }
+        .leaflet-popup-tip {
+          background-color: #fff;
         }
       `}</style>
     </div>
