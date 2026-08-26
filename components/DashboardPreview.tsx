@@ -6,6 +6,7 @@ import ExpansionInterest from "./ExpansionInterest";
 import ExpansionTerritoriesSection from "./ExpansionTerritoriesSection";
 import DemoBanner from "./DemoBanner";
 import NoroestMap from "./NoroestMap";
+import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import { DEMO_STATS } from "@/lib/demo-data";
 
 interface DashboardStats {
@@ -476,31 +477,21 @@ export default function DashboardPreview() {
               </div>
             </div>
 
-            {/* Municípios Grid - Synchronized Selection */}
+            {/* Municípios Ranking - Interactive */}
             <div>
               <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-4xl" : "text-xl"}`}>
-                Municípios do Noroeste Fluminense
+                Ranking de Participações
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-                {MUNICIPIOS_NOROESTE.map((municipio) => (
-                  <div
-                    key={municipio}
-                    onClick={() => setSelectedMunicipio(municipio === selectedMunicipio ? null : municipio)}
-                    className={`bg-white border-2 rounded-lg p-4 sm:p-6 text-center cursor-pointer transition-all duration-300 ${
-                      selectedMunicipio === municipio
-                        ? "pulse-highlight border-blue-600 bg-blue-50 shadow-md"
-                        : "border-gray-300 hover:border-gray-400"
-                    } ${isTV ? "p-8" : ""}`}
-                  >
-                    <p className={`text-gray-900 font-semibold line-clamp-3 ${isTV ? "text-2xl mb-3" : "text-sm mb-2"}`}>
-                      {municipio}
-                    </p>
-                    <p className={`${selectedMunicipio === municipio ? "text-blue-600 font-bold" : "text-gray-600"} ${isTV ? "text-3xl" : "text-xl"}`}>
-                      {municipiosStats[municipio] || 0}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <MunicipalitiesRanking
+                municipiosStats={municipiosStats}
+                selectedMunicipio={selectedMunicipio}
+                onMunicipioSelect={setSelectedMunicipio}
+                onCenterMap={(municipio) => {
+                  setSelectedMunicipio(municipio);
+                  // Map will receive this through the onMunicipioSelect callback
+                }}
+                isTV={isTV}
+              />
             </div>
 
             {/* Distribuição de Categorias */}
