@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { CATEGORIAS, MUNICIPIOS_NOROESTE } from "@/lib/constants";
 
 export type ParticipationStep = "start" | "location" | "question" | "sending" | "confirmation";
 
@@ -10,32 +11,8 @@ export interface ParticipationFormData {
   resposta_categoria: string;
 }
 
-const CATEGORIAS = [
-  {
-    id: "dificuldade-continuar",
-    label: "Dificuldade para continuar o tratamento",
-  },
-  {
-    id: "falta-orientacao",
-    label: "Falta de orientação",
-  },
-  {
-    id: "espera-encaminhamento",
-    label: "Espera por encaminhamento",
-  },
-  {
-    id: "interrupcao-acompanhamento",
-    label: "Interrupção do acompanhamento",
-  },
-  {
-    id: "mais-apoio",
-    label: "Necessidade de mais apoio ao paciente ou à família",
-  },
-  {
-    id: "outra-percepcao",
-    label: "Outra percepção",
-  },
-];
+// Re-export for backward compatibility
+export { MUNICIPIOS_NOROESTE } from "@/lib/constants";
 
 export const ESTADOS_BR = [
   { uf: "AC", nome: "Acre" },
@@ -67,22 +44,6 @@ export const ESTADOS_BR = [
   { uf: "TO", nome: "Tocantins" },
 ];
 
-// Municípios da região Noroeste Fluminense (13 municipios)
-export const MUNICIPIOS_NOROESTE = [
-  "Aperibé",
-  "Bom Jesus do Itabapoana",
-  "Cambuci",
-  "Italva",
-  "Itaocara",
-  "Itaperuna",
-  "Laje do Muriaé",
-  "Miracema",
-  "Natividade",
-  "Porciúncula",
-  "Santo Antônio de Pádua",
-  "São José de Ubá",
-  "Varre-Sai",
-];
 
 // Cidades disponíveis para seleção (todos os estados)
 const CIDADES_MERCO = [

@@ -1,5 +1,6 @@
 import { createClient } from "./supabase";
 import { CreateContribuicaoRequest, CreateExpansaoRequest } from "@/types/database";
+import { MUNICIPIOS_NOROESTE } from "@/lib/constants";
 
 export class SupabaseService {
   private static instance: SupabaseService;
@@ -192,6 +193,94 @@ export class SupabaseService {
       return {
         success: false,
         error: "Erro ao buscar estatísticas.",
+      };
+    }
+  }
+
+  // Get unified public map metrics (single source of truth)
+  async getPublicMapMetrics() {
+    try {
+      const client = createClient();
+
+      // Fetch all contributions
+      const { data: allContributions, error: fetchError } = await client
+        .from("mapa_contribuicoes")
+        .select("municipio, estado, resposta_categoria, created_at");
+
+      if (fetchError) {
+        console.error("Error fetching contributions:", fetchError);
+        return { success: false, error: fetchError.message };
+      }
+
+      if (!allContributions || allContributions.length === 0) {
+        return {
+          success: true,
+          data: {
+            totalParticipacoes: 0,
+            participacoesNoroeste: 0,
+            municipiosAtivos: 0,
+            totalMunicipios: 13,
+            temasIdentificados: 0,
+            ultimaAtualizacao: new Date().toISOString(),
+            tipoDados: "indisponivel" as const,
+          },
+        };
+      }
+
+      // Calculate metrics
+      let participacoesNoroeste = 0;
+      const municipiosAtivosSet = new Set<string>();
+      const categoriasSet = new Set<string>();
+      let latestDate = new Date(0);
+
+      allContributions.forEach((contrib) => {
+        // Count Noroeste participations
+        if (
+          contrib.estado === "RJ" &&
+          MUNICIPIOS_NOROESTE.includes(contrib.municipio)
+        ) {
+          participacoesNoroeste += 1;
+        }
+
+        // Track active municipalities in Noroeste
+        if (
+          contrib.estado === "RJ" &&
+          MUNICIPIOS_NOROESTE.includes(contrib.municipio)
+        ) {
+          municipiosAtivosSet.add(contrib.municipio);
+        }
+
+        // Track unique categories
+        if (contrib.resposta_categoria) {
+          categoriasSet.add(contrib.resposta_categoria);
+        }
+
+        // Track latest update
+        if (contrib.created_at) {
+          const date = new Date(contrib.created_at);
+          if (date > latestDate) {
+            latestDate = date;
+          }
+        }
+      });
+
+      return {
+        success: true,
+        data: {
+          totalParticipacoes: allContributions.length,
+          participacoesNoroeste,
+          municipiosAtivos: municipiosAtivosSet.size,
+          totalMunicipios: 13,
+          temasIdentificados: categoriasSet.size,
+          ultimaAtualizacao: latestDate > new Date(0) ? latestDate.toISOString() : new Date().toISOString(),
+          tipoDados: "real" as const,
+        },
+      };
+    } catch (err) {
+      console.error("Unexpected error in getPublicMapMetrics:", err);
+      return {
+        success: false,
+        error: "Erro ao buscar métricas do mapa.",
       };
     }
   }
