@@ -306,7 +306,7 @@ export default function DashboardPreview() {
       </header>
 
       {/* Content */}
-      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-12">
         {/* Loading State - Skeleton */}
         {loading && !loadingTimeout && !stats && (
           <div className="space-y-8">
@@ -384,40 +384,43 @@ export default function DashboardPreview() {
         {stats && (
           <div className="space-y-8 sm:space-y-12">
             {/* Main Panel Layout - Map + Sidebar */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-              {/* Left Column - Map (2/3 width on desktop) */}
-              <div className="lg:col-span-2 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-2xl"}`}>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8">
+              {/* Left Column - Map (2/3 width on desktop, full on mobile) */}
+              <div className="md:col-span-2 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-xl sm:text-2xl"}`}>
                     Mapa Geográfico
                   </h2>
                   {/* Data View Toggle */}
-                  <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                  <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1.5 sm:p-2">
                     <button
                       onClick={() => setDataView("participations")}
-                      className={`px-3 py-1.5 rounded font-medium text-xs sm:text-sm transition ${
+                      className={`px-3 sm:px-4 py-2 rounded font-medium text-xs sm:text-sm transition whitespace-nowrap ${
                         dataView === "participations"
-                          ? "bg-blue-600 text-white"
+                          ? "bg-blue-600 text-white shadow-sm"
                           : "text-gray-700 hover:bg-gray-200"
                       }`}
                     >
-                      Participações
+                      📊 Participações
                     </button>
                     <button
                       onClick={() => setDataView("needs")}
-                      className={`px-3 py-1.5 rounded font-medium text-xs sm:text-sm transition ${
+                      className={`px-3 sm:px-4 py-2 rounded font-medium text-xs sm:text-sm transition whitespace-nowrap ${
                         dataView === "needs"
-                          ? "bg-amber-600 text-white"
+                          ? "bg-amber-600 text-white shadow-sm"
                           : "text-gray-700 hover:bg-gray-200"
                       }`}
                     >
-                      Necessidades
+                      🎯 Necessidades
                     </button>
                   </div>
                 </div>
 
                 {/* Map - Primary Element */}
-                <div className="rounded-lg overflow-hidden border-2 border-gray-200 shadow-md" style={{ height: isTV ? '600px' : '500px' }}>
+                <div className="rounded-lg overflow-hidden border-2 border-gray-200 shadow-md" style={{
+                  height: isTV ? '600px' : 'clamp(350px, 60vh, 500px)',
+                  minHeight: '350px'
+                }}>
                   <NoroestMap
                     municipiosStats={municipiosStats}
                     municipiosCategories={municipiosCategories}
@@ -429,19 +432,19 @@ export default function DashboardPreview() {
                 </div>
               </div>
 
-              {/* Right Column - Info Panel (1/3 width on desktop) */}
-              <div className="lg:col-span-1 space-y-5">
+              {/* Right Column - Info Panel (1/3 width on desktop, full on mobile) */}
+              <div className="md:col-span-1 space-y-4 sm:space-y-5">
                 {/* Total Contributions - Large */}
                 <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-blue-100 border-2 border-indigo-300 rounded-lg p-5 sm:p-6 shadow-sm">
                   <div className="text-center space-y-2">
-                    <p className="font-semibold text-indigo-700 tracking-wide uppercase text-xs">
-                      Total
+                    <p className="font-semibold text-indigo-700 tracking-wide uppercase text-xs sm:text-sm">
+                      Participações
                     </p>
-                    <p className="font-bold text-indigo-900 text-4xl sm:text-5xl">
+                    <p className="font-bold text-indigo-900 text-4xl sm:text-5xl lg:text-6xl">
                       {stats.total}
                     </p>
-                    <p className="text-indigo-700 font-medium text-sm">
-                      histórias
+                    <p className="text-indigo-700 font-medium text-xs sm:text-sm">
+                      histórias compartilhadas
                     </p>
                   </div>
                 </div>
@@ -449,14 +452,14 @@ export default function DashboardPreview() {
                 {/* Quick Stats - 2 columns */}
                 {stats.total > 0 && (
                   <>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
                       {/* Municipalities */}
-                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-4 text-center">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-3 sm:p-4 text-center">
                         <p className="text-blue-600 font-semibold text-xs mb-2">
                           Municípios
                         </p>
                         <p className="font-bold text-blue-900 text-2xl sm:text-3xl">
-                          {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}/13
+                          {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}<span className="text-sm">/13</span>
                         </p>
                         <p className="text-blue-700 font-medium text-xs mt-1">
                           ativos
@@ -464,7 +467,7 @@ export default function DashboardPreview() {
                       </div>
 
                       {/* Categories */}
-                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-4 text-center">
+                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-3 sm:p-4 text-center">
                         <p className="text-emerald-600 font-semibold text-xs mb-2">
                           Temas
                         </p>
@@ -472,7 +475,7 @@ export default function DashboardPreview() {
                           {Object.keys(stats.byCategory || {}).filter(c => (stats.byCategory || {})[c] > 0).length}
                         </p>
                         <p className="text-emerald-700 font-medium text-xs mt-1">
-                          identificados
+                          detectados
                         </p>
                       </div>
                     </div>

@@ -101,22 +101,22 @@ export default function MunicipalitiesRanking({
       >
         {/* Header */}
         <div
-          className={`bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200 px-6 py-4 ${
-            isTV ? "py-6" : ""
+          className={`bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 ${
+            isTV ? "py-6 px-8" : ""
           }`}
         >
-          <div className="grid grid-cols-12 gap-4 items-center">
-            <div className={`col-span-1 font-bold text-gray-600 text-center ${isTV ? "text-xl" : "text-sm"}`}>
-              Pos
+          <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center">
+            <div className={`col-span-1 font-bold text-gray-600 text-center ${isTV ? "text-xl" : "text-xs sm:text-sm"}`}>
+              #
             </div>
-            <div className={`col-span-4 font-bold text-gray-600 ${isTV ? "text-xl" : "text-sm"}`}>
+            <div className={`col-span-4 sm:col-span-5 font-bold text-gray-600 truncate ${isTV ? "text-xl" : "text-xs sm:text-sm"}`}>
               Município
             </div>
-            <div className={`col-span-3 font-bold text-gray-600 text-right ${isTV ? "text-xl" : "text-sm"}`}>
-              Participações
+            <div className={`col-span-3 sm:col-span-2 font-bold text-gray-600 text-right ${isTV ? "text-xl" : "text-xs sm:text-sm"}`}>
+              Part.
             </div>
-            <div className={`col-span-4 font-bold text-gray-600 text-right ${isTV ? "text-xl" : "text-sm"}`}>
-              % do Total
+            <div className={`col-span-4 sm:col-span-3 font-bold text-gray-600 text-right ${isTV ? "text-xl" : "text-xs sm:text-sm"}`}>
+              %
             </div>
           </div>
         </div>
@@ -130,36 +130,36 @@ export default function MunicipalitiesRanking({
                 onMunicipioSelect(item.name === selectedMunicipio ? null : item.name);
                 onCenterMap(item.name);
               }}
-              className={`px-6 py-4 cursor-pointer transition-all duration-200 ${
+              className={`px-4 sm:px-6 py-3 sm:py-4 cursor-pointer transition-all duration-200 ${
                 selectedMunicipio === item.name
                   ? "bg-blue-50 border-l-4 border-blue-600"
                   : "hover:bg-gray-50 border-l-4 border-transparent"
-              } ${isTV ? "py-5" : ""}`}
+              } ${isTV ? "py-5 px-8" : ""}`}
             >
-              <div className="grid grid-cols-12 gap-4 items-center mb-2">
+              <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center mb-2">
                 {/* Rank */}
                 <div
                   className={`col-span-1 text-center font-bold ${getRankColor(
                     item.rank
-                  )} ${isTV ? "text-2xl" : "text-lg"}`}
+                  )} ${isTV ? "text-2xl" : "text-base sm:text-lg"}`}
                 >
-                  {getMedalEmoji(item.rank) || `${item.rank}º`}
+                  {getMedalEmoji(item.rank) || `${item.rank}°`}
                 </div>
 
                 {/* Municipality Name */}
-                <div className={`col-span-4 font-semibold text-gray-900 ${isTV ? "text-lg" : "text-sm"}`}>
+                <div className={`col-span-4 sm:col-span-5 font-semibold text-gray-900 truncate ${isTV ? "text-lg" : "text-xs sm:text-sm"}`}>
                   {item.name}
                 </div>
 
                 {/* Count */}
-                <div className={`col-span-3 text-right font-bold ${
+                <div className={`col-span-3 sm:col-span-2 text-right font-bold ${
                   item.count === 0 ? "text-gray-400" : "text-blue-600"
-                } ${isTV ? "text-xl" : "text-base"}`}>
+                } ${isTV ? "text-xl" : "text-xs sm:text-base"}`}>
                   {item.count}
                 </div>
 
                 {/* Percentage */}
-                <div className={`col-span-4 text-right font-semibold text-gray-600 ${isTV ? "text-lg" : "text-sm"}`}>
+                <div className={`col-span-4 sm:col-span-3 text-right font-semibold text-gray-600 ${isTV ? "text-lg" : "text-xs sm:text-sm"}`}>
                   {item.percentage}%
                 </div>
               </div>
@@ -192,20 +192,20 @@ export default function MunicipalitiesRanking({
         </div>
 
         {/* Summary Footer */}
-        <div className="bg-gray-50 border-t border-gray-200 px-6 py-4 grid grid-cols-2 gap-4">
+        <div className="bg-gray-50 border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4 grid grid-cols-2 gap-2 sm:gap-4">
           <div>
             <p className={`text-gray-600 font-medium ${isTV ? "text-lg mb-1" : "text-xs mb-0.5"}`}>
-              Total de Participações
+              Total
             </p>
-            <p className={`font-bold text-blue-600 ${isTV ? "text-3xl" : "text-xl"}`}>
+            <p className={`font-bold text-blue-600 ${isTV ? "text-3xl" : "text-lg sm:text-xl"}`}>
               {total}
             </p>
           </div>
           <div>
             <p className={`text-gray-600 font-medium ${isTV ? "text-lg mb-1" : "text-xs mb-0.5"}`}>
-              Municípios Ativos
+              Ativos
             </p>
-            <p className={`font-bold text-green-600 ${isTV ? "text-3xl" : "text-xl"}`}>
+            <p className={`font-bold text-green-600 ${isTV ? "text-3xl" : "text-lg sm:text-xl"}`}>
               {ranking.filter((m) => m.count > 0).length}/13
             </p>
           </div>

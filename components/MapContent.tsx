@@ -269,9 +269,9 @@ export default function MapContent({
 
       {/* Enhanced Accessible Legend */}
       {showLegend && (
-        <div className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg p-5 max-w-sm z-40 border border-gray-200">
+        <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-white rounded-lg shadow-lg p-4 sm:p-5 max-w-sm z-40 border border-gray-200 text-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-gray-900 text-sm">Legenda de Intensidade</h3>
+            <h3 className="font-bold text-gray-900 text-xs sm:text-sm">Intensidade</h3>
             <button
               onClick={() => setShowLegend(false)}
               className="text-gray-400 hover:text-gray-600 text-lg"
@@ -282,12 +282,12 @@ export default function MapContent({
           </div>
 
           {/* Color and pattern scale */}
-          <div className="space-y-3 mb-4">
+          <div className="space-y-2 mb-3">
             {INTENSITY_LEVELS.map((level) => (
-              <div key={level.level} className="flex items-center gap-3">
-                <div className="flex items-center gap-2 w-12">
+              <div key={level.level} className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 w-10">
                   <div
-                    className="w-6 h-6 rounded-full border-2 border-gray-300"
+                    className="w-5 h-5 rounded-full border-2 border-gray-300"
                     style={{ background: level.color }}
                     role="img"
                     aria-label={`Nível ${level.level}: ${level.label}`}
@@ -300,7 +300,7 @@ export default function MapContent({
           </div>
 
           {/* Statistics */}
-          <div className="border-t pt-3">
+          <div className="border-t pt-2">
             <p className="text-xs font-semibold text-gray-600 uppercase mb-2">Estatísticas</p>
             <div className="space-y-1 text-xs">
               <div className="flex justify-between">
@@ -308,21 +308,14 @@ export default function MapContent({
                 <span className="font-bold text-blue-600">{totalParticipations}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Municípios ativos:</span>
+                <span className="text-gray-600">Ativos:</span>
                 <span className="font-bold text-green-600">{municipiosComDados}/13</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Máximo registrado:</span>
+                <span className="text-gray-600">Máx.:</span>
                 <span className="font-bold text-purple-600">{maxCount}</span>
               </div>
             </div>
-          </div>
-
-          {/* Help text */}
-          <div className="border-t pt-3 mt-3">
-            <p className="text-xs text-gray-500 leading-relaxed">
-              💡 Clique nos marcadores para ver detalhes. Tamanho, cor e padrão indicam intensidade.
-            </p>
           </div>
         </div>
       )}
@@ -331,28 +324,28 @@ export default function MapContent({
       {!showLegend && (
         <button
           onClick={() => setShowLegend(true)}
-          className="absolute bottom-6 left-6 bg-white rounded-lg shadow-lg p-2 z-40 hover:bg-gray-50 border border-gray-200"
+          className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-white rounded-lg shadow-lg p-2 z-40 hover:bg-gray-50 border border-gray-200 text-lg"
           title="Mostrar legenda"
           aria-label="Mostrar legenda"
         >
-          <span className="text-lg">📋</span>
+          📋
         </button>
       )}
 
       {/* Selection info box */}
-      <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs z-40 border border-gray-200">
-        <div className="text-sm">
-          <p className="text-gray-600 mb-2 font-medium">
+      <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 sm:p-4 z-40 border border-gray-200 max-w-xs">
+        <div className="text-xs sm:text-sm">
+          <p className="text-gray-600 mb-2 font-medium line-clamp-2">
             {localSelectedMunicipio
-              ? `Selecionado: ${localSelectedMunicipio}`
-              : "Clique para explorar municípios"}
+              ? `📍 ${localSelectedMunicipio}`
+              : "👆 Clique no mapa"}
           </p>
           {localSelectedMunicipio && (
             <button
               onClick={handleClearSelection}
-              className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-medium"
+              className="text-xs px-2 py-1.5 sm:px-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-medium"
             >
-              Limpar seleção
+              Limpar
             </button>
           )}
         </div>
