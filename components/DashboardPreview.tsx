@@ -72,7 +72,7 @@ export default function DashboardPreview() {
         const data = await response.json();
 
         // Se temos dados de contribuições, usar dados por município
-        if (data.data) {
+        if (data.success && data.data) {
           setStats(data.data);
 
           // Preparar dados por município
@@ -89,7 +89,9 @@ export default function DashboardPreview() {
           setMunicipiosCategories(byMunicipioCategories);
           setLastUpdate(new Date());
           setError(null);
-          setIsDemoMode(false);
+          setIsDemoMode(data.isDemoMode || false);
+        } else {
+          throw new Error("Dados inválidos recebidos da API");
         }
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
@@ -204,7 +206,7 @@ export default function DashboardPreview() {
         if (!response.ok) throw new Error("Servidor retornou erro");
         const data = await response.json();
 
-        if (data.data) {
+        if (data.success && data.data) {
           setStats(data.data);
           const byMunicipio: Record<string, number> = {};
           const byMunicipioCategories: Record<string, Record<string, number>> = {};
@@ -216,7 +218,9 @@ export default function DashboardPreview() {
           setMunicipiosCategories(byMunicipioCategories);
           setLastUpdate(new Date());
           setError(null);
-          setIsDemoMode(false);
+          setIsDemoMode(data.isDemoMode || false);
+        } else {
+          throw new Error("Dados inválidos recebidos da API");
         }
       } catch (err) {
         console.error("Erro ao tentar novamente:", err);

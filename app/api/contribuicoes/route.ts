@@ -70,12 +70,16 @@ export async function GET() {
     const result = await supabaseService.getContribuicoesStats();
 
     if (!result.success) {
+      // Retorna dados de demonstração como fallback
+      const { DEMO_STATS } = await import("@/lib/demo-data");
+      console.warn("Supabase unavailable, using demo data:", result.error);
       return NextResponse.json(
         {
-          success: false,
-          error: result.error,
+          success: true,
+          data: DEMO_STATS,
+          isDemoMode: true,
         },
-        { status: 500 }
+        { status: 200 }
       );
     }
 
@@ -83,17 +87,21 @@ export async function GET() {
       {
         success: true,
         data: result.data,
+        isDemoMode: false,
       },
       { status: 200 }
     );
   } catch (error) {
     console.error("API Error:", error);
+    // Fallback para dados de demonstração em caso de erro
+    const { DEMO_STATS } = await import("@/lib/demo-data");
     return NextResponse.json(
       {
-        success: false,
-        error: "Erro ao buscar estatísticas",
+        success: true,
+        data: DEMO_STATS,
+        isDemoMode: true,
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }
