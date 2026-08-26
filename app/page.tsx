@@ -10,6 +10,7 @@ import ProofOfMovement from "@/components/ProofOfMovement";
 import WhatAreWeTryingToSee from "@/components/WhatAreWeTryingToSee";
 import JourneyExample from "@/components/JourneyExample";
 import DashboardPreview from "@/components/DashboardPreview";
+import ScopeAndExpansion from "@/components/ScopeAndExpansion";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 
@@ -128,6 +129,9 @@ export default function Home() {
 
         {/* Dashboard Preview - Real aggregated data */}
         <DashboardPreview />
+
+        {/* Scope and Expansion - Territory and future growth */}
+        <ScopeAndExpansion />
 
         {/* How It Works - Four step process */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
