@@ -199,36 +199,70 @@ export function useParticipationForm() {
     setIsLoading(true);
     setError(null);
 
+    const submitWithRetry = async (retryCount = 0): Promise<void> => {
+      const FETCH_TIMEOUT = 10000; // 10 segundos para envio
+      const MAX_RETRIES = 2;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+
+      try {
+        const response = await fetch("/api/contribuicoes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            municipio: formData.municipio,
+            estado: formData.estado,
+            resposta_categoria: formData.resposta_categoria,
+          }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || "Erro ao processar");
+        }
+
+        // Obter o total de participações da resposta
+        if (data.total) {
+          setParticipationNumber(data.total);
+        }
+
+        setIsLoading(false);
+        nextStep("confirmation");
+      } catch (err) {
+        clearTimeout(timeoutId);
+
+        // Log technical error only
+        console.error("[Form] Submission error:", err);
+
+        // Retry logic
+        if (retryCount < MAX_RETRIES) {
+          console.log(`[Form] Retry attempt ${retryCount + 1}/${MAX_RETRIES}`);
+          const backoffDelay = Math.min(1000 * Math.pow(2, retryCount), 3000);
+          await new Promise((resolve) => setTimeout(resolve, backoffDelay));
+          return submitWithRetry(retryCount + 1);
+        }
+
+        // User-friendly error message only
+        setIsLoading(false);
+        setError("Não foi possível enviar sua resposta agora. Por favor, tente novamente.");
+        throw err;
+      }
+    };
+
     try {
-      const response = await fetch("/api/contribuicoes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          municipio: formData.municipio,
-          estado: formData.estado,
-          resposta_categoria: formData.resposta_categoria,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Falha ao enviar resposta");
-      }
-
-      const data = await response.json();
-      // Obter o total de participações da resposta
-      if (data.total) {
-        setParticipationNumber(data.total);
-      }
-
-      setIsLoading(false);
-      nextStep("confirmation");
+      await submitWithRetry();
     } catch (err) {
-      setIsLoading(false);
-      const errorMessage =
-        err instanceof Error ? err.message : "Erro ao enviar resposta";
-      setError(errorMessage);
+      // Error already set in catch block above
       throw err;
     }
   }, [formData, nextStep]);

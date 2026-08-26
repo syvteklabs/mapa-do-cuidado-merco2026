@@ -3,7 +3,7 @@
 import { useMovementStats } from "@/lib/hooks/useMovementStats";
 
 export default function ProofOfMovement() {
-  const { stats, loading, error } = useMovementStats();
+  const { stats, loading, error, retryFetch } = useMovementStats();
 
   // Skeleton loader
   if (loading) {
@@ -39,14 +39,20 @@ export default function ProofOfMovement() {
   // Error state
   if (error || !stats) {
     return (
-      <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 sm:p-8">
-        <div className="text-center">
-          <p className="text-sm font-semibold text-red-800 mb-2">
-            ⚠️ Dados indisponíveis
+      <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 sm:p-8">
+        <div className="text-center space-y-3">
+          <p className="text-sm font-semibold text-yellow-900">
+            ⏳ Dados temporariamente indisponíveis
           </p>
-          <p className="text-xs text-red-700">
-            {error || "Não foi possível carregar os dados de movimento. Tente novamente mais tarde."}
+          <p className="text-xs text-yellow-800">
+            Não conseguimos atualizar os dados agora. Você ainda pode participar normalmente — tente visualizar o mapa novamente em alguns instantes.
           </p>
+          <button
+            onClick={retryFetch}
+            className="inline-block px-4 py-2 bg-yellow-600 text-white text-sm font-medium rounded hover:bg-yellow-700 transition"
+          >
+            Tentar atualizar
+          </button>
         </div>
       </div>
     );
