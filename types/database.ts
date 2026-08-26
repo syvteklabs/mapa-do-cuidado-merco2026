@@ -7,6 +7,10 @@ export interface MapaContribuicao {
   resposta_categoria: string;
   origem: string;
   criado_em: string;
+  is_complete?: boolean;
+  is_test?: boolean;
+  municipio_normalized?: string;
+  participation_date?: string;
 }
 
 export interface MapaExpansao {
@@ -27,6 +31,10 @@ export interface CreateContribuicaoRequest {
   municipio: string;
   estado: string;
   resposta_categoria: string;
+  is_complete?: boolean;
+  is_test?: boolean;
+  municipio_normalized?: string;
+  participation_date?: string;
 }
 
 export interface CreateExpansaoRequest {

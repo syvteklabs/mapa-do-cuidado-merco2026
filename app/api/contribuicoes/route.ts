@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseService } from "@/lib/supabase-service";
 import { CreateContribuicaoRequest } from "@/types/database";
+import { validateContribuicao, isTestRecord } from "@/lib/validation";
 
 // Request timeout: 15 segundos
 const REQUEST_TIMEOUT = 15000;
@@ -69,7 +70,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await supabaseService.createContribuicao(body);
+    // Run comprehensive validation to detect data quality issues
+    const ipAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip");
+    const validation = validateContribuicao({
+      municipio: body.municipio,
+      estado: body.estado,
+      resposta_categoria: body.resposta_categoria,
+      ip: ipAddress || undefined,
+    });
+
+    // Create enriched data with validation results
+    const enrichedData = {
+      ...body,
+      is_complete: validation.isComplete,
+      is_test: validation.isTest,
+      municipio_normalized: validation.municipioNormalized,
+      participation_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+    };
+
+    const result = await supabaseService.createContribuicao(enrichedData);
 
     if (!result.success) {
       console.error("[POST] Supabase error:", result.error);

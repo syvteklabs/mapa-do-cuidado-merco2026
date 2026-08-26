@@ -17,10 +17,20 @@ export const MUNICIPIOS_NOROESTE = [
 
 export const TOTAL_MUNICIPIOS_NOROESTE = 13;
 
+// Normalize municipality name (trim, titlecase)
+export function normalizeMunicipioName(municipio: string): string {
+  return municipio
+    .trim()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 // Helper function to check if a municipality is in Noroeste
 export function isFromNoroeste(estado: string, municipio: string): boolean {
   if (estado !== "RJ") return false;
-  return MUNICIPIOS_NOROESTE.includes(municipio);
+  const normalized = normalizeMunicipioName(municipio);
+  return MUNICIPIOS_NOROESTE.includes(normalized);
 }
 
 // Category IDs (must match database)

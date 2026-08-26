@@ -27,6 +27,10 @@ export class SupabaseService {
             estado: data.estado,
             resposta_categoria: data.resposta_categoria,
             origem: "merco-2026",
+            is_complete: data.is_complete ?? true,
+            is_test: data.is_test ?? false,
+            municipio_normalized: data.municipio_normalized || data.municipio,
+            participation_date: data.participation_date || new Date().toISOString().split('T')[0],
           },
         ])
         .select();
@@ -108,45 +112,53 @@ export class SupabaseService {
   }
 
   // Get aggregated statistics (for dashboard)
-  // Only returns aggregated data, no individual records
+  // Only returns aggregated data from valid contributions, no individual records
   async getContribuicoesStats() {
     try {
       const client = createClient();
 
-      // Total contributions
+      // Total valid contributions (complete and non-test)
       const { count: totalContributions, error: countError } = await client
         .from("mapa_contribuicoes")
-        .select("*", { count: "exact", head: true });
+        .select("*", { count: "exact", head: true })
+        .eq("is_complete", true)
+        .eq("is_test", false);
 
       if (countError) {
         console.error("Error fetching count:", countError);
         return { success: false, error: countError.message };
       }
 
-      // Contributions by state
+      // Contributions by state (valid only)
       const { data: byState, error: stateError } = await client
         .from("mapa_contribuicoes")
-        .select("estado, id");
+        .select("estado, id")
+        .eq("is_complete", true)
+        .eq("is_test", false);
 
       if (stateError) {
         console.error("Error fetching by state:", stateError);
         return { success: false, error: stateError.message };
       }
 
-      // Contributions by municipality
+      // Contributions by municipality (valid only)
       const { data: byMunicipio, error: municipioError } = await client
         .from("mapa_contribuicoes")
-        .select("municipio, id");
+        .select("municipio_normalized, id")
+        .eq("is_complete", true)
+        .eq("is_test", false);
 
       if (municipioError) {
         console.error("Error fetching by municipality:", municipioError);
         return { success: false, error: municipioError.message };
       }
 
-      // Count by category
+      // Count by category (valid only)
       const { data: byCategoryRaw, error: categoryError } = await client
         .from("mapa_contribuicoes")
-        .select("resposta_categoria, id");
+        .select("resposta_categoria, id")
+        .eq("is_complete", true)
+        .eq("is_test", false);
 
       if (categoryError) {
         console.error("Error fetching by category:", categoryError);
@@ -165,8 +177,8 @@ export class SupabaseService {
       }
 
       if (byMunicipio) {
-        byMunicipio.forEach(({ municipio }) => {
-          municipioPcts.set(municipio, (municipioPcts.get(municipio) || 0) + 1);
+        byMunicipio.forEach(({ municipio_normalized }) => {
+          municipioPcts.set(municipio_normalized || "", (municipioPcts.get(municipio_normalized || "") || 0) + 1);
         });
       }
 
@@ -198,14 +210,17 @@ export class SupabaseService {
   }
 
   // Get unified public map metrics (single source of truth)
+  // Only includes complete, non-test contributions
   async getPublicMapMetrics() {
     try {
       const client = createClient();
 
-      // Fetch all contributions
+      // Fetch all valid contributions (complete and non-test)
       const { data: allContributions, error: fetchError } = await client
         .from("mapa_contribuicoes")
-        .select("municipio, estado, resposta_categoria, created_at");
+        .select("municipio, municipio_normalized, estado, resposta_categoria, created_at, is_complete, is_test")
+        .eq("is_complete", true)
+        .eq("is_test", false);
 
       if (fetchError) {
         console.error("Error fetching contributions:", fetchError);
@@ -234,10 +249,13 @@ export class SupabaseService {
       let latestDate = new Date(0);
 
       allContributions.forEach((contrib) => {
+        // Use normalized municipality name for accurate matching
+        const municipioToCheck = contrib.municipio_normalized || contrib.municipio;
+
         // Count Noroeste participations
         if (
           contrib.estado === "RJ" &&
-          MUNICIPIOS_NOROESTE.includes(contrib.municipio)
+          MUNICIPIOS_NOROESTE.includes(municipioToCheck)
         ) {
           participacoesNoroeste += 1;
         }
@@ -245,9 +263,9 @@ export class SupabaseService {
         // Track active municipalities in Noroeste
         if (
           contrib.estado === "RJ" &&
-          MUNICIPIOS_NOROESTE.includes(contrib.municipio)
+          MUNICIPIOS_NOROESTE.includes(municipioToCheck)
         ) {
-          municipiosAtivosSet.add(contrib.municipio);
+          municipiosAtivosSet.add(municipioToCheck);
         }
 
         // Track unique categories
