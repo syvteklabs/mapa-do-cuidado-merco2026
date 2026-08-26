@@ -9,6 +9,7 @@ import ContextAndTrustBar from "@/components/ContextAndTrustBar";
 import ProofOfMovement from "@/components/ProofOfMovement";
 import WhatAreWeTryingToSee from "@/components/WhatAreWeTryingToSee";
 import JourneyExample from "@/components/JourneyExample";
+import DashboardPreview from "@/components/DashboardPreview";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 
@@ -125,7 +126,10 @@ export default function Home() {
         {/* Journey Example - Visual flow from experience to insight */}
         <JourneyExample />
 
-        {/* How It Works - Three step process */}
+        {/* Dashboard Preview - Real aggregated data */}
+        <DashboardPreview />
+
+        {/* How It Works - Four step process */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <HowItWorks />
         </section>
