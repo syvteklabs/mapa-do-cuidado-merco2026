@@ -8,6 +8,7 @@ import ErrorContingency from "./ErrorContingency";
 import PrivacyDisclosure from "./PrivacyDisclosure";
 import { CheckIcon } from "./Icons";
 import { animationClasses } from "@/lib/animations";
+import { useRef, useEffect } from "react";
 
 export default function ParticipationFlow() {
   const {
@@ -38,6 +39,7 @@ export default function ParticipationFlow() {
   } = useErrorRecovery();
 
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
+  const mainRef = useRef<HTMLElement>(null);
 
   const progressSteps = [
     { id: "location", label: "1. Município" },
@@ -49,14 +51,29 @@ export default function ParticipationFlow() {
     progressSteps.findIndex((s) => s.id === step) + 1;
   const totalProgress = progressSteps.length;
 
+  // Focus management on step change
+  useEffect(() => {
+    if (mainRef.current) {
+      const firstHeading = mainRef.current.querySelector("h1, h2");
+      if (firstHeading instanceof HTMLElement) {
+        firstHeading.focus();
+        firstHeading.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [step]);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      {/* Accessibility: aria-live region for announcements */}
+      <div id="aria-live-region" aria-live="polite" aria-atomic="true" className="sr-only" />
+      <div id="aria-live-errors" aria-live="assertive" aria-atomic="true" className="sr-only" />
+
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <Link
             href="/"
-            className="text-sm text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 inline-block"
+            className="text-sm text-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1 inline-block min-h-11 inline-flex items-center"
           >
             ← Voltar
           </Link>
@@ -65,9 +82,9 @@ export default function ParticipationFlow() {
 
       {/* Progress Bar */}
       {step !== "confirmation" && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 px-4 py-4">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 px-4 py-4" role="status" aria-label="Progresso do formulário">
           <div className="max-w-2xl mx-auto">
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-2 mb-3" aria-hidden="true">
               {Array.from({ length: totalProgress }).map((_, i) => (
                 <div
                   key={i}
@@ -81,7 +98,7 @@ export default function ParticipationFlow() {
               <p className="text-sm font-semibold text-gray-700">
                 {step === "start" ? "Preparado?" : progressSteps[currentProgress - 1]?.label || "Progresso"}
               </p>
-              <p className="text-xs font-medium text-gray-600">
+              <p className="text-xs font-medium text-gray-600" aria-label={`Etapa ${currentProgress} de ${totalProgress}`}>
                 {currentProgress} de {totalProgress}
               </p>
             </div>
@@ -90,13 +107,13 @@ export default function ParticipationFlow() {
       )}
 
       {/* Content */}
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12">
+      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12" ref={mainRef}>
         {/* Step: Start */}
         {step === "start" && (
           <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             {/* Title and Introduction */}
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900" tabIndex={-1}>
                 Sua experiência ajuda a construir este mapa.
               </h1>
               <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
@@ -163,7 +180,7 @@ export default function ParticipationFlow() {
             {/* CTA Button */}
             <button
               onClick={() => nextStep("location")}
-              className="w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 min-h-12"
             >
               Começar agora
             </button>
@@ -174,7 +191,7 @@ export default function ParticipationFlow() {
         {step === "location" && (
           <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2" tabIndex={-1}>
                 Em qual município você mora?
               </h2>
               <p className="text-gray-600 text-sm">
@@ -184,16 +201,18 @@ export default function ParticipationFlow() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  Estado (UF)
+                <label htmlFor="estado-select" className="block text-sm font-semibold text-gray-700 mb-3">
+                  Estado (UF) <span aria-label="obrigatório">*</span>
                 </label>
                 <select
+                  id="estado-select"
                   value={formData.estado}
                   onChange={(e) => {
                     updateFormData("estado", e.target.value);
                     updateFormData("municipio", "");
                   }}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-11"
                 >
                   {estados.map((est) => (
                     <option key={est.uf} value={est.uf}>
@@ -204,16 +223,19 @@ export default function ParticipationFlow() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  Cidade/Município
+                <label htmlFor="municipio-input" className="block text-sm font-semibold text-gray-700 mb-3">
+                  Cidade/Município <span aria-label="obrigatório">*</span>
                 </label>
                 {formData.estado === "RJ" ? (
                   <select
+                    id="municipio-input"
                     value={formData.municipio}
                     onChange={(e) =>
                       updateFormData("municipio", e.target.value)
                     }
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                    aria-describedby={error ? "municipio-error" : undefined}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-11"
                   >
                     <option value="">Selecione uma cidade</option>
                     {filteredCidades.map((cidade) => (
@@ -224,19 +246,22 @@ export default function ParticipationFlow() {
                   </select>
                 ) : (
                   <input
+                    id="municipio-input"
                     type="text"
                     value={formData.municipio}
                     onChange={(e) =>
                       updateFormData("municipio", e.target.value)
                     }
                     placeholder="Digite sua cidade"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                    aria-describedby={error ? "municipio-error" : undefined}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-11"
                   />
                 )}
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
+                <div id="municipio-error" role="alert" className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
                   {error}
                 </div>
               )}
@@ -257,7 +282,8 @@ export default function ParticipationFlow() {
               <div className="flex gap-3">
                 <button
                   onClick={() => nextStep("start")}
-                  className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                  className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 min-h-11"
+                  aria-label="Voltar para etapa anterior"
                 >
                   Voltar
                 </button>
@@ -266,7 +292,8 @@ export default function ParticipationFlow() {
                     if (formData.municipio) nextStep("question");
                   }}
                   disabled={!formData.municipio}
-                  className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                  className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 min-h-11"
+                  aria-label={formData.municipio ? "Ir para próxima etapa" : "Selecione um município para continuar"}
                 >
                   Próximo
                 </button>
@@ -279,7 +306,7 @@ export default function ParticipationFlow() {
         {step === "question" && (
           <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2" tabIndex={-1}>
                 Como foi sua experiência?
               </h2>
               <p className="text-gray-600 text-sm">
@@ -287,17 +314,21 @@ export default function ParticipationFlow() {
               </p>
             </div>
 
-            <div className="space-y-3">
+            <fieldset className="space-y-3 border-0">
+              <legend className="sr-only">Categorias de experiência</legend>
               {categorias.map((cat, index) => (
                 <button
                   key={cat.id}
                   onClick={() =>
                     updateFormData("resposta_categoria", cat.id)
                   }
-                  className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors ${animationClasses.fadeInUp} ${
+                  role="option"
+                  aria-selected={formData.resposta_categoria === cat.id}
+                  aria-label={`${cat.label}${formData.resposta_categoria === cat.id ? " (selecionado)" : ""}`}
+                  className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors ${animationClasses.fadeInUp} focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-12 ${
                     formData.resposta_categoria === cat.id
-                      ? "bg-blue-600 text-white border-2 border-blue-600"
-                      : "bg-white border-2 border-gray-300 text-gray-900 hover:border-blue-400 active:bg-blue-50"
+                      ? "bg-blue-600 text-white border-2 border-blue-600 focus:ring-blue-400"
+                      : "bg-white border-2 border-gray-300 text-gray-900 hover:border-blue-400 active:bg-blue-50 focus:ring-blue-500"
                   }`}
                   style={{
                     animationDelay: `${index * 75}ms`,
@@ -310,15 +341,18 @@ export default function ParticipationFlow() {
                 onClick={() =>
                   updateFormData("resposta_categoria", "prefer_not_answer")
                 }
-                className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors border-2 ${
+                role="option"
+                aria-selected={formData.resposta_categoria === "prefer_not_answer"}
+                aria-label={`Prefiro não responder${formData.resposta_categoria === "prefer_not_answer" ? " (selecionado)" : ""}`}
+                className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-12 ${
                   formData.resposta_categoria === "prefer_not_answer"
-                    ? "bg-gray-400 text-white border-2 border-gray-400"
-                    : "bg-white border-2 border-gray-300 text-gray-900 hover:border-gray-400 active:bg-gray-50"
+                    ? "bg-gray-400 text-white border-2 border-gray-400 focus:ring-gray-300"
+                    : "bg-white border-2 border-gray-300 text-gray-900 hover:border-gray-400 active:bg-gray-50 focus:ring-gray-500"
                 }`}
               >
                 Prefiro não responder
               </button>
-            </div>
+            </fieldset>
 
             <p className="text-xs text-gray-600 bg-gray-50 p-3 rounded-lg">
               Esta pergunta é opcional. Se preferir não responder, você ainda poderá contribuir com sua participação.
@@ -333,7 +367,8 @@ export default function ParticipationFlow() {
             <div className="flex gap-3">
               <button
                 onClick={() => nextStep("location")}
-                className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 min-h-11"
+                aria-label="Voltar para etapa anterior"
               >
                 Voltar
               </button>
@@ -350,11 +385,12 @@ export default function ParticipationFlow() {
                   }
                 }}
                 disabled={!formData.resposta_categoria || isLoading}
-                className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center gap-2 min-h-11"
+                aria-label={!formData.resposta_categoria ? "Selecione uma opção para salvar" : isLoading ? "Salvando sua resposta" : "Salvar resposta"}
               >
                 {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
                     Salvando...
                   </>
                 ) : (
@@ -449,7 +485,7 @@ export default function ParticipationFlow() {
               {/* Primary CTA */}
               <Link
                 href="/mapa"
-                className="block w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="block w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 min-h-12"
               >
                 Ver o mapa atualizado
               </Link>
@@ -472,7 +508,7 @@ export default function ParticipationFlow() {
                     alert("Link copiado para a área de transferência!");
                   }
                 }}
-                className="w-full bg-gray-200 text-gray-900 py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 active:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                className="w-full bg-gray-200 text-gray-900 py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 active:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 min-h-12"
               >
                 Compartilhar o Mapa do Cuidado
               </button>
@@ -480,7 +516,7 @@ export default function ParticipationFlow() {
               {/* Tertiary CTA */}
               <Link
                 href="/"
-                className="block w-full bg-white text-gray-900 border-2 border-gray-300 py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-gray-50 active:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                className="block w-full bg-white text-gray-900 border-2 border-gray-300 py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-gray-50 active:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 min-h-12"
               >
                 Voltar ao início
               </Link>

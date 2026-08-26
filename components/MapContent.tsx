@@ -51,7 +51,7 @@ const INTENSITY_LEVELS = [
   { level: 1, label: "Sem dados", color: "#cbd5e1", icon: "◯", pattern: "none" },
 ];
 
-const createCustomIcon = (count: number, maxCount: number, isSelected: boolean = false) => {
+const createCustomIcon = (count: number, maxCount: number, isSelected: boolean = false, municipioName: string = "") => {
   let color = "#cbd5e1";
   let size = 30;
   let borderColor = "white";
@@ -83,7 +83,7 @@ const createCustomIcon = (count: number, maxCount: number, isSelected: boolean =
   }
 
   const svgIcon = `
-    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${municipioName}: ${count} participações">
       <circle cx="12" cy="12" r="10" fill="${color}" stroke="${borderColor}" stroke-width="${borderWidth}"/>
       <text x="12" y="14" font-size="8" font-weight="bold" text-anchor="middle" fill="white">
         ${count}
@@ -259,7 +259,8 @@ export default function MapContent({
           <Marker
             key={`marker-${mun.name}`}
             position={[mun.lat, mun.lng] as LatLngExpression}
-            icon={createCustomIcon(mun.count, maxCount, localSelectedMunicipio === mun.name)}
+            icon={createCustomIcon(mun.count, maxCount, localSelectedMunicipio === mun.name, mun.name)}
+            aria-label={`${mun.name}: ${mun.count} participações. Clique para detalhes`}
             eventHandlers={{
               click: () => handleMarkerClick(mun.name),
             }}

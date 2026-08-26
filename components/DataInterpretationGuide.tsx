@@ -33,7 +33,9 @@ export default function DataInterpretationGuide() {
       {/* Compact Header Button */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full group"
+        className="w-full group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+        aria-expanded={isExpanded}
+        aria-controls="interpretation-content"
       >
         <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors text-left">
           <div className="flex-shrink-0">
@@ -73,7 +75,7 @@ export default function DataInterpretationGuide() {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        <div id="interpretation-content" className="bg-white border border-gray-200 rounded-lg overflow-hidden" role="region" aria-label="Guia de interpretação de dados">
           {/* Introduction */}
           <div className="p-4 sm:p-6 bg-gray-50 border-b border-gray-200">
             <p className="text-sm sm:text-base text-gray-700 leading-relaxed">

@@ -212,3 +212,68 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================================
+   ACCESSIBILITY UTILITIES
+   ============================================================================ */
+
+/* Screen reader only content (visually hidden but announced) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible states for better keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--syvtek-primary, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  body {
+    font-weight: 500;
+  }
+
+  button, a {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Ensure 200% zoom doesn't break layout */
+@media (max-width: 512px) {
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Prevent horizontal scrolling on zoom */
+  main, section, article {
+    max-width: 100vw;
+    overflow-x: auto;
+  }
+}
+
+/* Ensure touch targets are at least 44×44 px */
+button, a[href], input[type="button"], input[type="submit"],
+select, textarea, input[type="text"], input[type="email"],
+input[type="number"], input[type="tel"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improve form field accessibility */
+input[type="text"], input[type="email"], input[type="number"],
+input[type="tel"], input[type="password"], select, textarea {
+  font-size: 16px; /* Prevents zoom on iOS */
+}

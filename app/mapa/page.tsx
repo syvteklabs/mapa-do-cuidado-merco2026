@@ -47,15 +47,32 @@ export default function MapPage() {
     fetchStats();
   }, []);
 
+  // Create text summary of map data for screen readers
+  const mapSummary = stats
+    ? `Total de participações: ${stats.total}. Municípios com participações: ${Object.keys(stats.byMunicipio).length}`
+    : "Carregando dados do mapa...";
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header */}
       <DashboardHeader />
 
+      {/* Accessibility: Skip to content link */}
+      <a
+        href="#map-summary"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2"
+      >
+        Pular para resumo de dados
+      </a>
+
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto">
         {/* Map Section */}
-        <div className="h-96 sm:h-[500px] lg:h-screen lg:max-h-[600px] overflow-hidden border-b border-gray-200">
+        <div
+          className="h-96 sm:h-[500px] lg:h-screen lg:max-h-[600px] overflow-hidden border-b border-gray-200"
+          role="region"
+          aria-label="Mapa interativo de participações por município"
+        >
           <MapContent
             municipiosStats={stats?.byMunicipio || {}}
             municipiosCategories={stats?.byCategory}
@@ -65,6 +82,11 @@ export default function MapPage() {
 
         {/* Data Interpretation Guide & Tabs Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+          {/* Accessibility: Text summary of map */}
+          <div id="map-summary" className="sr-only" role="status" aria-live="polite">
+            {mapSummary}
+          </div>
+
           {/* Interpretation Guide */}
           <DataInterpretationGuide />
 

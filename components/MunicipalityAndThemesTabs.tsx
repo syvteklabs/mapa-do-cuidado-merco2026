@@ -76,10 +76,14 @@ export default function MunicipalityAndThemesTabs({
   return (
     <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200 flex">
+      <div className="border-b border-gray-200 flex" role="tablist">
         <button
           onClick={() => setActiveTab("municipalities")}
-          className={`flex-1 px-4 sm:px-6 py-4 text-sm sm:text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${
+          role="tab"
+          aria-selected={activeTab === "municipalities"}
+          aria-controls="municipalities-panel"
+          id="municipalities-tab"
+          className={`flex-1 px-4 sm:px-6 py-4 text-sm sm:text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 min-h-12 ${
             activeTab === "municipalities"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-600 hover:text-gray-900"
@@ -89,7 +93,11 @@ export default function MunicipalityAndThemesTabs({
         </button>
         <button
           onClick={() => setActiveTab("themes")}
-          className={`flex-1 px-4 sm:px-6 py-4 text-sm sm:text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${
+          role="tab"
+          aria-selected={activeTab === "themes"}
+          aria-controls="themes-panel"
+          id="themes-tab"
+          className={`flex-1 px-4 sm:px-6 py-4 text-sm sm:text-base font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 min-h-12 ${
             activeTab === "themes"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-600 hover:text-gray-900"
@@ -103,7 +111,7 @@ export default function MunicipalityAndThemesTabs({
       <div className="p-4 sm:p-6">
         {/* Municipalities Tab */}
         {activeTab === "municipalities" && (
-          <div className="space-y-4">
+          <div id="municipalities-panel" role="tabpanel" aria-labelledby="municipalities-tab" className="space-y-4">
             {/* Header Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
               <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-200">
@@ -130,7 +138,10 @@ export default function MunicipalityAndThemesTabs({
 
             {/* Table */}
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm" role="table" aria-label="Participações por município">
+                <caption className="sr-only">
+                  Tabela de dados mostrando o número de participações e percentuais por município, ordenados por maior quantidade de participações
+                </caption>
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50">
                     <th className="px-3 sm:px-4 py-3 text-left font-semibold text-gray-700 text-xs sm:text-sm">
@@ -202,7 +213,7 @@ export default function MunicipalityAndThemesTabs({
 
         {/* Themes Tab */}
         {activeTab === "themes" && (
-          <div className="space-y-4">
+          <div id="themes-panel" role="tabpanel" aria-labelledby="themes-tab" className="space-y-4">
             {themesData.length > 0 ? (
               <>
                 {/* Header Stats */}
