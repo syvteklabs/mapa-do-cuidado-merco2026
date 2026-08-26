@@ -176,11 +176,10 @@ export default function MapContent({
         style={{ height: "100%", width: "100%" }}
         className="rounded-lg"
       >
-        {/* Softer base layer */}
+        {/* OpenStreetMap base layer */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://tiles.stadiamaps.com/tiles/stamen_tonerlite/{z}/{x}/{y}.png"
-          opacity={0.85}
+          attribution='&copy; OpenStreetMap contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
         {/* Intensity circles */}
