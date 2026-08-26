@@ -359,46 +359,124 @@ export default function ParticipationFlow() {
 
         {/* Step: Confirmation */}
         {step === "confirmation" && (
-          <div className="text-center space-y-8">
-            <div>
-              <div className="mb-4 text-5xl">✓</div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-                Sua voz entrou no mapa.
-              </h2>
-              <p className="text-lg text-gray-600 mb-2">
-                Sua experiência agora faz parte do Mapa do Cuidado.
-              </p>
-              {participationNumber && (
-                <p className="text-2xl font-bold text-blue-600 mb-3">
-                  Você é a participação nº {participationNumber} deste mapa.
+          <div className="space-y-8">
+            {/* Success Header */}
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
+                <svg
+                  className="w-8 h-8 text-green-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+                  Sua participação agora faz parte deste mapa.
+                </h2>
+                <p className="text-lg sm:text-xl text-gray-700">
+                  A resposta foi registrada de forma anônima e será apresentada somente em
+                  conjunto com outras participações.
                 </p>
+              </div>
+            </div>
+
+            {/* Submission Details */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
+              <h3 className="font-semibold text-gray-900 text-sm uppercase">Sua contribuição</h3>
+
+              {/* Municipality */}
+              <div className="flex justify-between items-start py-3 border-b border-blue-100">
+                <span className="text-gray-600 font-medium">Município informado:</span>
+                <span className="text-right font-semibold text-gray-900">{formData.municipio}</span>
+              </div>
+
+              {/* Theme/Category */}
+              {formData.resposta_categoria !== "prefer_not_answer" && (
+                <div className="flex justify-between items-start py-3 border-b border-blue-100">
+                  <span className="text-gray-600 font-medium">Tema percebido:</span>
+                  <span className="text-right font-semibold text-gray-900">
+                    {categorias.find((c) => c.id === formData.resposta_categoria)?.label ||
+                      "Resposta registrada"}
+                  </span>
+                </div>
               )}
-              <p className="text-gray-600 italic">
-                &quot;Quando uma experiência é compartilhada, o cuidado deixa de ser invisível.&quot;
+
+              {/* Anonymity Confirmation */}
+              <div className="flex justify-between items-start py-3">
+                <span className="text-gray-600 font-medium">Dados pessoais coletados:</span>
+                <span className="text-right font-semibold text-green-700">Nenhum</span>
+              </div>
+
+              {/* Update Time */}
+              <div className="flex justify-between items-start pt-3 border-t border-blue-100">
+                <span className="text-gray-600 font-medium">Próxima atualização:</span>
+                <span className="text-right font-semibold text-gray-900">Em até 1 hora</span>
+              </div>
+            </div>
+
+            {/* Privacy Note */}
+            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+              <p className="text-sm text-gray-700 leading-relaxed">
+                Sua resposta será agregada com outras participações. Você não pode ser
+                identificado(a), pois nenhum dado pessoal ou de localização exata foi solicitado.
               </p>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-left">
-              <p className="text-sm text-gray-600">
-                Sua contribuição anônima e voluntária ajuda a construir um mapa
-                real dos caminhos do cuidado em nossa região.
-              </p>
-            </div>
-
+            {/* CTAs */}
             <div className="space-y-3">
+              {/* Primary CTA */}
               <Link
-                href={`/mapa?destaque=${encodeURIComponent(formData.municipio)}`}
-                className="block w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors"
+                href="/mapa"
+                className="block w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Ver minha cidade no mapa
+                Ver o mapa atualizado
               </Link>
+
+              {/* Secondary CTA - Share */}
               <button
-                onClick={reset}
-                className="w-full bg-gray-200 text-gray-900 py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: "Mapa do Cuidado",
+                      text: "Compartilhe sua experiência sobre os caminhos do cuidado no Noroeste Fluminense",
+                      url: window.location.origin,
+                    }).catch(() => {
+                      // User cancelled share
+                    });
+                  } else {
+                    // Fallback: copy URL to clipboard
+                    const url = window.location.origin;
+                    navigator.clipboard.writeText(url);
+                    alert("Link copiado para a área de transferência!");
+                  }
+                }}
+                className="w-full bg-gray-200 text-gray-900 py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 active:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
               >
-                Nova Participação
+                Compartilhar o Mapa do Cuidado
               </button>
+
+              {/* Tertiary CTA */}
+              <Link
+                href="/"
+                className="block w-full bg-white text-gray-900 border-2 border-gray-300 py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-gray-50 active:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+              >
+                Voltar ao início
+              </Link>
             </div>
+
+            {/* Participation Count (Optional) */}
+            {participationNumber && (
+              <div className="text-center">
+                <p className="text-sm text-gray-600">
+                  Você é a participação nº <span className="font-bold text-gray-900">{participationNumber}</span> deste
+                  mapa.
+                </p>
+              </div>
+            )}
           </div>
         )}
       </main>
