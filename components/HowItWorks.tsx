@@ -1,129 +1,175 @@
 "use client";
 
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
 export default function HowItWorks() {
-  const steps = [
+  const steps: Step[] = [
     {
-      number: "1",
-      title: "Participação",
-      description: "Você compartilha sua experiência de cuidado de forma rápida, anônima e voluntária. Nenhum dado pessoal é coletado.",
-      icon: "🗣️",
-      details: "2 minutos • Sem identificação • Totalmente anônimo",
+      number: "01",
+      title: "Compartilhe",
+      description:
+        "Informe seu município e conte como você percebeu uma experiência relacionada aos caminhos do cuidado.",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          <circle cx="9" cy="10" r="1" />
+          <circle cx="12" cy="10" r="1" />
+          <circle cx="15" cy="10" r="1" />
+        </svg>
+      ),
     },
     {
-      number: "2",
-      title: "Agregação",
-      description: "Suas respostas são combinadas com outras participações. Os dados são processados de forma segura e privada.",
-      icon: "🔗",
-      details: "Dados anônimos • Sem armazenamento pessoal • Totalmente seguro",
+      number: "02",
+      title: "Protegemos",
+      description:
+        "Nenhum nome, contato, endereço, dado clínico ou localização em tempo real é solicitado.",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M10 17l2 2 4-4" />
+        </svg>
+      ),
     },
     {
-      number: "3",
-      title: "Visualização",
-      description: "Os padrões e tendências aparecem no mapa. Você pode explorar os caminhos do cuidado na sua região.",
-      icon: "🗺️",
-      details: "Mapa interativo • Insights em tempo real • Dados agregados",
+      number: "03",
+      title: "Agregamos",
+      description:
+        "As respostas são combinadas para evitar a identificação individual.",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+    {
+      number: "04",
+      title: "Visualizamos",
+      description:
+        "O mapa apresenta tendências da participação por município e por tema.",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 3v18a1 1 0 0 0 1 1h16" />
+          <path d="M18 17V9" />
+          <path d="M13 17v-5" />
+          <path d="M8 17v-3" />
+        </svg>
+      ),
     },
   ];
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 sm:p-12 border border-blue-200">
+    <section className="space-y-16">
       {/* Header */}
-      <div className="text-center mb-12 space-y-3">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+      <div className="space-y-4">
+        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
           Como funciona
         </h2>
-        <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-          Três passos simples para mapear os caminhos do cuidado na sua região
+        <p className="text-lg sm:text-xl text-gray-700 max-w-2xl">
+          Quatro passos simples que transformam uma experiência em insight coletivo.
         </p>
       </div>
 
-      {/* Steps */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      {/* Steps Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {steps.map((step, index) => (
-          <div key={step.number} className="relative">
-            {/* Card */}
-            <div className="bg-white rounded-lg p-8 h-full border-2 border-blue-200 shadow-sm hover:shadow-md transition-shadow">
-              {/* Step number */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">
-                  {step.number}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">
-                  {step.title}
-                </h3>
-              </div>
-
-              {/* Icon */}
-              <div className="text-4xl mb-6">
-                {step.icon}
-              </div>
-
-              {/* Description */}
-              <p className="text-gray-700 text-base leading-relaxed mb-6">
-                {step.description}
+          <div
+            key={step.number}
+            className="flex flex-col h-full bg-white rounded-lg border border-gray-200 p-8 hover:border-gray-300 hover:shadow-md transition-all duration-200"
+          >
+            {/* Number - Large visual element */}
+            <div className="mb-6 flex-shrink-0">
+              <p className="text-6xl sm:text-7xl font-bold text-gray-100 leading-none">
+                {step.number}
               </p>
-
-              {/* Details */}
-              <div className="pt-6 border-t border-gray-200">
-                <p className="text-xs text-gray-600 space-y-1">
-                  {step.details.split(" • ").map((detail, i) => (
-                    <span key={i} className="block">
-                      ✓ {detail}
-                    </span>
-                  ))}
-                </p>
-              </div>
             </div>
 
-            {/* Arrow connector (hidden on mobile) */}
+            {/* Icon */}
+            <div className="text-indigo-600 mb-6 flex-shrink-0">
+              {step.icon}
+            </div>
+
+            {/* Title */}
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              {step.title}
+            </h3>
+
+            {/* Description - Flex grow to push connector to bottom */}
+            <p className="text-base text-gray-700 leading-relaxed flex-grow mb-6">
+              {step.description}
+            </p>
+
+            {/* Connector line (hidden on mobile, visible on md and above between items) */}
             {index < steps.length - 1 && (
-              <div className="hidden md:block absolute -right-4 top-1/2 transform -translate-y-1/2 text-3xl text-blue-400">
-                →
-              </div>
+              <div className="hidden lg:block absolute right-0 top-1/2 w-6 h-0.5 bg-gradient-to-r from-indigo-300 to-transparent opacity-40 transform translate-x-full" />
             )}
           </div>
         ))}
       </div>
 
-      {/* Benefits section */}
-      <div className="bg-white rounded-lg p-8 border border-blue-200">
-        <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
-          Por que participar?
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="text-center">
-            <p className="text-3xl mb-2">🔒</p>
-            <p className="font-semibold text-gray-900 mb-2">Privacidade</p>
-            <p className="text-sm text-gray-600">
-              Seus dados pessoais nunca são coletados ou armazenados
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl mb-2">⚡</p>
-            <p className="font-semibold text-gray-900 mb-2">Rápido</p>
-            <p className="text-sm text-gray-600">
-              Leva apenas 2 minutos para compartilhar sua experiência
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl mb-2">💡</p>
-            <p className="font-semibold text-gray-900 mb-2">Impacto</p>
-            <p className="text-sm text-gray-600">
-              Suas contribuições formam insights coletivos que geram mudança
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Mobile vertical connectors - visible only on small screens */}
+      <style>{`
+        @media (max-width: 768px) {
+          .step-item {
+            position: relative;
+            padding-bottom: 2rem;
+          }
+          .step-item::after {
+            content: "";
+            position: absolute;
+            left: 1.5rem;
+            top: 100%;
+            width: 2px;
+            height: 2rem;
+            background: linear-gradient(to bottom, #a5b4fc, transparent);
+          }
+          .step-item:last-child::after {
+            display: none;
+          }
+        }
+      `}</style>
 
-      {/* CTA */}
-      <div className="text-center mt-12">
-        <a
-          href="/participar"
-          className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors"
-        >
-          Participar agora
-        </a>
-      </div>
-    </div>
+      {/* Whitespace and breathing room - key visual element */}
+      <div className="h-12" />
+    </section>
   );
 }
