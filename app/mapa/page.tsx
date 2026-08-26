@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
+import DataInterpretationGuide from "@/components/DataInterpretationGuide";
 import MunicipalityAndThemesTabs from "@/components/MunicipalityAndThemesTabs";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -62,8 +63,12 @@ export default function MapPage() {
           />
         </div>
 
-        {/* Tabs Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Data Interpretation Guide & Tabs Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+          {/* Interpretation Guide */}
+          <DataInterpretationGuide />
+
+          {/* Tabs */}
           <MunicipalityAndThemesTabs
             municipiosStats={stats?.byMunicipio || {}}
             municipiosCategories={stats?.byCategory || {}}
