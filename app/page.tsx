@@ -8,6 +8,7 @@ import HeroMap from "@/components/HeroMap";
 import ContextAndTrustBar from "@/components/ContextAndTrustBar";
 import ProofOfMovement from "@/components/ProofOfMovement";
 import WhatAreWeTryingToSee from "@/components/WhatAreWeTryingToSee";
+import JourneyExample from "@/components/JourneyExample";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 
@@ -120,6 +121,9 @@ export default function Home() {
 
         {/* What Are We Trying To See - Problem statement before solution */}
         <WhatAreWeTryingToSee />
+
+        {/* Journey Example - Visual flow from experience to insight */}
+        <JourneyExample />
 
         {/* How It Works - Three step process */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
