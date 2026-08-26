@@ -35,6 +35,18 @@ export default function Footer() {
                 Privacidade
               </Link>
               <Link
+                href="/termos"
+                className="text-xs text-blue-600 hover:text-blue-700 underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
+              >
+                Termos
+              </Link>
+              <Link
+                href="/contato"
+                className="text-xs text-blue-600 hover:text-blue-700 underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
+              >
+                Contato
+              </Link>
+              <Link
                 href="/acessibilidade"
                 className="text-xs text-blue-600 hover:text-blue-700 underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
               >
