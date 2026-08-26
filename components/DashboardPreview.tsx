@@ -383,100 +383,141 @@ export default function DashboardPreview() {
 
         {stats && (
           <div className="space-y-8 sm:space-y-12">
-            {/* Total & Indicators Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Total Contributions - Compact */}
-              <div className="lg:col-span-1 bg-gradient-to-br from-indigo-50 via-blue-50 to-blue-100 border-2 border-indigo-300 rounded-lg p-6 sm:p-8 shadow-sm">
-                <div className="text-center">
-                  <p className={`font-semibold text-indigo-700 mb-2 tracking-wide uppercase text-xs`}>
-                    Total
-                  </p>
-                  <p className={`font-bold text-indigo-900 ${isTV ? "text-6xl" : "text-5xl"}`}>
-                    {stats.total}
-                  </p>
-                  <p className={`text-indigo-700 font-medium mt-2 text-sm`}>
-                    histórias compartilhadas
-                  </p>
+            {/* Main Panel Layout - Map + Sidebar */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+              {/* Left Column - Map (2/3 width on desktop) */}
+              <div className="lg:col-span-2 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-2xl"}`}>
+                    Mapa Geográfico
+                  </h2>
+                  {/* Data View Toggle */}
+                  <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                    <button
+                      onClick={() => setDataView("participations")}
+                      className={`px-3 py-1.5 rounded font-medium text-xs sm:text-sm transition ${
+                        dataView === "participations"
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      Participações
+                    </button>
+                    <button
+                      onClick={() => setDataView("needs")}
+                      className={`px-3 py-1.5 rounded font-medium text-xs sm:text-sm transition ${
+                        dataView === "needs"
+                          ? "bg-amber-600 text-white"
+                          : "text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      Necessidades
+                    </button>
+                  </div>
+                </div>
+
+                {/* Map - Primary Element */}
+                <div className={`${isTV ? "h-[600px]" : "h-[450px] sm:h-[500px]"} rounded-lg overflow-hidden border-2 border-gray-200 shadow-md`}>
+                  <NoroestMap
+                    municipiosStats={municipiosStats}
+                    municipiosCategories={municipiosCategories}
+                    selectedMunicipio={selectedMunicipio}
+                    onMunicipioSelect={setSelectedMunicipio}
+                    dataView={dataView}
+                    height="h-full"
+                  />
                 </div>
               </div>
 
-              {/* Complementary Indicators - 3 metrics */}
-              {stats.total > 0 && (
-                <>
-                  {/* Municipalities */}
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-6 text-center">
-                    <p className={`text-blue-600 font-semibold mb-2 text-sm`}>
-                      Municípios
+              {/* Right Column - Info Panel (1/3 width on desktop) */}
+              <div className="lg:col-span-1 space-y-5">
+                {/* Total Contributions - Large */}
+                <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-blue-100 border-2 border-indigo-300 rounded-lg p-5 sm:p-6 shadow-sm">
+                  <div className="text-center space-y-2">
+                    <p className="font-semibold text-indigo-700 tracking-wide uppercase text-xs">
+                      Total
                     </p>
-                    <p className={`font-bold text-blue-900 mb-1 ${isTV ? "text-4xl" : "text-3xl"}`}>
-                      {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}/13
+                    <p className="font-bold text-indigo-900 text-4xl sm:text-5xl">
+                      {stats.total}
                     </p>
-                    <p className={`text-blue-700 font-medium text-xs`}>
-                      ativos
-                    </p>
-                  </div>
-
-                  {/* States */}
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-6 text-center">
-                    <p className={`text-emerald-600 font-semibold mb-2 text-sm`}>
-                      Temas
-                    </p>
-                    <p className={`font-bold text-emerald-900 mb-1 ${isTV ? "text-4xl" : "text-3xl"}`}>
-                      {Object.keys(stats.byCategory || {}).filter(c => (stats.byCategory || {})[c] > 0).length}
-                    </p>
-                    <p className={`text-emerald-700 font-medium text-xs`}>
-                      identificados
+                    <p className="text-indigo-700 font-medium text-sm">
+                      histórias
                     </p>
                   </div>
-                </>
-              )}
-            </div>
-
-            {/* Map Section with Data View Toggle */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-2xl"}`}>
-                  Mapa Geográfico
-                </h2>
-                {/* Data View Toggle */}
-                <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                  <button
-                    onClick={() => setDataView("participations")}
-                    className={`px-4 py-2 rounded font-medium text-sm transition ${
-                      dataView === "participations"
-                        ? "bg-blue-600 text-white"
-                        : "text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    Participações
-                  </button>
-                  <button
-                    onClick={() => setDataView("needs")}
-                    className={`px-4 py-2 rounded font-medium text-sm transition ${
-                      dataView === "needs"
-                        ? "bg-amber-600 text-white"
-                        : "text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    Necessidades
-                  </button>
                 </div>
-              </div>
 
-              {/* Map - Large and Primary */}
-              <div className={`${isTV ? "h-[600px]" : "h-[500px]"} rounded-lg overflow-hidden border-2 border-gray-200 shadow-md`}>
-                <NoroestMap
-                  municipiosStats={municipiosStats}
-                  municipiosCategories={municipiosCategories}
-                  selectedMunicipio={selectedMunicipio}
-                  onMunicipioSelect={setSelectedMunicipio}
-                  dataView={dataView}
-                  height="h-full"
-                />
+                {/* Quick Stats - 2 columns */}
+                {stats.total > 0 && (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Municipalities */}
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-4 text-center">
+                        <p className="text-blue-600 font-semibold text-xs mb-2">
+                          Municípios
+                        </p>
+                        <p className="font-bold text-blue-900 text-2xl sm:text-3xl">
+                          {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}/13
+                        </p>
+                        <p className="text-blue-700 font-medium text-xs mt-1">
+                          ativos
+                        </p>
+                      </div>
+
+                      {/* Categories */}
+                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-4 text-center">
+                        <p className="text-emerald-600 font-semibold text-xs mb-2">
+                          Temas
+                        </p>
+                        <p className="font-bold text-emerald-900 text-2xl sm:text-3xl">
+                          {Object.keys(stats.byCategory || {}).filter(c => (stats.byCategory || {})[c] > 0).length}
+                        </p>
+                        <p className="text-emerald-700 font-medium text-xs mt-1">
+                          identificados
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Geographic Scope Info */}
+                    {stats.byState && stats.byState.RJ !== stats.total && (
+                      <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+                        <div className="flex gap-2 text-sm">
+                          <span className="flex-shrink-0 text-lg">📍</span>
+                          <div className="text-xs sm:text-sm">
+                            <p className="font-bold text-blue-900 mb-1">Escopo</p>
+                            <p className="text-blue-800">
+                              <strong>{stats.byState.RJ}</strong> de <strong>{stats.total}</strong> participações no Noroeste RJ
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Selected Municipality Info */}
+                {selectedMunicipio && (
+                  <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4">
+                    <div className="flex items-start gap-2">
+                      <span className="flex-shrink-0 text-xl">📍</span>
+                      <div className="text-sm flex-1">
+                        <p className="font-bold text-amber-900 mb-1">{selectedMunicipio}</p>
+                        <p className="text-amber-800">
+                          {municipiosStats[selectedMunicipio] || 0} participações
+                        </p>
+                        <button
+                          onClick={() => setSelectedMunicipio(null)}
+                          className="mt-2 text-xs font-medium text-amber-600 hover:text-amber-700"
+                        >
+                          Limpar seleção
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Municípios Ranking - Interactive */}
+            {/* Municípios Ranking - Full Width Below */}
             <div>
               <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-4xl" : "text-xl"}`}>
                 Ranking de Participações
@@ -487,7 +528,6 @@ export default function DashboardPreview() {
                 onMunicipioSelect={setSelectedMunicipio}
                 onCenterMap={(municipio) => {
                   setSelectedMunicipio(municipio);
-                  // Map will receive this through the onMunicipioSelect callback
                 }}
                 isTV={isTV}
               />
