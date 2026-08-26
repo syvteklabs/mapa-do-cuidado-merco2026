@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ExpansionUnified from "./ExpansionUnified";
 import DemoBanner from "./DemoBanner";
-import NoroestMap from "./NoroestMap";
+import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import { DEMO_STATS } from "@/lib/demo-data";
 
@@ -425,13 +425,12 @@ export default function DashboardPreview() {
                   height: isTV ? '700px' : 'clamp(400px, 70vh, 600px)',
                   minHeight: '400px'
                 }}>
-                  <NoroestMap
+                  <TerritorialMap
                     municipiosStats={municipiosStats}
                     municipiosCategories={municipiosCategories}
                     selectedMunicipio={selectedMunicipio}
                     onMunicipioSelect={setSelectedMunicipio}
                     dataView={dataView}
-                    height="h-full"
                   />
                 </div>
 
