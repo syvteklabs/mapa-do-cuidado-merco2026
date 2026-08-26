@@ -6,6 +6,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { LocationIcon, AlertIcon, XIcon } from "./Icons";
+import { animationClasses } from "@/lib/animations";
 
 interface MunicipalityData {
   name: string;
@@ -227,7 +228,7 @@ export default function MapContent({
         center={mapCenter}
         zoom={9}
         style={{ height: "100%", width: "100%" }}
-        className="rounded-lg"
+        className={`rounded-lg ${animationClasses.fadeIn}`}
       >
         {/* Softer base layer */}
         <TileLayer
@@ -322,7 +323,7 @@ export default function MapContent({
 
       {/* Enhanced Accessible Legend */}
       {showLegend && (
-        <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-white rounded-lg shadow-lg p-4 sm:p-5 max-w-sm z-40 border border-gray-200 text-sm">
+        <div className={`absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-white rounded-lg shadow-lg p-4 sm:p-5 max-w-sm z-40 border border-gray-200 text-sm ${animationClasses.fadeInUp}`}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-gray-900 text-xs sm:text-sm">Intensidade</h3>
             <button
@@ -387,7 +388,7 @@ export default function MapContent({
 
       {/* Selection info box - Quick indicator */}
       {localSelectedMunicipio && !showDetailPanel && (
-        <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 sm:p-4 z-40 border border-gray-200 max-w-xs">
+        <div className={`absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 sm:p-4 z-40 border border-gray-200 max-w-xs ${animationClasses.fadeInDown}`}>
           <div className="text-xs sm:text-sm">
             <p className="text-gray-600 mb-2 font-medium line-clamp-2 flex items-center gap-2">
               <LocationIcon className="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden={true} />
@@ -405,7 +406,7 @@ export default function MapContent({
 
       {/* Detailed selection panel */}
       {showDetailPanel && localSelectedMunicipio && getSelectedMunicipio() && (
-        <div className="absolute bottom-0 right-0 top-0 sm:top-4 sm:right-4 w-full sm:w-96 bg-white rounded-t-lg sm:rounded-lg shadow-2xl z-50 border border-gray-200 flex flex-col max-h-screen sm:max-h-[85vh] overflow-hidden">
+        <div className={`absolute bottom-0 right-0 top-0 sm:top-4 sm:right-4 w-full sm:w-96 bg-white rounded-t-lg sm:rounded-lg shadow-2xl z-50 border border-gray-200 flex flex-col max-h-screen sm:max-h-[85vh] overflow-hidden ${animationClasses.slideInRight}`}>
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-4 sm:p-5 flex-shrink-0">
             <div className="flex items-start justify-between gap-3">

@@ -7,6 +7,7 @@ import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
 import PrivacyDisclosure from "./PrivacyDisclosure";
 import { CheckIcon } from "./Icons";
+import { animationClasses } from "@/lib/animations";
 
 export default function ParticipationFlow() {
   const {
@@ -92,7 +93,7 @@ export default function ParticipationFlow() {
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8 sm:py-12">
         {/* Step: Start */}
         {step === "start" && (
-          <div className="space-y-8">
+          <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             {/* Title and Introduction */}
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
@@ -109,7 +110,13 @@ export default function ParticipationFlow() {
               <h2 className="font-semibold text-gray-900 mb-6 text-sm">Processo em 4 etapas:</h2>
               <div className="space-y-4">
                 {progressSteps.map((step, index) => (
-                  <div key={step.id} className="flex gap-4 items-start">
+                  <div
+                    key={step.id}
+                    className={`flex gap-4 items-start ${animationClasses.fadeInUp}`}
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                    }}
+                  >
                     <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm sm:text-base">
                       {index + 1}
                     </div>
@@ -165,7 +172,7 @@ export default function ParticipationFlow() {
 
         {/* Step: Location */}
         {step === "location" && (
-          <div className="space-y-8">
+          <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Em qual município você mora?
@@ -270,7 +277,7 @@ export default function ParticipationFlow() {
 
         {/* Step: Question */}
         {step === "question" && (
-          <div className="space-y-8">
+          <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Como foi sua experiência?
@@ -281,17 +288,20 @@ export default function ParticipationFlow() {
             </div>
 
             <div className="space-y-3">
-              {categorias.map((cat) => (
+              {categorias.map((cat, index) => (
                 <button
                   key={cat.id}
                   onClick={() =>
                     updateFormData("resposta_categoria", cat.id)
                   }
-                  className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors ${
+                  className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors ${animationClasses.fadeInUp} ${
                     formData.resposta_categoria === cat.id
                       ? "bg-blue-600 text-white border-2 border-blue-600"
                       : "bg-white border-2 border-gray-300 text-gray-900 hover:border-blue-400 active:bg-blue-50"
                   }`}
+                  style={{
+                    animationDelay: `${index * 75}ms`,
+                  }}
                 >
                   {cat.label}
                 </button>
@@ -367,9 +377,9 @@ export default function ParticipationFlow() {
 
         {/* Step: Confirmation */}
         {step === "confirmation" && (
-          <div className="space-y-8">
+          <div className={`space-y-8 ${animationClasses.fadeIn}`}>
             {/* Success Header */}
-            <div className="text-center space-y-4">
+            <div className={`text-center space-y-4 ${animationClasses.scaleIn}`}>
               <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
                 <svg
                   className="w-8 h-8 text-green-600"
@@ -491,7 +501,7 @@ export default function ParticipationFlow() {
 
       {/* Saved Notification Toast */}
       {savedNotification && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-lg animate-pulse">
+        <div className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-lg ${animationClasses.slideInUp}`}>
           <div className="flex items-center gap-3">
             <CheckIcon className="w-5 h-5 text-green-600 flex-shrink-0" aria-hidden={true} />
             <p className="text-sm font-semibold text-green-800">

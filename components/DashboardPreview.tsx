@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { animationClasses } from "@/lib/animations";
+import { SkeletonStat, SkeletonCard } from "./Skeleton";
 
 interface DashboardStats {
   total: number;
@@ -55,10 +57,7 @@ export default function DashboardPreview() {
             {/* Stats skeleton */}
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="animate-pulse space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-24" />
-                  <div className="h-8 bg-gray-200 rounded w-32" />
-                </div>
+                <SkeletonStat key={i} />
               ))}
             </div>
           </div>
@@ -144,7 +143,7 @@ export default function DashboardPreview() {
         {/* Layout - Map and Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Map Preview */}
-          <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
+          <div className={`lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6 sm:p-8 ${animationClasses.fadeInUp}`}>
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg aspect-video sm:aspect-square lg:aspect-auto lg:h-80 flex items-center justify-center">
               <div className="text-center space-y-3">
                 <p className="text-gray-600">Mapa territorial do Noroeste</p>
@@ -160,20 +159,29 @@ export default function DashboardPreview() {
           {/* Right: Statistics */}
           <div className="space-y-6">
             {/* Total Participations */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div
+              className={`bg-white rounded-lg border border-gray-200 p-6 ${animationClasses.fadeInUp}`}
+              style={{ animationDelay: "100ms" }}
+            >
               <p className="text-sm text-gray-600 mb-2">Total de participações</p>
               <p className="text-4xl font-bold text-indigo-600">{stats.total}</p>
             </div>
 
             {/* Municipalities with participation */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div
+              className={`bg-white rounded-lg border border-gray-200 p-6 ${animationClasses.fadeInUp}`}
+              style={{ animationDelay: "200ms" }}
+            >
               <p className="text-sm text-gray-600 mb-2">Municípios participando</p>
               <p className="text-4xl font-bold text-indigo-600">{municipiosCount}</p>
               <p className="text-xs text-gray-500 mt-2">de 13 municípios</p>
             </div>
 
             {/* Most mentioned theme */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div
+              className={`bg-white rounded-lg border border-gray-200 p-6 ${animationClasses.fadeInUp}`}
+              style={{ animationDelay: "300ms" }}
+            >
               <p className="text-sm text-gray-600 mb-2">Tema mais mencionado</p>
               <p className="text-lg font-semibold text-gray-900 truncate">
                 {topCategoryName}
@@ -186,7 +194,10 @@ export default function DashboardPreview() {
             </div>
 
             {/* Last Update */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div
+              className={`bg-white rounded-lg border border-gray-200 p-6 ${animationClasses.fadeInUp}`}
+              style={{ animationDelay: "400ms" }}
+            >
               <p className="text-sm text-gray-600 mb-2">Última atualização</p>
               <p className="text-sm font-medium text-gray-900">Agora</p>
               <p className="text-xs text-gray-500 mt-2">Dados em tempo real</p>

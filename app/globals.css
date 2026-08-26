@@ -51,3 +51,164 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter, Inter, system-ui, -apple-system, sans-serif);
 }
+
+/* ============================================================================
+   ANIMATIONS - Subtle and accessible
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleInSm {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes bounceLight {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Tailwind animation utilities */
+.animate-fadeIn {
+  animation: fadeIn 300ms ease-out;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 400ms ease-out;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown 400ms ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 300ms ease-out;
+}
+
+.animate-scaleInSm {
+  animation: scaleInSm 300ms ease-out;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 400ms ease-out;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 400ms ease-out;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 400ms ease-out;
+}
+
+.animate-pulseSubtle {
+  animation: pulseSubtle 2s ease-in-out infinite;
+}
+
+.animate-bounceLight {
+  animation: bounceLight 1s ease-in-out infinite;
+}
+
+/* Respects prefers-reduced-motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
