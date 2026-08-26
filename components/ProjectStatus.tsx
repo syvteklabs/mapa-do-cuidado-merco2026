@@ -1,4 +1,5 @@
 import { CheckIcon, ArrowRightIcon, LightbulbIcon } from "./Icons";
+import { animationClasses } from "@/lib/animations";
 
 export default function ProjectStatus() {
   const phases = [
@@ -88,7 +89,13 @@ export default function ProjectStatus() {
           {phases.map((phase, idx) => {
             const colors = getColorClasses(phase.color);
             return (
-              <div key={idx} className={`border rounded-lg p-6 sm:p-8 ${colors.badge}`}>
+              <div
+                key={idx}
+                className={`border rounded-lg p-6 sm:p-8 ${colors.badge} ${animationClasses.fadeInUp}`}
+                style={{
+                  animationDelay: `${idx * 100}ms`,
+                }}
+              >
                 {/* Icon and Title */}
                 <div className="flex items-start gap-4 mb-6">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${colors.icon}`}>

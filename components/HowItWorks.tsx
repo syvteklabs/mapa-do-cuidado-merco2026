@@ -1,5 +1,7 @@
 "use client";
 
+import { animationClasses } from "@/lib/animations";
+
 interface Step {
   number: string;
   title: string;
@@ -114,7 +116,10 @@ export default function HowItWorks() {
         {steps.map((step, index) => (
           <div
             key={step.number}
-            className="flex flex-col h-full bg-white rounded-lg border border-gray-200 p-8 hover:border-gray-300 hover:shadow-md transition-all duration-200"
+            className={`flex flex-col h-full bg-white rounded-lg border border-gray-200 p-8 hover:border-gray-300 hover:shadow-md transition-all duration-200 ${animationClasses.fadeInUp}`}
+            style={{
+              animationDelay: `${index * 75}ms`,
+            }}
           >
             {/* Number - Large visual element */}
             <div className="mb-6 flex-shrink-0">

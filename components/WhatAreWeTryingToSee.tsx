@@ -1,5 +1,7 @@
 "use client";
 
+import { animationClasses } from "@/lib/animations";
+
 interface ProblemCard {
   title: string;
   question: string;
@@ -107,7 +109,10 @@ export default function WhatAreWeTryingToSee() {
         {cards.map((card, index) => (
           <div
             key={index}
-            className="flex flex-col h-full p-6 rounded-lg bg-white border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200"
+            className={`flex flex-col h-full p-6 rounded-lg bg-white border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 ${animationClasses.fadeInUp}`}
+            style={{
+              animationDelay: `${index * 75}ms`,
+            }}
           >
             {/* Icon */}
             <div className="text-indigo-600 mb-4 flex-shrink-0">
