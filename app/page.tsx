@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
@@ -6,7 +9,43 @@ import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 
+interface StatsData {
+  total: number;
+  byMunicipio: Record<string, number>;
+}
+
 export default function Home() {
+  const [stats, setStats] = useState<StatsData | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch("/api/contribuicoes", {
+          signal: AbortSignal.timeout(5000),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            setStats(data.data);
+            setIsDemoMode(false);
+          }
+        }
+      } catch {
+        setIsDemoMode(true);
+        setStats({ total: 0, byMunicipio: {} });
+      }
+    };
+    fetchStats();
+  }, []);
+
+  const getParticipationMessage = () => {
+    if (!stats) return "Convidamos você a compartilhar sua experiência.";
+    if (stats.total === 0) return "Seja o primeiro a contribuir e ajude a mapear os caminhos do cuidado.";
+    if (stats.total === 1) return "Uma pessoa já começou a compartilhar. Sua contribuição ajuda a construir um mapa mais completo.";
+    return `${stats.total} ${stats.total === 1 ? "pessoa já começou" : "pessoas já começaram"} a compartilhar suas experiências. Cada contribuição nos ajuda a enxergar melhor os caminhos do cuidado.`;
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
@@ -28,22 +67,29 @@ export default function Home() {
               </div>
 
               {/* Results & Impact - Show what participation achieves */}
-              <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border-2 border-indigo-200 rounded-lg p-6 space-y-4">
+              <div className={`border-2 rounded-lg p-6 space-y-4 ${
+                isDemoMode
+                  ? "bg-yellow-50 border-yellow-300"
+                  : "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
+              }`}>
                 <div className="flex items-start gap-3">
                   <span className="text-2xl flex-shrink-0">📊</span>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Seus dados em ação</h3>
+                    <h3 className="font-bold text-gray-900 mb-1">
+                      {isDemoMode ? "Exemplo de participação" : "Território ganhando visibilidade"}
+                    </h3>
                     <p className="text-sm text-gray-700">
-                      Mais de 240 histórias já mapearam os caminhos do cuidado. Cada participação nos ajuda a entender melhor as necessidades da região.
+                      {getParticipationMessage()}
+                      {isDemoMode && " (dados de demonstração)"}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-2xl flex-shrink-0">🔒</span>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Privacidade garantida</h3>
+                    <h3 className="font-bold text-gray-900 mb-1">Participação protegida</h3>
                     <p className="text-sm text-gray-700">
-                      Respostas apresentadas de forma agregada. Nenhuma informação pessoal é armazenada ou exibida.
+                      Respostas apresentadas de forma agregada. Nenhum nome, contato ou informação clínica é solicitado ou armazenado.
                     </p>
                   </div>
                 </div>
@@ -64,9 +110,9 @@ export default function Home() {
               {/* Trust indicator */}
               <div className="pt-4 border-t border-gray-200">
                 <p className="text-sm text-gray-600">
-                  <span className="font-semibold">✓ Confidencial</span> •
+                  <span className="font-semibold">✓ Protegido</span> •
                   <span className="font-semibold ml-1">Rápido</span> •
-                  <span className="font-semibold ml-1">Impacto real</span>
+                  <span className="font-semibold ml-1">Agregado</span>
                 </p>
               </div>
             </div>
