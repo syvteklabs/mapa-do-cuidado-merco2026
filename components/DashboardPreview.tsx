@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ExpansionInterest from "./ExpansionInterest";
+import ExpansionTerritoriesSection from "./ExpansionTerritoriesSection";
 
 interface DashboardStats {
   total: number;
@@ -42,6 +43,7 @@ export default function DashboardPreview() {
     municipio: string;
     visible: boolean;
   } | null>(null);
+  const [newTerritory, setNewTerritory] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -94,6 +96,22 @@ export default function DashboardPreview() {
         const cleanup = setTimeout(() => {
           setHighlightedCity(null);
           setShowNewContributionMessage(null);
+        }, 5000);
+        return () => clearTimeout(cleanup);
+      }
+    }
+  }, []);
+
+  // Processar novo território de URL
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const novoTerritorio = params.get("novo-territorio");
+      if (novoTerritorio) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setNewTerritory(novoTerritorio);
+        const cleanup = setTimeout(() => {
+          setNewTerritory(null);
         }, 5000);
         return () => clearTimeout(cleanup);
       }
@@ -333,6 +351,9 @@ export default function DashboardPreview() {
                 ⚠️ Os dados representam as contribuições voluntárias recebidas durante a experiência. Não constituem diagnóstico oficial nem pesquisa estatisticamente representativa da população.
               </p>
             </div>
+
+            {/* Expansion Territories Section */}
+            <ExpansionTerritoriesSection isTV={isTV} newTerritory={newTerritory} />
 
             {/* Expansion Interest Section */}
             <ExpansionInterest />

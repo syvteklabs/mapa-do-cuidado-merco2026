@@ -195,6 +195,68 @@ export class SupabaseService {
       };
     }
   }
+
+  // Get aggregated expansion statistics (no personal data)
+  async getExpansaoStats() {
+    try {
+      const client = createClient();
+
+      // Total expansion interests
+      const { count: totalInterests, error: countError } = await client
+        .from("mapa_expansao")
+        .select("*", { count: "exact", head: true });
+
+      if (countError) {
+        console.error("Error fetching expansion count:", countError);
+        return { success: false, error: countError.message };
+      }
+
+      // Expansion interests by city
+      const { data: byCity, error: cityError } = await client
+        .from("mapa_expansao")
+        .select("cidade, estado, id");
+
+      if (cityError) {
+        console.error("Error fetching expansion by city:", cityError);
+        return { success: false, error: cityError.message };
+      }
+
+      // Aggregate by city and state
+      const cityStats = new Map<string, number>();
+      const cityStateMap = new Map<string, string>();
+
+      if (byCity) {
+        byCity.forEach(({ cidade, estado }) => {
+          const key = `${cidade} — ${estado}`;
+          cityStats.set(key, (cityStats.get(key) || 0) + 1);
+          cityStateMap.set(key, estado);
+        });
+      }
+
+      // Sort by count descending
+      const sortedCities = Array.from(cityStats.entries())
+        .sort((a, b) => b[1] - a[1])
+        .map(([city, count]) => ({
+          city,
+          count,
+        }));
+
+      return {
+        success: true,
+        data: {
+          total: totalInterests || 0,
+          uniqueCities: cityStats.size,
+          byCity: sortedCities,
+        },
+      };
+    } catch (err) {
+      console.error("Unexpected error in getExpansaoStats:", err);
+      return {
+        success: false,
+        error: "Erro ao buscar estatísticas de expansão.",
+      };
+    }
+  }
 }
 
 export const supabaseService = SupabaseService.getInstance();

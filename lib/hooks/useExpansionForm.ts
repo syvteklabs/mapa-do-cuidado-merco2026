@@ -41,22 +41,22 @@ export function useExpansionForm() {
   const submitForm = useCallback(async () => {
     if (!formData.nome || !formData.cidade || !formData.estado) {
       setError("Nome, cidade e estado são obrigatórios");
-      return;
+      return false;
     }
 
     if (!formData.contato_whatsapp && !formData.contato_email) {
       setError("Forneça pelo menos WhatsApp ou e-mail");
-      return;
+      return false;
     }
 
     if (formData.contato_email && !formData.contato_email.includes("@")) {
       setError("E-mail inválido");
-      return;
+      return false;
     }
 
     if (!formData.consentimento_contato) {
       setError("Você precisa autorizar o contato");
-      return;
+      return false;
     }
 
     setIsLoading(true);
@@ -86,11 +86,13 @@ export function useExpansionForm() {
       }
 
       setStep("confirmation");
+      return true;
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Erro ao registrar interesse";
       setError(errorMessage);
       setIsLoading(false);
+      return false;
     }
   }, [formData]);
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useExpansionForm } from "@/lib/hooks/useExpansionForm";
 import { ESTADOS_BR } from "@/lib/hooks/useParticipationForm";
 import { useEffect } from "react";
@@ -17,8 +18,18 @@ export default function ExpansionModal({
   initialCity,
   initialState,
 }: ExpansionModalProps) {
+  const router = useRouter();
   const { step, formData, isLoading, error, updateFormData, submitForm, reset } =
     useExpansionForm();
+
+  const handleSubmit = async () => {
+    const success = await submitForm();
+    if (success) {
+      const territorio = `${formData.cidade} — ${formData.estado}`;
+      onClose();
+      router.push(`/mapa?novo-territorio=${encodeURIComponent(territorio)}`);
+    }
+  };
 
   useEffect(() => {
     if (isOpen && initialCity) {
@@ -194,7 +205,7 @@ export default function ExpansionModal({
                   Cancelar
                 </button>
                 <button
-                  onClick={submitForm}
+                  onClick={handleSubmit}
                   disabled={isLoading || !formData.consentimento_contato}
                   className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
