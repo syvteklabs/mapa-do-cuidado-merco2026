@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ExpansionInterest from "./ExpansionInterest";
 import ExpansionTerritoriesSection from "./ExpansionTerritoriesSection";
+import DemoBanner from "./DemoBanner";
+import { DEMO_STATS } from "@/lib/demo-data";
 
 interface DashboardStats {
   total: number;
@@ -44,6 +46,7 @@ export default function DashboardPreview() {
     visible: boolean;
   } | null>(null);
   const [newTerritory, setNewTerritory] = useState<string | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -68,9 +71,19 @@ export default function DashboardPreview() {
 
         setError(null);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erro ao carregar dados"
-        );
+        console.error("Erro ao carregar dados:", err);
+        // Usar dados de demonstração como contingência
+        setStats(DEMO_STATS);
+        setIsDemoMode(true);
+        setError(null);
+        // Preparar dados por município
+        const byMunicipio: Record<string, number> = {};
+        const municipiosMap = DEMO_STATS.byMunicipio as Record<string, number>;
+        MUNICIPIOS_NOROESTE.forEach((mun) => {
+          byMunicipio[mun] = municipiosMap[mun] || 0;
+        });
+        setMunicipiosStats(byMunicipio);
+        setLastUpdate(new Date());
       } finally {
         setLoading(false);
       }
@@ -141,6 +154,9 @@ export default function DashboardPreview() {
           animation: pulse-highlight 2s infinite;
         }
       `}</style>
+      {/* Demo Mode Banner */}
+      {isDemoMode && <DemoBanner />}
+
       {/* Header */}
       <header className="bg-white border-b-4 border-blue-600 shadow-lg">
         <div className="max-w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">

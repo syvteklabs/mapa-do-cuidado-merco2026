@@ -133,8 +133,9 @@ export function useParticipationForm() {
 
   const submitForm = useCallback(async () => {
     if (!formData.municipio || !formData.resposta_categoria) {
-      setError("Por favor, complete todos os campos");
-      return;
+      const errorMsg = "Por favor, complete todos os campos";
+      setError(errorMsg);
+      throw new Error(errorMsg);
     }
 
     setIsLoading(true);
@@ -163,12 +164,14 @@ export function useParticipationForm() {
         setParticipationNumber(data.total);
       }
 
+      setIsLoading(false);
       nextStep("confirmation");
     } catch (err) {
+      setIsLoading(false);
       const errorMessage =
         err instanceof Error ? err.message : "Erro ao enviar resposta";
       setError(errorMessage);
-      setIsLoading(false);
+      throw err;
     }
   }, [formData, nextStep]);
 

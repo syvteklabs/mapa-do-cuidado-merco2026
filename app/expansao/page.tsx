@@ -5,18 +5,34 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useExpansionForm } from "@/lib/hooks/useExpansionForm";
+import { useErrorRecovery } from "@/lib/hooks/useErrorRecovery";
 import { ESTADOS_BR } from "@/lib/hooks/useParticipationForm";
+import ErrorContingency from "@/components/ErrorContingency";
 
 export default function ExpansionPage() {
   const router = useRouter();
   const { step, formData, isLoading, error, updateFormData, submitForm, reset } =
     useExpansionForm();
+  const {
+    hasError,
+    errorMessage,
+    isRetrying,
+    setIsRetrying,
+    reportError,
+    clearError,
+  } = useErrorRecovery();
 
   const handleSubmit = async () => {
-    const success = await submitForm();
-    if (success) {
-      const territorio = `${formData.cidade} — ${formData.estado}`;
-      router.push(`/mapa?novo-territorio=${encodeURIComponent(territorio)}`);
+    try {
+      const success = await submitForm();
+      if (success) {
+        const territorio = `${formData.cidade} — ${formData.estado}`;
+        router.push(`/mapa?novo-territorio=${encodeURIComponent(territorio)}`);
+      }
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Erro ao registrar interesse";
+      reportError(errorMsg, formData as unknown as Record<string, string | boolean>);
     }
   };
 
@@ -229,6 +245,31 @@ export default function ExpansionPage() {
         )}
       </main>
       <Footer />
+
+      {/* Error Contingency Modal */}
+      {hasError && errorMessage && (
+        <ErrorContingency
+          errorMessage={errorMessage}
+          onRetry={async () => {
+            setIsRetrying(true);
+            try {
+              const success = await submitForm();
+              if (success) {
+                const territorio = `${formData.cidade} — ${formData.estado}`;
+                router.push(`/mapa?novo-territorio=${encodeURIComponent(territorio)}`);
+              }
+              clearError();
+            } catch (err) {
+              const errorMsg =
+                err instanceof Error ? err.message : "Erro ao tentar novamente";
+              reportError(errorMsg, formData as unknown as Record<string, string | boolean>);
+            } finally {
+              setIsRetrying(false);
+            }
+          }}
+          isRetrying={isRetrying}
+        />
+      )}
     </div>
   );
 }

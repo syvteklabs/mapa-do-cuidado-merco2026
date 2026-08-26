@@ -1,8 +1,10 @@
 "use client";
 
 import { useParticipationForm } from "@/lib/hooks/useParticipationForm";
+import { useErrorRecovery } from "@/lib/hooks/useErrorRecovery";
 import Link from "next/link";
 import OutOfRegionFlow from "./OutOfRegionFlow";
+import ErrorContingency from "./ErrorContingency";
 
 export default function ParticipationFlow() {
   const {
@@ -21,6 +23,15 @@ export default function ParticipationFlow() {
     showOutOfRegion,
     continueParticipation,
   } = useParticipationForm();
+
+  const {
+    hasError,
+    errorMessage,
+    isRetrying,
+    setIsRetrying,
+    reportError,
+    clearError,
+  } = useErrorRecovery();
 
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
 
@@ -271,9 +282,16 @@ export default function ParticipationFlow() {
                 Voltar
               </button>
               <button
-                onClick={() => {
-                  nextStep("sending");
-                  submitForm();
+                onClick={async () => {
+                  try {
+                    nextStep("sending");
+                    await submitForm();
+                  } catch (err) {
+                    const errorMsg =
+                      err instanceof Error ? err.message : "Erro ao enviar resposta";
+                    reportError(errorMsg, formData as unknown as Record<string, string>);
+                    nextStep("question");
+                  }
                 }}
                 disabled={!formData.resposta_categoria || isLoading}
                 className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
@@ -344,6 +362,27 @@ export default function ParticipationFlow() {
       <footer className="bg-gray-50 border-t border-gray-200 px-4 py-6 text-center text-xs text-gray-500">
         <p>Uma experiência da SyVtek Care para a Merco Noroeste 2026</p>
       </footer>
+
+      {/* Error Contingency Modal */}
+      {hasError && errorMessage && (
+        <ErrorContingency
+          errorMessage={errorMessage}
+          onRetry={async () => {
+            setIsRetrying(true);
+            try {
+              await submitForm();
+              clearError();
+            } catch (err) {
+              const errorMsg =
+                err instanceof Error ? err.message : "Erro ao tentar novamente";
+              reportError(errorMsg, formData as unknown as Record<string, string>);
+            } finally {
+              setIsRetrying(false);
+            }
+          }}
+          isRetrying={isRetrying}
+        />
+      )}
     </div>
   );
 }
