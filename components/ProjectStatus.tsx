@@ -1,8 +1,10 @@
+import { CheckIcon, ArrowRightIcon, LightbulbIcon } from "./Icons";
+
 export default function ProjectStatus() {
   const phases = [
     {
       title: "Disponível agora",
-      icon: "✓",
+      icon: CheckIcon,
       color: "green",
       items: [
         "Escuta participativa anônima.",
@@ -14,7 +16,7 @@ export default function ProjectStatus() {
     },
     {
       title: "Em validação durante a Merco",
-      icon: "→",
+      icon: ArrowRightIcon,
       color: "amber",
       items: [
         "Clareza das perguntas.",
@@ -26,7 +28,7 @@ export default function ProjectStatus() {
     },
     {
       title: "Visão de evolução",
-      icon: "◆",
+      icon: LightbulbIcon,
       color: "slate",
       items: [
         "Novos ciclos territoriais.",
@@ -89,8 +91,8 @@ export default function ProjectStatus() {
               <div key={idx} className={`border rounded-lg p-6 sm:p-8 ${colors.badge}`}>
                 {/* Icon and Title */}
                 <div className="flex items-start gap-4 mb-6">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${colors.icon} font-bold text-lg`}>
-                    {phase.icon}
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${colors.icon}`}>
+                    <phase.icon className="w-5 h-5" aria-hidden={true} />
                   </div>
                   <h3 className={`text-xl font-bold ${colors.title}`}>{phase.title}</h3>
                 </div>

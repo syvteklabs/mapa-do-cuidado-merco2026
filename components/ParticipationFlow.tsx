@@ -6,6 +6,7 @@ import Link from "next/link";
 import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
 import PrivacyDisclosure from "./PrivacyDisclosure";
+import { CheckIcon } from "./Icons";
 
 export default function ParticipationFlow() {
   const {
@@ -492,7 +493,7 @@ export default function ParticipationFlow() {
       {savedNotification && (
         <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-lg animate-pulse">
           <div className="flex items-center gap-3">
-            <span className="text-xl">✓</span>
+            <CheckIcon className="w-5 h-5 text-green-600 flex-shrink-0" aria-hidden={true} />
             <p className="text-sm font-semibold text-green-800">
               Respostas salvas localmente
             </p>

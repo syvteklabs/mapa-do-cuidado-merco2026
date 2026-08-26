@@ -5,6 +5,7 @@ import type { LatLngExpression } from "leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useMemo, useState, useRef, useEffect } from "react";
+import { LocationIcon, AlertIcon, XIcon } from "./Icons";
 
 interface MunicipalityData {
   name: string;
@@ -388,8 +389,9 @@ export default function MapContent({
       {localSelectedMunicipio && !showDetailPanel && (
         <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 sm:p-4 z-40 border border-gray-200 max-w-xs">
           <div className="text-xs sm:text-sm">
-            <p className="text-gray-600 mb-2 font-medium line-clamp-2">
-              📍 {localSelectedMunicipio}
+            <p className="text-gray-600 mb-2 font-medium line-clamp-2 flex items-center gap-2">
+              <LocationIcon className="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden={true} />
+              {localSelectedMunicipio}
             </p>
             <button
               onClick={() => setShowDetailPanel(true)}
@@ -417,10 +419,10 @@ export default function MapContent({
               </div>
               <button
                 onClick={handleClearSelection}
-                className="text-gray-400 hover:text-gray-600 text-xl flex-shrink-0 p-1"
+                className="text-gray-400 hover:text-gray-600 flex-shrink-0 p-1"
                 aria-label="Fechar painel"
               >
-                ✕
+                <XIcon className="w-5 h-5" aria-hidden={true} />
               </button>
             </div>
           </div>
@@ -509,8 +511,9 @@ export default function MapContent({
             {/* Participatory sample warning */}
             {getSelectedMunicipio()!.count > 0 && (
               <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3">
-                <p className="text-xs font-semibold text-yellow-900 mb-1">
-                  ⚠️ Amostra participativa
+                <p className="text-xs font-semibold text-yellow-900 mb-1 flex items-center gap-2">
+                  <AlertIcon className="w-4 h-4 flex-shrink-0" aria-hidden={true} />
+                  Amostra participativa
                 </p>
                 <p className="text-xs text-yellow-800 leading-relaxed">
                   Os dados refletem experiências compartilhadas voluntariamente e não representam a totalidade da população.
