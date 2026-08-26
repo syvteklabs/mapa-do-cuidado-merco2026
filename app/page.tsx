@@ -110,9 +110,9 @@ export default function Home() {
               {/* Trust indicator */}
               <div className="pt-4 border-t border-gray-200">
                 <p className="text-sm text-gray-600">
-                  <span className="font-semibold">✓ Confidencial</span> •
+                  <span className="font-semibold">✓ Protegido</span> •
                   <span className="font-semibold ml-1">Rápido</span> •
-                  <span className="font-semibold ml-1">Impacto real</span>
+                  <span className="font-semibold ml-1">Agregado</span>
                 </p>
               </div>
             </div>
