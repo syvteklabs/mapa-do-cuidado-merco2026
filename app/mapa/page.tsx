@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardHeader from "@/components/DashboardHeader";
+import MunicipalityAndThemesTabs from "@/components/MunicipalityAndThemesTabs";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -46,18 +47,29 @@ export default function MapPage() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-white">
       {/* Header */}
       <DashboardHeader />
 
-      {/* Map Content */}
-      <div className="flex-1 overflow-hidden">
-        <MapContent
-          municipiosStats={stats?.byMunicipio || {}}
-          municipiosCategories={stats?.byCategory}
-          dataView="participations"
-        />
-      </div>
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto">
+        {/* Map Section */}
+        <div className="h-96 sm:h-[500px] lg:h-screen lg:max-h-[600px] overflow-hidden border-b border-gray-200">
+          <MapContent
+            municipiosStats={stats?.byMunicipio || {}}
+            municipiosCategories={stats?.byCategory}
+            dataView="participations"
+          />
+        </div>
+
+        {/* Tabs Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <MunicipalityAndThemesTabs
+            municipiosStats={stats?.byMunicipio || {}}
+            municipiosCategories={stats?.byCategory || {}}
+          />
+        </div>
+      </main>
     </div>
   );
 }
