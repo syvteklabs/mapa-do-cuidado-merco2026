@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import HeroMap from "@/components/HeroMap";
+import ContextAndTrustBar from "@/components/ContextAndTrustBar";
 import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
@@ -107,6 +108,9 @@ export default function Home() {
             <HeroMap stats={stats} />
           </div>
         </section>
+
+        {/* Context and Trust Bar - Immediate below hero */}
+        <ContextAndTrustBar />
 
         {/* Proof of Movement - Live engagement stats */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
