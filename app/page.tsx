@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import HeroMap from "@/components/HeroMap";
 import ProofOfMovement from "@/components/ProofOfMovement";
+import HowItWorks from "@/components/HowItWorks";
 
 export default function Home() {
   return (
@@ -86,6 +87,11 @@ export default function Home() {
         {/* Proof of Movement - Live engagement stats */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <ProofOfMovement />
+        </section>
+
+        {/* How It Works - Three step process */}
+        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <HowItWorks />
         </section>
 
         {/* Brand Footer */}
