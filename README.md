@@ -66,9 +66,38 @@ npm run build
 - `/mapa` - Mapa e painel
 - `/expansao` - Lista de expansão
 
-## Documentação de Desenvolvimento
+## Documentação
 
-Veja `CLAUDE.md` para regras e padrões de desenvolvimento.
+### Desenvolvimento
+- `CLAUDE.md` - Regras e padrões de desenvolvimento
+- `TESTING.md` - Checklist completo de testes (15 categorias)
+
+### Deployment
+- `DEPLOYMENT.md` - Guia de deploy para Vercel e outros serviços
+- `ENV_SETUP.md` - Configuração de variáveis de ambiente
+- `OPERATION.md` - Guia rápido para operadores durante evento
+
+### Estrutura
+- `app/` - Rotas e páginas Next.js
+- `components/` - Componentes React reutilizáveis
+- `lib/` - Utilitários e hooks customizados
+- `supabase/` - Migrações de banco de dados
+- `public/` - Arquivos estáticos
+
+## Verificações de Qualidade
+
+```bash
+# Lint (eslint)
+npm run lint
+
+# TypeScript
+npm run build
+
+# Desenvolvimento
+npm run dev
+```
+
+Todas as verificações devem passar antes de deploy em produção.
 
 ---
 
