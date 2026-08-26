@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import HeroMap from "@/components/HeroMap";
+import ProofOfMovement from "@/components/ProofOfMovement";
 
 export default function Home() {
   return (
@@ -80,6 +81,11 @@ export default function Home() {
           <div className="h-64 sm:h-80">
             <HeroMap />
           </div>
+        </section>
+
+        {/* Proof of Movement - Live engagement stats */}
+        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <ProofOfMovement />
         </section>
 
         {/* Brand Footer */}
