@@ -2,18 +2,21 @@ export default function ResearchAndInnovation() {
   const institutions = [
     {
       title: "SAEG · IFF Campos",
-      description: "Grupo de pesquisa dedicado a estudar os caminhos do cuidado e acesso de pessoas no território",
-      category: "Pesquisa",
+      description:
+        "A iniciativa dialoga com a trajetória de formação e pesquisa aplicada do pesquisador no Mestrado Profissional em Sistemas Aplicados à Engenharia e Gestão.",
+      category: "Formação e pesquisa aplicada",
     },
     {
       title: "HUB RJ · FAPERJ",
-      description: "Ecossistema de inovação que conecta pesquisa acadêmica com soluções aplicadas em saúde",
-      category: "Inovação",
+      description:
+        "A trajetória da SyVtek Care está conectada a ambientes de desenvolvimento, inovação e empreendedorismo apoiados pelo ecossistema fluminense.",
+      category: "Ecossistema de inovação",
     },
     {
       title: "TEC Incubadora · UENF",
-      description: "Espaço para transformar ideias de tecnologia em saúde em empreendimentos reais",
-      category: "Empreendedorismo",
+      description:
+        "O desenvolvimento empreendedor da SyVtek Care acontece em conexão com o ambiente de incubação e inovação da TEC Incubadora.",
+      category: "Incubação e desenvolvimento",
     },
   ];
 
@@ -25,8 +28,9 @@ export default function ResearchAndInnovation() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
             Pesquisa, território e inovação aplicada
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            O Mapa do Cuidado integra pesquisa acadêmica qualitativa com inovação aplicada, conectando vozes da comunidade com ecossistemas de conhecimento e empreendedorismo no Noroeste Fluminense.
+          <p className="text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            O Mapa do Cuidado é uma experiência desenvolvida pela SyVtek Care para ouvir o território e testar
+            formas responsáveis de transformar participações anônimas em visualizações coletivas.
           </p>
         </div>
 
@@ -35,33 +39,34 @@ export default function ResearchAndInnovation() {
           {institutions.map((institution, idx) => (
             <div
               key={idx}
-              className="group bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition-all duration-300 flex flex-col"
+              className="bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-300 flex flex-col"
             >
               <div className="mb-4">
                 <div className="inline-block">
-                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider bg-blue-50 px-3 py-1 rounded-full">
+                  <span className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     {institution.category}
                   </span>
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-700 transition-colors">
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
                 {institution.title}
               </h3>
-              <p className="text-gray-600 text-sm leading-relaxed flex-1">
+              <p className="text-gray-700 text-sm leading-relaxed flex-1">
                 {institution.description}
               </p>
-              <div className="mt-4 text-blue-600 text-sm font-semibold group-hover:translate-x-1 transition-transform">
-                Saiba mais →
-              </div>
             </div>
           ))}
         </div>
 
-        {/* Legal Disclaimer */}
-        <div className="bg-gray-50 border-l-4 border-gray-300 rounded-lg p-6">
+        {/* Transparency Disclaimer */}
+        <div className="bg-gray-50 border-l-4 border-gray-400 rounded-lg p-6">
           <p className="text-sm text-gray-700 leading-relaxed">
             <span className="font-semibold block mb-2">Transparência:</span>
-            As conexões mencionadas acima com instituições acadêmicas e de inovação refletem parcerias de pesquisa e desenvolvimento. Não implicam em validação, financiamento ou responsabilidade institucional específica sobre o Mapa do Cuidado. A SyVtek Care desenvolve e mantém o projeto de forma independente.
+            As conexões mencionadas com instituições acadêmicas, de inovação e incubação refletem o contexto
+            formativo, empreendedor e de desenvolvimento do projeto. Não implicam em validação científica,
+            financiamento, ou responsabilidade institucional específica sobre o Mapa do Cuidado. A SyVtek Care
+            desenvolve e mantém o projeto de forma independente, responsável pelo conteúdo e pela condução da
+            escuta participativa.
           </p>
         </div>
       </div>
