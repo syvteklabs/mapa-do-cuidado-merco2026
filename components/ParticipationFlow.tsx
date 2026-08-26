@@ -339,9 +339,16 @@ export default function ParticipationFlow() {
                   }
                 }}
                 disabled={!formData.resposta_categoria || isLoading}
-                className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
-                {isLoading ? "Salvando..." : "Salvar resposta"}
+                {isLoading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Salvando...
+                  </>
+                ) : (
+                  "Salvar resposta"
+                )}
               </button>
             </div>
           </div>
@@ -514,6 +521,10 @@ export default function ParticipationFlow() {
             } finally {
               setIsRetrying(false);
             }
+          }}
+          onGoBack={() => {
+            clearError();
+            nextStep("question");
           }}
           isRetrying={isRetrying}
         />
