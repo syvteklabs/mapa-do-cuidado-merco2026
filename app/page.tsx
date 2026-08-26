@@ -50,56 +50,35 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
       <main className="flex-1 w-full">
-        {/* Hero Section - Two Column */}
-        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+        {/* Hero Section - Territorial Identity */}
+        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Content */}
             <div className="space-y-8">
-              {/* Main Headline - Human & Compelling */}
-              <div className="space-y-4">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Sua experiência importa no cuidado
-                </h1>
-                <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                  Escuta participativa rápida, voluntária e anônima sobre os
-                  caminhos do cuidado no Noroeste Fluminense.
+              {/* Regional Seal */}
+              <div className="inline-block">
+                <p className="text-sm font-semibold text-gray-700 tracking-wide">
+                  MAPA DO CUIDADO • NOROESTE FLUMINENSE
                 </p>
               </div>
 
-              {/* Results & Impact - Show what participation achieves */}
-              <div className={`border-2 rounded-lg p-6 space-y-4 ${
-                isDemoMode
-                  ? "bg-yellow-50 border-yellow-300"
-                  : "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
-              }`}>
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">📊</span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">
-                      {isDemoMode ? "Exemplo de participação" : "Território ganhando visibilidade"}
-                    </h3>
-                    <p className="text-sm text-gray-700">
-                      {getParticipationMessage()}
-                      {isDemoMode && " (dados de demonstração)"}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">🔒</span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Participação protegida</h3>
-                    <p className="text-sm text-gray-700">
-                      Respostas apresentadas de forma agregada. Nenhum nome, contato ou informação clínica é solicitado ou armazenado.
-                    </p>
-                  </div>
-                </div>
+              {/* Main Headline - Territorial & Human */}
+              <div className="space-y-4">
+                <h1 className="text-4xl sm:text-5xl lg:text-5xl font-bold text-gray-900 leading-tight">
+                  O cuidado acontece no território.
+                  <br />
+                  Sua experiência ajuda a enxergá-lo.
+                </h1>
+                <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-md">
+                  Compartilhe, de forma rápida e anônima, como você percebe os caminhos do cuidado no Noroeste Fluminense e ajude a construir um retrato coletivo da região.
+                </p>
               </div>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                {/* Primary CTA */}
-                <Button href="/participar" variant="primary" className="text-base sm:text-lg py-4 px-6">
-                  Participar agora — leva 2 minutos
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                {/* Primary CTA - Highlighted */}
+                <Button href="/participar" variant="primary" className="text-base sm:text-lg py-4 px-6 font-semibold">
+                  Compartilhar minha experiência
                 </Button>
                 {/* Secondary CTA */}
                 <Button href="/mapa" variant="secondary" className="text-base sm:text-lg py-4 px-6">
@@ -107,27 +86,25 @@ export default function Home() {
                 </Button>
               </div>
 
-              {/* Trust indicator */}
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">✓ Protegido</span> •
-                  <span className="font-semibold ml-1">Rápido</span> •
-                  <span className="font-semibold ml-1">Agregado</span>
+              {/* Microcopy */}
+              <div className="text-sm text-gray-600 border-l-4 border-indigo-300 pl-4">
+                <p>
+                  <span className="font-semibold">Leva cerca de 2 minutos.</span> Nenhum dado pessoal ou clínico é solicitado.
                 </p>
               </div>
             </div>
 
-            {/* Right Column - Visual Map */}
+            {/* Right Column - Territorial Map */}
             <div className="hidden lg:block h-96 lg:h-full min-h-96">
-              <HeroMap />
+              <HeroMap stats={stats} />
             </div>
           </div>
         </section>
 
         {/* Mobile Map - Show on small screens */}
         <section className="lg:hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
-          <div className="h-64 sm:h-80">
-            <HeroMap />
+          <div className="h-72 sm:h-80">
+            <HeroMap stats={stats} />
           </div>
         </section>
 
