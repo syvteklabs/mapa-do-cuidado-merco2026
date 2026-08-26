@@ -13,6 +13,7 @@ import DashboardPreview from "@/components/DashboardPreview";
 import ScopeAndExpansion from "@/components/ScopeAndExpansion";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
+import InstitutionalTransparency from "@/components/InstitutionalTransparency";
 
 interface StatsData {
   total: number;
@@ -140,6 +141,9 @@ export default function Home() {
 
         {/* Research and Innovation */}
         <ResearchAndInnovation />
+
+        {/* Institutional Transparency Block */}
+        <InstitutionalTransparency />
 
         {/* Brand Footer */}
         <section className="bg-gradient-to-r from-gray-50 to-indigo-50 border-t border-gray-200 py-8 mt-8">
