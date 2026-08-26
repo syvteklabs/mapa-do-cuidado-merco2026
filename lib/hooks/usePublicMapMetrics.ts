@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { getDataMode, DEMO_METRICS } from "@/lib/config";
 
 export interface PublicMapMetrics {
   totalParticipacoes: number;
@@ -81,7 +82,26 @@ export function usePublicMapMetrics() {
   }, [fetchMetricsWithTimeout]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    const dataMode = getDataMode();
+
+    // If demo mode, use fixed demo data
+    if (dataMode === "demo") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMetrics(DEMO_METRICS);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    // If empty mode, show empty state
+    if (dataMode === "empty") {
+      setMetrics(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    // Real mode: fetch from API
     setLoading(true);
     setError(null);
 

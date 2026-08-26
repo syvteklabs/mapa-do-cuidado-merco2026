@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import DemoBanner from "@/components/DemoBanner";
+import DemoWatermark from "@/components/DemoWatermark";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -56,7 +58,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <meta name="theme-color" content="#3b82f6" />
       </head>
-      <body className="min-h-full flex flex-col bg-white">{children}</body>
+      <body className="min-h-full flex flex-col bg-white">
+        <DemoBanner />
+        <DemoWatermark />
+        {children}
+      </body>
     </html>
   );
 }

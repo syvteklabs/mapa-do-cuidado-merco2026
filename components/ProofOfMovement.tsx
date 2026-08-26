@@ -1,9 +1,14 @@
 "use client";
 
 import { usePublicMapMetrics } from "@/lib/hooks/usePublicMapMetrics";
+import { getDataMode } from "@/lib/config";
+import EmptyMapState from "./EmptyMapState";
 
 export default function ProofOfMovement() {
   const { metrics, loading, error, retryFetch } = usePublicMapMetrics();
+  const dataMode = getDataMode();
+  const isDemo = dataMode === "demo";
+  const isEmpty = dataMode === "empty";
 
   // Skeleton loader
   if (loading) {
@@ -34,6 +39,11 @@ export default function ProofOfMovement() {
         </div>
       </div>
     );
+  }
+
+  // Empty state (no data yet)
+  if (isEmpty) {
+    return <EmptyMapState />;
   }
 
   // Error state
@@ -137,15 +147,24 @@ export default function ProofOfMovement() {
         </p>
       </div>
 
-      {/* Live indicator */}
+      {/* Status indicator */}
       <div className="flex items-center justify-center gap-2">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-        </span>
-        <p className="text-xs text-emerald-700 font-medium">
-          Dados ao vivo — atualizado a cada 30 segundos
-        </p>
+        {!isDemo && (
+          <>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <p className="text-xs text-emerald-700 font-medium">
+              Escuta participativa — atualizado a cada 30 segundos
+            </p>
+          </>
+        )}
+        {isDemo && (
+          <p className="text-xs text-orange-700 font-medium">
+            🎭 Visualização demonstrativa
+          </p>
+        )}
       </div>
     </div>
   );
