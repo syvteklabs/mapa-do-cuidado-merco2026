@@ -1,6 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
-export type ParticipationStep = "start" | "info" | "location" | "question" | "sending" | "confirmation";
+export type ParticipationStep = "start" | "location" | "question" | "sending" | "confirmation";
+
+const STORAGE_KEY = "mapa-cuidado-form-data";
 
 export interface ParticipationFormData {
   estado: string;
@@ -93,16 +95,72 @@ function isFromNoroeste(estado: string, municipio: string): boolean {
 }
 
 export function useParticipationForm() {
+  const isMountedRef = useRef(false);
+  const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Initialize with localStorage data
+  const getInitialFormData = (): ParticipationFormData => {
+    if (typeof window === "undefined") {
+      return { estado: "RJ", municipio: "", resposta_categoria: "" };
+    }
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.formData) {
+          return parsed.formData;
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load from localStorage:", err);
+    }
+    return { estado: "RJ", municipio: "", resposta_categoria: "" };
+  };
+
   const [step, setStep] = useState<ParticipationStep>("start");
-  const [formData, setFormData] = useState<ParticipationFormData>({
-    estado: "RJ",
-    municipio: "",
-    resposta_categoria: "",
-  });
+  const [formData, setFormData] = useState<ParticipationFormData>(
+    getInitialFormData()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [participationNumber, setParticipationNumber] = useState<number | null>(null);
   const [showOutOfRegion, setShowOutOfRegion] = useState(false);
+  const [savedNotification, setSavedNotification] = useState(false);
+
+  // Set mounted flag after first render
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Save to localStorage whenever formData changes (after mount)
+  useEffect(() => {
+    if (!isMountedRef.current) return;
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          formData,
+          timestamp: new Date().toISOString(),
+        })
+      );
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSavedNotification(true);
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+      notificationTimeoutRef.current = setTimeout(() => {
+        setSavedNotification(false);
+      }, 1500);
+    } catch (err) {
+      console.error("Failed to save to localStorage:", err);
+    }
+  }, [formData]);
 
   const nextStep = useCallback((nextStepValue: ParticipationStep) => {
     setError(null);
@@ -177,13 +235,20 @@ export function useParticipationForm() {
 
   const reset = useCallback(() => {
     setStep("start");
-    setFormData({
+    const freshData = {
       estado: "RJ",
       municipio: "",
       resposta_categoria: "",
-    });
+    };
+    setFormData(freshData);
     setError(null);
     setIsLoading(false);
+    setSavedNotification(false);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (err) {
+      console.error("Failed to clear localStorage:", err);
+    }
   }, []);
 
   return {
@@ -201,5 +266,6 @@ export function useParticipationForm() {
     cidades: CIDADES_MERCO,
     showOutOfRegion,
     continueParticipation,
+    savedNotification,
   };
 }

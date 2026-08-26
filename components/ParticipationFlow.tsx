@@ -22,6 +22,7 @@ export default function ParticipationFlow() {
     cidades,
     showOutOfRegion,
     continueParticipation,
+    savedNotification,
   } = useParticipationForm();
 
   const {
@@ -35,9 +36,13 @@ export default function ParticipationFlow() {
 
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
 
-  const progressSteps = ["info", "location", "question", "sending"];
+  const progressSteps = [
+    { id: "location", label: "Localização" },
+    { id: "question", label: "Experiência" },
+    { id: "sending", label: "Salvando" },
+  ];
   const currentProgress =
-    progressSteps.indexOf(step as string) + 1;
+    progressSteps.findIndex((s) => s.id === step) + 1;
   const totalProgress = progressSteps.length;
 
   return (
@@ -53,21 +58,26 @@ export default function ParticipationFlow() {
 
       {/* Progress Bar */}
       {step !== "start" && step !== "confirmation" && (
-        <div className="bg-gray-50 border-b border-gray-200 px-4 py-3">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-200 px-4 py-4">
           <div className="max-w-2xl mx-auto">
-            <div className="flex gap-2">
+            <div className="flex gap-2 mb-3">
               {Array.from({ length: totalProgress }).map((_, i) => (
                 <div
                   key={i}
-                  className={`flex-1 h-1 rounded-full transition-colors ${
-                    i < currentProgress ? "bg-blue-600" : "bg-gray-300"
+                  className={`flex-1 h-2 rounded-full transition-all ${
+                    i < currentProgress ? "bg-gradient-to-r from-blue-500 to-indigo-600" : "bg-gray-300"
                   }`}
                 />
               ))}
             </div>
-            <p className="text-xs text-gray-600 mt-2">
-              {currentProgress} de {totalProgress}
-            </p>
+            <div className="flex justify-between items-center">
+              <p className="text-sm font-semibold text-gray-700">
+                {progressSteps[currentProgress - 1]?.label || "Progresso"}
+              </p>
+              <p className="text-xs font-medium text-gray-600">
+                {currentProgress} de {totalProgress}
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -78,60 +88,44 @@ export default function ParticipationFlow() {
         {step === "start" && (
           <div className="text-center space-y-8">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Mapa do Cuidado
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+                Sua experiência importa
               </h1>
-              <p className="text-lg text-gray-700 mb-6">
-                Sua experiência pode transformar o cuidado em nossa região.
+              <p className="text-lg text-gray-700 mb-8">
+                Compartilhe como você percebe os caminhos do cuidado na sua região
               </p>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-left space-y-3">
-              <p className="text-sm text-gray-700">
-                <strong>Esta é uma escuta rápida, voluntária e anônima.</strong>
-              </p>
-              <p className="text-sm text-gray-600">
-                As respostas serão apresentadas de forma agregada e não
-                identificam os participantes.
-              </p>
-              <p className="text-xs text-gray-500 mt-4">
-                Tempo estimado: 2 minutos
-              </p>
+            <div className="space-y-4 text-left">
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
+                <span className="text-2xl flex-shrink-0">⏱️</span>
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm">Rápido</p>
+                  <p className="text-sm text-gray-600">Apenas 2 minutos</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
+                <span className="text-2xl flex-shrink-0">🔒</span>
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm">Anônimo</p>
+                  <p className="text-sm text-gray-600">Nenhum dado pessoal é coletado</p>
+                </div>
+              </div>
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
+                <span className="text-2xl flex-shrink-0">📊</span>
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm">Agregado</p>
+                  <p className="text-sm text-gray-600">Suas respostas formam um mapa coletivo</p>
+                </div>
+              </div>
             </div>
 
             <button
-              onClick={() => nextStep("info")}
-              className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 active:bg-blue-800 transition-colors"
+              onClick={() => nextStep("location")}
+              className="w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors"
             >
-              Começar
+              Começar agora
             </button>
-          </div>
-        )}
-
-        {/* Step: Info */}
-        {step === "info" && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                Sua Experiência Importa
-              </h2>
-              <p className="text-gray-600 mb-4">
-                Queremos ouvir sobre os caminhos do cuidado que você percorreu
-                ou conhece na região do Noroeste Fluminense.
-              </p>
-              <p className="text-gray-600 mb-4">
-                Não há respostas certas ou erradas. Sua percepção é valiosa.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <button
-                onClick={() => nextStep("location")}
-                className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 active:bg-blue-800 transition-colors"
-              >
-                Continuar
-              </button>
-            </div>
           </div>
         )}
 
@@ -218,8 +212,8 @@ export default function ParticipationFlow() {
             {!showOutOfRegion && (
               <div className="flex gap-3">
                 <button
-                  onClick={() => nextStep("info")}
-                  className="flex-1 bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                  onClick={() => nextStep("start")}
+                  className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors"
                 >
                   Voltar
                 </button>
@@ -228,7 +222,7 @@ export default function ParticipationFlow() {
                     if (formData.municipio) nextStep("question");
                   }}
                   disabled={!formData.municipio}
-                  className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                  className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
                   Próximo
                 </button>
@@ -257,7 +251,7 @@ export default function ParticipationFlow() {
                   onClick={() =>
                     updateFormData("resposta_categoria", cat.id)
                   }
-                  className={`w-full p-4 rounded-lg font-semibold text-left transition-colors ${
+                  className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors ${
                     formData.resposta_categoria === cat.id
                       ? "bg-blue-600 text-white border-2 border-blue-600"
                       : "bg-white border-2 border-gray-300 text-gray-900 hover:border-blue-400 active:bg-blue-50"
@@ -277,7 +271,7 @@ export default function ParticipationFlow() {
             <div className="flex gap-3">
               <button
                 onClick={() => nextStep("location")}
-                className="flex-1 bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors"
               >
                 Voltar
               </button>
@@ -294,9 +288,9 @@ export default function ParticipationFlow() {
                   }
                 }}
                 disabled={!formData.resposta_categoria || isLoading}
-                className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? "Enviando..." : "Enviar"}
+                {isLoading ? "Salvando..." : "Salvar resposta"}
               </button>
             </div>
           </div>
@@ -343,13 +337,13 @@ export default function ParticipationFlow() {
             <div className="space-y-3">
               <Link
                 href={`/mapa?destaque=${encodeURIComponent(formData.municipio)}`}
-                className="block w-full bg-blue-600 text-white py-4 rounded-lg font-semibold text-center hover:bg-blue-700 active:bg-blue-800 transition-colors"
+                className="block w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors"
               >
                 Ver minha cidade no mapa
               </Link>
               <button
                 onClick={reset}
-                className="w-full bg-gray-200 text-gray-900 py-4 rounded-lg font-semibold hover:bg-gray-300 active:bg-gray-400 transition-colors"
+                className="w-full bg-gray-200 text-gray-900 py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 active:bg-gray-400 transition-colors"
               >
                 Nova Participação
               </button>
@@ -357,6 +351,18 @@ export default function ParticipationFlow() {
           </div>
         )}
       </main>
+
+      {/* Saved Notification Toast */}
+      {savedNotification && (
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 bg-green-50 border-2 border-green-300 rounded-lg p-4 shadow-lg animate-pulse">
+          <div className="flex items-center gap-3">
+            <span className="text-xl">✓</span>
+            <p className="text-sm font-semibold text-green-800">
+              Respostas salvas localmente
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-50 border-t border-gray-200 px-4 py-6 text-center text-xs text-gray-500">
