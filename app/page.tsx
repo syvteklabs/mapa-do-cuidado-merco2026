@@ -153,12 +153,20 @@ export default function Home() {
         <ResearchAndInnovation />
 
         {/* Brand Footer */}
-        <section className="bg-gradient-to-r from-gray-50 to-indigo-50 border-t border-gray-200 py-8 mt-8">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-gray-700 font-medium">
-              Uma experiência da <span className="text-indigo-700 font-bold">SyVtek Care</span>
+        <section className="bg-white border-t border-gray-200 py-8 mt-8">
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <div>
+              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
+                SyVtek Care
+              </p>
+              <p className="text-gray-700 font-medium mt-1">
+                Mapa do Cuidado
+              </p>
+            </div>
+            <p className="text-sm text-gray-600">
+              Uma escuta participativa rápida, voluntária e anônima para mapear os caminhos do cuidado
             </p>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-xs text-gray-500">
               Merco Noroeste Fluminense 2026
             </p>
           </div>

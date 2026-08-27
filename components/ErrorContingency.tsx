@@ -1,5 +1,8 @@
 "use client";
 
+import { IconAlert, IconSuccess } from "./icons/Icons";
+import { colors } from "@/lib/designTokens";
+
 interface ErrorContingencyProps {
   errorMessage: string;
   onRetry: () => void;
@@ -15,7 +18,9 @@ export default function ErrorContingency({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-md w-full p-6 sm:p-8 text-center space-y-6 shadow-2xl">
         <div>
-          <div className="text-5xl mb-4">⚠️</div>
+          <div className="flex justify-center mb-4">
+            <IconAlert size={48} color={colors.error[600]} />
+          </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Oops! Algo não deu certo
           </h2>
@@ -27,11 +32,14 @@ export default function ErrorContingency({
           </p>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-left">
-          <p className="text-sm text-green-800 font-semibold mb-2">
-            ✓ Seus dados estão seguros
-          </p>
-          <p className="text-xs text-green-700">
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-left">
+          <div className="flex items-start gap-2 mb-2">
+            <IconSuccess size={16} color={colors.success[600]} className="flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-emerald-800 font-semibold">
+              Seus dados estão seguros
+            </p>
+          </div>
+          <p className="text-xs text-emerald-700">
             Salvamos suas respostas temporariamente. Tente novamente quando a
             conexão melhorar.
           </p>

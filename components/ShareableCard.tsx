@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { IconMessage, IconLink, IconDownload, IconSuccess } from "./icons/Icons";
+import { colors } from "@/lib/designTokens";
 
 interface ShareableCardProps {
   municipio?: string;
@@ -42,25 +44,27 @@ export default function ShareableCard({ municipio, tema }: ShareableCardProps) {
 
     // Background gradient
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#3b82f6"); // Blue
-    gradient.addColorStop(1, "#4f46e5"); // Indigo
+    gradient.addColorStop(0, "#2563eb"); // Blue
+    gradient.addColorStop(1, "#1d4ed8"); // Blue darker
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // White card area
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(40, 200, canvas.width - 80, 900);
-    ctx.fillStyle = "#3b82f6";
-    ctx.font = "bold 48px Inter, system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("✨", canvas.width / 2, 300);
+
+    // Decorative circle (replacing emoji)
+    ctx.fillStyle = "#22c55e";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2, 280, 40, 0, Math.PI * 2);
+    ctx.fill();
 
     // Main text
     ctx.fillStyle = "#111827";
     ctx.font = "bold 56px Inter, system-ui, sans-serif";
     ctx.textAlign = "center";
     const mainLines = mainText.split(" ");
-    let y = 450;
+    let y = 420;
     let line = "";
     for (let word of mainLines) {
       const testLine = line + (line ? " " : "") + word;
@@ -105,10 +109,12 @@ export default function ShareableCard({ municipio, tema }: ShareableCardProps) {
   };
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-8">
+    <div className="space-y-6 bg-blue-50 border border-blue-200 rounded-lg p-8">
       {/* Card Preview */}
-      <div className="bg-white rounded-lg shadow-lg p-8 text-center space-y-4 border-2 border-blue-100">
-        <div className="text-5xl">✨</div>
+      <div className="bg-white rounded-lg border border-gray-200 p-8 text-center space-y-4">
+        <div className="flex justify-center">
+          <IconSuccess size={40} color={colors.success[600]} />
+        </div>
         <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
           {mainText}
         </h3>
@@ -130,9 +136,9 @@ export default function ShareableCard({ municipio, tema }: ShareableCardProps) {
         {/* WhatsApp Button */}
         <button
           onClick={handleWhatsAppShare}
-          className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 flex items-center justify-center gap-3"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 flex items-center justify-center gap-3"
         >
-          <span className="text-2xl">💬</span>
+          <IconMessage size={20} color="white" />
           Compartilhar no WhatsApp
         </button>
 
@@ -141,27 +147,36 @@ export default function ShareableCard({ municipio, tema }: ShareableCardProps) {
           onClick={handleCopyLink}
           className={`w-full font-bold py-4 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center justify-center gap-3 ${
             copySuccess
-              ? "bg-green-100 text-green-700 focus:ring-green-400"
-              : "bg-blue-100 hover:bg-blue-200 text-blue-700 focus:ring-blue-400"
+              ? "bg-emerald-100 text-emerald-700 focus:ring-emerald-500"
+              : "bg-blue-100 hover:bg-blue-200 text-blue-700 focus:ring-blue-500"
           }`}
         >
-          <span className="text-2xl">{copySuccess ? "✓" : "🔗"}</span>
-          {copySuccess ? "Link copiado!" : "Copiar link"}
+          {copySuccess ? (
+            <>
+              <IconSuccess size={20} color={colors.success[600]} />
+              Link copiado!
+            </>
+          ) : (
+            <>
+              <IconLink size={20} color={colors.primary[600]} />
+              Copiar link
+            </>
+          )}
         </button>
 
         {/* Download Card Button */}
         <button
           onClick={handleDownloadCard}
-          className="w-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold py-4 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 flex items-center justify-center gap-3"
+          className="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 font-bold py-4 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center gap-3"
         >
-          <span className="text-2xl">📥</span>
+          <IconDownload size={20} color={colors.primary[600]} />
           Baixar card
         </button>
       </div>
 
       {/* Privacy Note */}
       <p className="text-xs text-center text-gray-600">
-        💡 Dica: Nenhuma informação pessoal é incluída no compartilhamento. O card mostra apenas sua contribuição à causa.
+        Nenhuma informação pessoal é incluída no compartilhamento. O card mostra apenas sua contribuição à causa.
       </p>
     </div>
   );

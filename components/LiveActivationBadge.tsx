@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { IconLive } from "./icons/Icons";
+import { colors } from "@/lib/designTokens";
 
 interface LiveActivationBadgeProps {
   isDemoMode?: boolean;
@@ -39,12 +41,10 @@ export default function LiveActivationBadge({
   return (
     <div className="flex flex-col gap-4">
       {/* Live Badge */}
-      <div className="inline-flex items-center gap-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3 w-fit">
-        <span className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-          <span className="text-sm font-semibold text-red-700">
-            Experiência ao vivo na Merco Noroeste 2026
-          </span>
+      <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 w-fit">
+        <IconLive size={12} color={colors.error[600]} />
+        <span className="text-sm font-semibold text-blue-700">
+          Experiência ao vivo na Merco Noroeste 2026
         </span>
       </div>
 

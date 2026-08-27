@@ -9,6 +9,8 @@ import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import LiveActivityBar from "./LiveActivityBar";
 import LearningsBlock from "./LearningsBlock";
 import AccessibleMunicipalitiesTable from "./AccessibleMunicipalitiesTable";
+import { IconAlert, IconSuccess, IconView, IconAccessibility, IconChart } from "./icons/Icons";
+import { colors } from "@/lib/designTokens";
 import { DEMO_STATS } from "@/lib/demo-data";
 import { getCategoryLabel, getSentimentLabel } from "@/lib/dictionaries";
 
@@ -360,12 +362,12 @@ export default function DashboardPreview() {
         {/* Error State */}
         {error && (
           <div
-            className={`bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8 ${
+            className={`bg-red-50 border border-red-200 rounded-lg p-6 mb-8 ${
               isTV ? "text-2xl" : ""
             }`}
           >
             <div className="flex items-start gap-4">
-              <span className="text-3xl">⚠️</span>
+              <IconAlert size={24} color={colors.error[600]} className="flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h3 className="text-red-900 font-bold mb-2">
                   {isDemoMode
@@ -376,7 +378,7 @@ export default function DashboardPreview() {
                 <button
                   onClick={handleRetry}
                   disabled={retrying}
-                  className="px-4 py-2 bg-red-600 text-white rounded font-semibold hover:bg-red-700 disabled:bg-gray-400 transition"
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 disabled:bg-gray-400 transition"
                 >
                   {retrying ? "Tentando novamente..." : "Tentar Novamente"}
                 </button>
@@ -387,14 +389,14 @@ export default function DashboardPreview() {
 
         {/* Loading Timeout - Show demo data with message */}
         {loading && loadingTimeout && !error && (
-          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6 mb-8">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
             <div className="flex items-start gap-4">
-              <span className="text-3xl">⏳</span>
+              <IconAlert size={24} color={colors.warning[600]} className="flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="text-yellow-900 font-bold mb-1">
+                <h3 className="text-amber-900 font-bold mb-1">
                   Carregamento demorando...
                 </h3>
-                <p className="text-yellow-700 text-sm">
+                <p className="text-amber-700 text-sm">
                   Estamos tentando conectar ao servidor. Exibindo dados em cache
                   enquanto aguardamos a resposta.
                 </p>
@@ -404,10 +406,13 @@ export default function DashboardPreview() {
         )}
 
         {showNewContributionMessage?.visible && (
-          <div className={`bg-green-50 border-4 border-green-500 rounded-lg p-8 mb-8 animate-pulse ${isTV ? "p-12 text-3xl" : ""}`}>
-            <p className={`text-green-700 font-bold text-center ${isTV ? "text-4xl" : "text-lg"}`}>
-              ✓ Uma nova experiência foi compartilhada em <span className="text-green-900">{showNewContributionMessage.municipio}</span>
-            </p>
+          <div className={`bg-emerald-50 border border-emerald-200 rounded-lg p-6 mb-8 ${isTV ? "p-8" : ""}`}>
+            <div className="flex items-center justify-center gap-3">
+              <IconSuccess size={24} color={colors.success[600]} />
+              <p className={`text-emerald-700 font-bold ${isTV ? "text-2xl" : "text-lg"}`}>
+                Uma nova experiência foi compartilhada em <span className="text-emerald-900">{showNewContributionMessage.municipio}</span>
+              </p>
+            </div>
           </div>
         )}
 
@@ -428,7 +433,7 @@ export default function DashboardPreview() {
               {/* 4 Key Indicators - TV-optimized for no scrolling */}
               <div className={`grid gap-4 sm:gap-5 ${isTV ? "grid-cols-4 gap-6" : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"}`}>
                 {/* Experiências Compartilhadas */}
-                <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-300 rounded-2xl p-6 sm:p-5 shadow-lg">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 sm:p-5">
                   <div className="text-center space-y-2">
                     <p className={`text-blue-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
                       Experiências
@@ -443,7 +448,7 @@ export default function DashboardPreview() {
                 </div>
 
                 {/* Municípios com Participação */}
-                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-400 rounded-2xl p-6 sm:p-5 shadow-lg">
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 sm:p-5">
                   <div className="text-center space-y-2">
                     <p className={`text-emerald-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
                       Municípios
@@ -458,43 +463,43 @@ export default function DashboardPreview() {
                 </div>
 
                 {/* Principal Necessidade Relatada */}
-                <div className="bg-gradient-to-br from-rose-50 to-rose-100 border-2 border-rose-400 rounded-2xl p-6 sm:p-5 shadow-lg">
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 sm:p-5">
                   <div className="text-center space-y-2">
-                    <p className={`text-rose-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
+                    <p className={`text-orange-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
                       Principal
                     </p>
                     {topCategory ? (
                       <>
-                        <p className={`font-black text-rose-900 leading-tight ${isTV ? "text-2xl" : "text-sm"}`}>
+                        <p className={`font-black text-orange-900 leading-tight ${isTV ? "text-2xl" : "text-sm"}`}>
                           {getCategoryLabel(topCategory[0])}
                         </p>
-                        <p className={`text-rose-700 font-semibold ${isTV ? "text-lg" : "text-xs"}`}>
+                        <p className={`text-orange-700 font-semibold ${isTV ? "text-lg" : "text-xs"}`}>
                           {topCategory[1]} menção{topCategory[1] !== 1 ? 's' : ''}
                         </p>
                       </>
                     ) : (
-                      <p className={`text-rose-600 ${isTV ? "text-lg" : "text-xs"}`}>—</p>
+                      <p className={`text-orange-600 ${isTV ? "text-lg" : "text-xs"}`}>—</p>
                     )}
                   </div>
                 </div>
 
                 {/* Sentimento Mais Recorrente */}
-                <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-2xl p-6 sm:p-5 shadow-lg">
+                <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 sm:p-5">
                   <div className="text-center space-y-2">
-                    <p className={`text-amber-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
+                    <p className={`text-teal-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
                       Sentimento
                     </p>
                     {topSentiment ? (
                       <>
-                        <p className={`font-black text-amber-900 ${isTV ? "text-4xl" : "text-3xl"}`}>
+                        <p className={`font-black text-teal-900 ${isTV ? "text-4xl" : "text-3xl"}`}>
                           {getSentimentLabel(topSentiment[0]).emoji}
                         </p>
-                        <p className={`font-semibold text-amber-700 ${isTV ? "text-lg" : "text-xs"}`}>
+                        <p className={`font-semibold text-teal-700 ${isTV ? "text-lg" : "text-xs"}`}>
                           {getSentimentLabel(topSentiment[0]).label}
                         </p>
                       </>
                     ) : (
-                      <p className={`text-amber-600 ${isTV ? "text-lg" : "text-xs"}`}>—</p>
+                      <p className={`text-teal-600 ${isTV ? "text-lg" : "text-xs"}`}>—</p>
                     )}
                   </div>
                 </div>
@@ -566,21 +571,32 @@ export default function DashboardPreview() {
               <div className="flex justify-center mt-6">
                 <button
                   onClick={() => setShowAccessibleTable(!showAccessibleTable)}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center gap-2"
                   aria-label={`${showAccessibleTable ? "Mostrar mapa" : "Mostrar tabela acessível"}`}
                 >
-                  {showAccessibleTable ? "👁️ Ver Mapa" : "♿ Tabela Acessível"}
+                  {showAccessibleTable ? (
+                    <>
+                      <IconView size={18} color="white" />
+                      Ver Mapa
+                    </>
+                  ) : (
+                    <>
+                      <IconAccessibility size={18} color="white" />
+                      Tabela Acessível
+                    </>
+                  )}
                 </button>
               </div>
             </div>
 
             {/* SECTION 3: Main Territory Signals - Sinais Iniciais ou Principais */}
             {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
-              <div className="space-y-8 sm:space-y-10 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 border-2 border-indigo-300 rounded-3xl p-8 sm:p-10 lg:p-12 shadow-lg">
+              <div className="space-y-8 sm:space-y-10 bg-blue-50 border border-blue-200 rounded-lg p-8 sm:p-10 lg:p-12">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
+                    <IconChart size={32} color={colors.primary[600]} className="flex-shrink-0" />
                     <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
-                      🎯 {stats.total < 30 ? "Sinais Iniciais do Território" : "Principais Sinais do Território"}
+                      {stats.total < 30 ? "Sinais Iniciais do Território" : "Principais Sinais do Território"}
                     </h2>
                     {stats.total < 30 && (
                       <span className="bg-amber-200 text-amber-900 font-bold px-3 py-1 rounded-full text-sm whitespace-nowrap">
