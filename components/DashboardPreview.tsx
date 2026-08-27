@@ -8,6 +8,7 @@ import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import LiveActivityBar from "./LiveActivityBar";
 import { DEMO_STATS } from "@/lib/demo-data";
+import { getCategoryLabel } from "@/lib/dictionaries";
 
 interface DashboardStats {
   total: number;
@@ -568,7 +569,7 @@ export default function DashboardPreview() {
                           <div className="space-y-3">
                             <div className="flex items-start justify-between gap-3">
                               <p className={`font-bold text-gray-900 flex-1 leading-tight ${isTV ? "text-lg" : "text-sm sm:text-base"}`}>
-                                {category}
+                                {getCategoryLabel(category)}
                               </p>
                               <div className="flex items-center gap-2 whitespace-nowrap">
                                 <p className={`font-black text-blue-600 ${isTV ? "text-2xl" : "text-lg"}`}>

@@ -5,6 +5,7 @@ import type { LatLngExpression } from "leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useMemo, useState, useRef } from "react";
+import { getCategoryLabel } from "@/lib/dictionaries";
 
 interface MunicipalityData {
   name: string;
@@ -248,7 +249,7 @@ export default function MapContent({
                     <>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 font-medium text-sm">Tema Principal:</span>
-                        <span className="font-bold text-amber-600">{mun.categoryTopName || "—"}</span>
+                        <span className="font-bold text-amber-600">{mun.categoryTopName ? getCategoryLabel(mun.categoryTopName) : "—"}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600 font-medium text-sm">Menções:</span>
