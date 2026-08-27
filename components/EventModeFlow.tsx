@@ -2,7 +2,6 @@
 
 import { useEventModeForm } from "@/lib/hooks/useEventModeForm";
 import ParticipationRewardScreen from "./ParticipationRewardScreen";
-import { useEffect, useState } from "react";
 
 interface Categoria {
   id: string;
@@ -26,33 +25,6 @@ const MUNICIPIOS_NOROESTE = [
   "Varre-Sai",
 ];
 
-const CATEGORIAS = [
-  {
-    id: "dificuldade-continuar",
-    label: "Dificuldade para continuar o tratamento",
-  },
-  {
-    id: "falta-orientacao",
-    label: "Falta de orientação",
-  },
-  {
-    id: "espera-encaminhamento",
-    label: "Espera por encaminhamento",
-  },
-  {
-    id: "interrupcao-acompanhamento",
-    label: "Interrupção do acompanhamento",
-  },
-  {
-    id: "mais-apoio",
-    label: "Necessidade de mais apoio ao paciente ou à família",
-  },
-  {
-    id: "outra-percepcao",
-    label: "Outra percepção",
-  },
-];
-
 export default function EventModeFlow() {
   const {
     step,
@@ -66,11 +38,7 @@ export default function EventModeFlow() {
     submitForm,
     reset,
     categorias,
-    cidades,
   } = useEventModeForm();
-
-  const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
-  const [isMounted, setIsMounted] = useState(typeof window !== "undefined");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col items-center justify-center p-4">
@@ -189,7 +157,7 @@ export default function EventModeFlow() {
                     try {
                       nextStep("sending");
                       await submitForm();
-                    } catch (err) {
+                    } catch {
                       nextStep("question");
                     }
                   }}

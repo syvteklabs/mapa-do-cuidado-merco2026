@@ -12,7 +12,6 @@ export default function LiveActivationBadge({
   isDemoMode = false,
 }: LiveActivationBadgeProps) {
   const [count, setCount] = useState<number>(5);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCount = async () => {
@@ -28,8 +27,6 @@ export default function LiveActivationBadge({
         }
       } catch {
         setCount(5);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchCount();

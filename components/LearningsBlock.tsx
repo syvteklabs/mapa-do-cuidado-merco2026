@@ -22,7 +22,6 @@ interface Insight {
 export default function LearningsBlock({
   total,
   byCategory = {},
-  byMunicipio = {},
   activeMunicipios,
   totalMunicipios = 13,
   isTV = false,

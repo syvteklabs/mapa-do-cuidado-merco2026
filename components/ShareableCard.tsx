@@ -4,12 +4,7 @@ import { useState } from "react";
 import { IconMessage, IconLink, IconDownload, IconSuccess } from "./icons/Icons";
 import { colors } from "@/lib/designTokens";
 
-interface ShareableCardProps {
-  municipio?: string;
-  tema?: string;
-}
-
-export default function ShareableCard({ municipio, tema }: ShareableCardProps) {
+export default function ShareableCard() {
   const [copySuccess, setCopySuccess] = useState(false);
 
   const shareUrl = typeof window !== "undefined" ? window.location.origin + "/participar" : "";

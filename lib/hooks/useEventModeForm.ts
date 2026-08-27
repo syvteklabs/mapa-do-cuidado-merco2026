@@ -68,11 +68,6 @@ const CIDADES_MERCO = [
   ...MUNICIPIOS_NOROESTE.map((cidade) => ({ uf: "RJ", cidade })),
 ];
 
-function isFromNoroeste(estado: string, municipio: string): boolean {
-  if (estado !== "RJ") return false;
-  return MUNICIPIOS_NOROESTE.includes(municipio);
-}
-
 export function useEventModeForm() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -140,9 +135,10 @@ export function useEventModeForm() {
   }, [autoResetCountdown]);
 
   useEffect(() => {
+    const timeout = timeoutRef.current;
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (timeout) {
+        clearTimeout(timeout);
       }
     };
   }, []);
@@ -188,8 +184,6 @@ export function useEventModeForm() {
       if (!response.ok) {
         throw new Error("Falha ao enviar resposta");
       }
-
-      const data = await response.json();
 
       // Obter estatísticas atualizadas
       const statsResponse = await fetch("/api/contribuicoes");

@@ -28,7 +28,6 @@ export default function ParticipationFlow() {
     formData,
     isLoading,
     error,
-    participationNumber,
     rewardStats,
     nextStep,
     updateFormData,

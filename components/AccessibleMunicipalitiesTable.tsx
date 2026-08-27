@@ -10,7 +10,6 @@ interface AccessibleTableProps {
 export default function AccessibleMunicipalitiesTable({
   municipiosStats,
   totalParticipations,
-  dataView = "participations",
   isTV = false,
 }: AccessibleTableProps) {
   // Sort municipalities by participation count (descending)

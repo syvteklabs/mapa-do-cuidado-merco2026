@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 export default function PersistentMobileCTA() {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   // Determine if we should show the CTA
@@ -28,7 +27,7 @@ export default function PersistentMobileCTA() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  if (!isMobile || shouldHide || !isVisible) {
+  if (!isMobile || shouldHide) {
     return null;
   }
 

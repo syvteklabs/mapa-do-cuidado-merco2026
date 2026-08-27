@@ -112,7 +112,6 @@ const MapScreen = ({
 // Screen 3: Needs/Categories
 const NeedsScreen = ({
   stats,
-  highlightedMunicipio,
 }: {
   stats: DashboardStats;
   isTV?: boolean;
@@ -166,7 +165,6 @@ const NeedsScreen = ({
 // Screen 4: Sentiments
 const SentimentsScreen = ({
   stats,
-  highlightedMunicipio,
 }: {
   stats: DashboardStats;
   isTV?: boolean;
@@ -229,7 +227,7 @@ const MunicipalitiesScreen = ({
   const municipalities = useMemo(() => {
     const munis = stats.byMunicipio;
     return Object.entries(munis)
-      .filter(([_, count]) => (count as number) > 0)
+      .filter((entry) => (entry[1] as number) > 0)
       .sort((a, b) => (b[1] as number) - (a[1] as number))
       .slice(0, 6);
   }, [stats]);
@@ -277,8 +275,6 @@ const MunicipalitiesScreen = ({
 
 // Screen 6: QR Code
 const QRCodeScreen = ({
-  stats,
-  highlightedMunicipio,
 }: {
   stats: DashboardStats;
   isTV?: boolean;

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import ShareableCard from "./ShareableCard";
-import { IconSuccess, IconChart } from "./icons/Icons";
+import { IconSuccess } from "./icons/Icons";
 import { colors } from "@/lib/designTokens";
 
 interface RewardStats {
@@ -124,7 +124,7 @@ export default function ParticipationRewardScreen({
       </div>
 
       {/* Shareable Card */}
-      <ShareableCard municipio={municipio} tema={stats?.themeName} />
+      <ShareableCard />
 
       {/* CTAs */}
       <div className="space-y-3 pt-4">

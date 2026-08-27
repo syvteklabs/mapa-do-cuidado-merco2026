@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MUNICIPIOS_GEOJSON, getNoroesteBounds, normalizeMunicipalityName } from "@/lib/noroeste-geojson";
+import { MUNICIPIOS_GEOJSON, getNoroesteBounds } from "@/lib/noroeste-geojson";
 
 interface TerritorialMapProps {
   municipiosStats: Record<string, number>;
@@ -13,17 +13,11 @@ interface TerritorialMapProps {
 
 export default function TerritorialMap({
   municipiosStats,
-  municipiosCategories = {},
   selectedMunicipio = null,
   onMunicipioSelect = () => {},
   dataView = "participations",
 }: TerritorialMapProps) {
   const [hoveredMunicipio, setHoveredMunicipio] = useState<string | null>(null);
-
-  // Respect prefers-reduced-motion
-  const prefersReducedMotion = typeof window !== "undefined"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    : false;
 
   const getPlural = (count: number, singular: string, plural: string) => {
     return count === 1 ? singular : plural;
