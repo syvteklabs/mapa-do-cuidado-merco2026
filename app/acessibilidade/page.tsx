@@ -165,7 +165,7 @@ export default function AccessibilityPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-lg">✓</span>
-                  <span><strong>Rótulos singulares/plurais:</strong> Usamos "1 participação" e "2 participações" conforme apropriado</span>
+                  <span><strong>Rótulos singulares/plurais:</strong> Usamos &quot;1 participação&quot; e &quot;2 participações&quot; conforme apropriado</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-lg">✓</span>

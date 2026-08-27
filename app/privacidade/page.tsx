@@ -570,7 +570,7 @@ export default function PrivacyPage() {
                 contact@syvtek.care
               </p>
               <p className="text-sm text-gray-700 mt-3">
-                Inclua "Revogar Lista de Expansão" no assunto e confirme qual região registrou.
+                Inclua &quot;Revogar Lista de Expansão&quot; no assunto e confirme qual região registrou.
               </p>
             </div>
 

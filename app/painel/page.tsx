@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { supabaseService } from "@/lib/supabase-service";
 import { createClient } from "@/lib/supabase";
-import type { DashboardStats } from "@/types/database";
+import type { DashboardStats, MapaContribuicao } from "@/types/database";
 import { getCategoryLabel, getSentimentLabel } from "@/lib/dictionaries";
 
 interface NewVoiceNotification {
@@ -26,7 +26,6 @@ interface PanelScreen {
 // Screen 1: Overview
 const OverviewScreen = ({
   stats,
-  highlightedMunicipio,
 }: {
   stats: DashboardStats;
   isTV?: boolean;
@@ -77,7 +76,6 @@ const OverviewScreen = ({
 // Screen 2: Map
 const MapScreen = ({
   stats,
-  highlightedMunicipio,
 }: {
   stats: DashboardStats;
   isTV?: boolean;
@@ -371,7 +369,7 @@ export default function TVPanelPage() {
           table: "mapa_contribuicoes",
         },
         (payload) => {
-          const newContribuicao = payload.new as any;
+          const newContribuicao = payload.new as MapaContribuicao;
           const municipio = newContribuicao.municipio;
 
           if (municipio && municipio !== lastSeenId) {

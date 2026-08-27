@@ -93,9 +93,10 @@ export function useEventModeForm() {
 
   // Auto-reset após confirmação
   useEffect(() => {
-    if (step === "confirmation" && autoResetCountdown === null) {
-      setAutoResetCountdown(20);
+    if (step !== "confirmation" || autoResetCountdown !== null) {
+      return;
     }
+    setAutoResetCountdown(20);
   }, [step, autoResetCountdown]);
 
   // Countdown timer
@@ -103,7 +104,18 @@ export function useEventModeForm() {
     if (autoResetCountdown === null) return;
 
     if (autoResetCountdown <= 0) {
-      reset();
+      setStep("location");
+      setFormData(getInitialFormData());
+      setError(null);
+      setIsLoading(false);
+      setRewardStats(null);
+      setAutoResetCountdown(null);
+      try {
+        localStorage.removeItem(EVENT_STORAGE_KEY);
+        localStorage.removeItem("mapa-cuidado-form-data");
+      } catch (err) {
+        console.error("Failed to clear localStorage:", err);
+      }
       return;
     }
 

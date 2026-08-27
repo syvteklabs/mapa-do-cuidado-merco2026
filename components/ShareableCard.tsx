@@ -66,7 +66,7 @@ export default function ShareableCard({ municipio, tema }: ShareableCardProps) {
     const mainLines = mainText.split(" ");
     let y = 420;
     let line = "";
-    for (let word of mainLines) {
+    for (const word of mainLines) {
       const testLine = line + (line ? " " : "") + word;
       const metrics = ctx.measureText(testLine);
       if (metrics.width > 900 && line) {

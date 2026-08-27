@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { IconSuccess } from "./icons/Icons";
 import { colors } from "@/lib/designTokens";
 
@@ -25,7 +25,8 @@ export default function LiveActivityBar({
     temas: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [showNotification, setShowNotification] = useState(false);
+  const [notificationHideTime, setNotificationHideTime] = useState<number | null>(null);
+  const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -54,15 +55,29 @@ export default function LiveActivityBar({
   }, []);
 
   useEffect(() => {
-    if (showNewNotification) {
-      setShowNotification(true);
-      const timer = setTimeout(() => {
-        setShowNotification(false);
-        onNotificationClose?.();
-      }, 4000);
-      return () => clearTimeout(timer);
+    if (!showNewNotification) {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+        notificationTimeoutRef.current = null;
+      }
+      setNotificationHideTime(null);
+      return;
     }
+
+    notificationTimeoutRef.current = setTimeout(() => {
+      setNotificationHideTime(Date.now());
+      onNotificationClose?.();
+    }, 4000);
+
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+        notificationTimeoutRef.current = null;
+      }
+    };
   }, [showNewNotification, onNotificationClose]);
+
+  const showNotification = useMemo(() => showNewNotification && notificationHideTime === null, [showNewNotification, notificationHideTime]);
 
   return (
     <div className="space-y-4">

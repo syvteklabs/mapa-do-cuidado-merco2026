@@ -10,6 +10,17 @@ import ParticipationRewardScreen from "./ParticipationRewardScreen";
 import { IconExpand, IconSecurity, IconChart } from "./icons/Icons";
 import { colors } from "@/lib/designTokens";
 
+interface Categoria {
+  id: string;
+  label: string;
+  humanLabel?: string;
+}
+
+interface Sentimento {
+  id: string;
+  label: string;
+}
+
 export default function ParticipationFlow() {
   const {
     step,
@@ -260,7 +271,7 @@ export default function ParticipationFlow() {
             </div>
 
             <div className="space-y-3">
-              {categorias.map((cat: any) => (
+              {categorias.map((cat: Categoria) => (
                 <button
                   key={cat.id}
                   onClick={() =>
@@ -314,7 +325,7 @@ export default function ParticipationFlow() {
             </div>
 
             <div className="space-y-3">
-              {sentimentos.map((sent: any) => (
+              {sentimentos.map((sent: Sentimento) => (
                 <button
                   key={sent.id}
                   onClick={() =>

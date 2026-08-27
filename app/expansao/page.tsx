@@ -84,7 +84,7 @@ export default function ExpansionPage() {
                   <strong>Quanto tempo:</strong> Mantemos até 2 anos ou até você revogar consentimento
                 </p>
                 <p>
-                  <strong>Como revogar:</strong> Email para contact@syvtek.care com "Revogar Lista de Expansão" no assunto
+                  <strong>Como revogar:</strong> Email para contact@syvtek.care com &quot;Revogar Lista de Expansão&quot; no assunto
                 </p>
                 <p className="italic">
                   Leia nossa <a href="/privacidade" className="underline font-semibold text-amber-900 hover:text-amber-800">política de privacidade completa</a> para detalhes.

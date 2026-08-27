@@ -4,6 +4,11 @@ import { useEventModeForm } from "@/lib/hooks/useEventModeForm";
 import ParticipationRewardScreen from "./ParticipationRewardScreen";
 import { useEffect, useState } from "react";
 
+interface Categoria {
+  id: string;
+  label: string;
+}
+
 const MUNICIPIOS_NOROESTE = [
   "Aperibé",
   "Bom Jesus do Itabapoana",
@@ -64,13 +69,7 @@ export default function EventModeFlow() {
   } = useEventModeForm();
 
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
+  const [isMounted, setIsMounted] = useState(typeof window !== "undefined");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col items-center justify-center p-4">
@@ -155,7 +154,7 @@ export default function EventModeFlow() {
             </div>
 
             <div className="space-y-4 px-4 sm:px-0">
-              {categorias.map((cat: any) => (
+              {categorias.map((cat: Categoria) => (
                 <button
                   key={cat.id}
                   onClick={() =>
