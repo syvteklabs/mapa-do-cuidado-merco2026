@@ -222,15 +222,17 @@ export default function MapContent({
                         <span className="text-gray-600 font-medium text-sm">Participações:</span>
                         <span className="font-bold text-blue-600 text-lg">{mun.count}</span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 font-medium text-sm">% do total:</span>
-                        <span className="font-bold text-blue-600">
-                          {totalParticipations > 0
-                            ? ((mun.count / totalParticipations) * 100).toFixed(1)
-                            : "0"}
-                          %
-                        </span>
-                      </div>
+                      {totalParticipations >= 30 && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600 font-medium text-sm">% do total:</span>
+                          <span className="font-bold text-blue-600">
+                            {totalParticipations > 0
+                              ? ((mun.count / totalParticipations) * 100).toFixed(1)
+                              : "0"}
+                            %
+                          </span>
+                        </div>
+                      )}
                       {mun.count > 0 && (
                         <div className="space-y-1">
                           <div className="text-xs text-gray-600">Intensidade relativa</div>
