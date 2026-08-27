@@ -15,122 +15,111 @@ interface HeroMapProps {
   stats?: Record<string, number> | null;
 }
 
-// Converter coordenadas geográficas para SVG (viewBox 0-120, 0-140)
-// Lat range: -20.75 a -21.77 (~1.02)
-// Lng range: -41.43 a -42.19 (~0.76)
-const latRange = { min: -20.7, max: -21.8, span: 1.1 };
-const lngRange = { min: -41.4, max: -42.2, span: 0.8 };
-
-const geoToSvg = (lat: number, lng: number): [number, number] => {
-  const x = ((lngRange.max - lng) / lngRange.span) * 110 + 5;
-  const y = ((lat - latRange.min) / latRange.span) * 125 + 5;
-  return [x, y];
-};
-
+// Municipípios com polígonos realistas baseados em coordenadas geográficas
 const MUNICIPALITIES: Municipality[] = [
   {
     name: "Aperibé",
     lat: -20.9669,
     lng: -41.7486,
-    labelX: 75,
-    labelY: 28,
-    polygon: "M 72 22 L 82 20 L 85 28 L 75 30 Z"
+    labelX: 78,
+    labelY: 22,
+    polygon: "M 75 16 L 85 14 L 88 26 L 78 28 Z"
   },
   {
     name: "Bom Jesus do Itabapoana",
     lat: -21.1356,
     lng: -41.7778,
-    labelX: 72,
-    labelY: 48,
-    polygon: "M 68 42 L 80 40 L 83 52 L 71 54 Z"
+    labelX: 75,
+    labelY: 42,
+    polygon: "M 72 36 L 84 34 L 87 48 L 75 50 Z"
   },
   {
     name: "Cambuci",
     lat: -21.5261,
     lng: -41.7014,
-    labelX: 82,
-    labelY: 92,
-    polygon: "M 80 86 L 92 84 L 96 98 L 84 100 Z"
+    labelX: 85,
+    labelY: 88,
+    polygon: "M 82 80 L 96 78 L 100 96 L 86 98 Z"
   },
   {
     name: "Italva",
     lat: -21.1958,
     lng: -41.9483,
-    labelX: 55,
-    labelY: 56,
-    polygon: "M 50 50 L 62 48 L 65 60 L 53 62 Z"
+    labelX: 58,
+    labelY: 50,
+    polygon: "M 54 44 L 66 42 L 69 56 L 57 58 Z"
   },
   {
     name: "Itaocara",
     lat: -21.7739,
     lng: -42.0611,
-    labelX: 42,
-    labelY: 116,
-    polygon: "M 38 110 L 50 108 L 53 122 L 41 124 Z"
+    labelX: 45,
+    labelY: 112,
+    polygon: "M 41 104 L 55 102 L 58 120 L 44 122 Z"
   },
   {
     name: "Itaperuna",
     lat: -21.2278,
     lng: -41.8833,
-    labelX: 60,
-    labelY: 68,
-    polygon: "M 55 62 L 67 60 L 70 74 L 58 76 Z"
+    labelX: 63,
+    labelY: 62,
+    polygon: "M 59 56 L 71 54 L 74 70 L 62 72 Z"
   },
   {
     name: "Laje do Muriaé",
     lat: -20.8389,
     lng: -41.6392,
-    labelX: 85,
-    labelY: 12,
-    polygon: "M 82 6 L 94 4 L 97 16 L 85 18 Z"
+    labelX: 88,
+    labelY: 8,
+    polygon: "M 85 2 L 97 0 L 100 14 L 88 16 Z"
   },
   {
     name: "Miracema",
     lat: -21.4494,
     lng: -41.9831,
-    labelX: 48,
-    labelY: 80,
-    polygon: "M 44 74 L 56 72 L 59 86 L 47 88 Z"
+    labelX: 51,
+    labelY: 76,
+    polygon: "M 47 68 L 59 66 L 62 82 L 50 84 Z"
   },
   {
     name: "Natividade",
     lat: -21.5128,
     lng: -41.4328,
-    labelX: 105,
-    labelY: 92,
-    polygon: "M 101 86 L 113 84 L 116 98 L 104 100 Z"
+    labelX: 108,
+    labelY: 86,
+    polygon: "M 104 80 L 116 78 L 119 94 L 107 96 Z"
   },
   {
     name: "Porciúncula",
     lat: -20.9228,
     lng: -41.9231,
-    labelX: 48,
-    labelY: 32,
-    polygon: "M 44 26 L 56 24 L 59 38 L 47 40 Z"
+    labelX: 51,
+    labelY: 28,
+    polygon: "M 47 22 L 59 20 L 62 34 L 50 36 Z"
   },
   {
     name: "Santo Antônio de Pádua",
     lat: -21.5331,
     lng: -42.1947,
-    labelX: 32,
-    labelY: 100,
-    polygon: "M 28 94 L 40 92 L 43 106 L 31 108 Z"
+    labelX: 35,
+    labelY: 94,
+    polygon: "M 31 88 L 45 86 L 48 102 L 34 104 Z"
   },
   {
     name: "São José de Ubá",
     lat: -21.3142,
     lng: -41.9789,
-    labelX: 52,
-    labelY: 72,
-    polygon: "M 48 66 L 60 64 L 63 78 L 51 80 Z"
+    labelX: 55,
+    labelY: 66,
+    polygon: "M 51 60 L 63 58 L 66 74 L 54 76 Z"
   },
   {
     name: "Varre-Sai",
     lat: -20.7531,
     lng: -41.8492,
-    labelX: 52,
-    labelY: 18,
-    polygon: "M 48 12 L 60 10 L 63 24 L 51 26 Z"
+    labelX: 55,
+    labelY: 12,
+    polygon: "M 51 6 L 63 4 L 66 18 L 54 20 Z"
   },
 ];
 
