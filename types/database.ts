@@ -44,3 +44,11 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
+
+export interface DashboardStats {
+  total: number;
+  byState: Record<string, number>;
+  byMunicipio: Record<string, number>;
+  byCategory: Record<string, number>;
+  bySentiment?: Record<string, number>;
+}
