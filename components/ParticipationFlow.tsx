@@ -3,10 +3,13 @@
 import { useParticipationForm } from "@/lib/hooks/useParticipationForm";
 import { useErrorRecovery } from "@/lib/hooks/useErrorRecovery";
 import { useFormTracking } from "@/lib/hooks/useAnalyticsTracking";
+import { useOfflineSync } from "@/lib/hooks/useOfflineSync";
 import Link from "next/link";
 import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
 import PrivacyDisclosure from "./PrivacyDisclosure";
+import OfflineIndicator from "./OfflineIndicator";
+import { useState } from "react";
 
 export default function ParticipationFlow() {
   const {
@@ -36,6 +39,27 @@ export default function ParticipationFlow() {
     clearError,
   } = useErrorRecovery();
 
+  const [offlineTestMode, setOfflineTestMode] = useState(false);
+
+  const {
+    isOnline,
+    isSyncing,
+    pendingCount,
+    queueResponse,
+    setTestMode: setOfflineSyncTestMode,
+  } = useOfflineSync({
+    onQueueChange: (count) => {
+      // Queue change feedback could be shown here
+    },
+    testMode: offlineTestMode,
+  });
+
+  const handleTestModeToggle = () => {
+    const newMode = !offlineTestMode;
+    setOfflineTestMode(newMode);
+    setOfflineSyncTestMode(newMode);
+  };
+
   const progressSteps = [
     { id: "location", label: "Localização" },
     { id: "question", label: "Experiência" },
@@ -58,6 +82,31 @@ export default function ParticipationFlow() {
   useFormTracking(analyticsStep, totalProgress);
 
   const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
+
+  // Enhanced submission that handles offline queue
+  const handleSubmit = async () => {
+    try {
+      nextStep("sending");
+      if (isOnline) {
+        // Online: submit normally
+        await submitForm();
+      } else {
+        // Offline: queue the response
+        queueResponse({
+          municipio: formData.municipio,
+          estado: formData.estado,
+          resposta_categoria: formData.resposta_categoria,
+        });
+        // Move to confirmation (but with offline indicator)
+        nextStep("confirmation");
+      }
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Erro ao enviar resposta";
+      reportError(errorMsg, formData as unknown as Record<string, string>);
+      nextStep("question");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -296,21 +345,11 @@ export default function ParticipationFlow() {
                 Voltar
               </button>
               <button
-                onClick={async () => {
-                  try {
-                    nextStep("sending");
-                    await submitForm();
-                  } catch (err) {
-                    const errorMsg =
-                      err instanceof Error ? err.message : "Erro ao enviar resposta";
-                    reportError(errorMsg, formData as unknown as Record<string, string>);
-                    nextStep("question");
-                  }
-                }}
+                onClick={handleSubmit}
                 disabled={!formData.resposta_categoria || isLoading}
                 className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? "Salvando..." : "Salvar resposta"}
+                {isLoading || isSyncing ? "Salvando..." : "Salvar resposta"}
               </button>
             </div>
           </div>
@@ -329,13 +368,25 @@ export default function ParticipationFlow() {
         {/* Step: Confirmation */}
         {step === "confirmation" && (
           <div className="text-center space-y-8">
+            {/* Offline Indicator */}
+            {!isOnline && (
+              <OfflineIndicator
+                isOnline={isOnline}
+                isSyncing={isSyncing}
+                pendingCount={pendingCount}
+                compact={false}
+              />
+            )}
+
             <div>
               <div className="mb-4 text-5xl">✓</div>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
                 Sua voz entrou no mapa.
               </h2>
               <p className="text-lg text-gray-600 mb-2">
-                Sua experiência agora faz parte do Mapa do Cuidado.
+                {isOnline
+                  ? "Sua experiência agora faz parte do Mapa do Cuidado."
+                  : "Sua resposta foi salva neste dispositivo e será enviada assim que a conexão voltar."}
               </p>
               {participationNumber && (
                 <p className="text-2xl font-bold text-blue-600 mb-3">
@@ -347,10 +398,17 @@ export default function ParticipationFlow() {
               </p>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-left">
-              <p className="text-sm text-gray-600">
-                Sua contribuição anônima e voluntária ajuda a construir um mapa
-                real dos caminhos do cuidado em nossa região.
+            <div className={`border rounded-lg p-6 text-left ${
+              isOnline
+                ? "bg-green-50 border-green-200"
+                : "bg-amber-50 border-amber-200"
+            }`}>
+              <p className={`text-sm ${
+                isOnline ? "text-gray-600" : "text-amber-800"
+              }`}>
+                {isOnline
+                  ? "Sua contribuição anônima e voluntária ajuda a construir um mapa real dos caminhos do cuidado em nossa região."
+                  : "Sua resposta está segura neste dispositivo. Não precisa fazer nada — ela será sincronizada automaticamente quando a conexão voltar."}
               </p>
             </div>
 
