@@ -8,6 +8,7 @@ import HeroMap from "@/components/HeroMap";
 import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
+import LiveActivationBadge from "@/components/LiveActivationBadge";
 
 interface StatsData {
   total: number;
@@ -55,13 +56,16 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Content */}
             <div className="space-y-8">
+              {/* Live Activation Badge */}
+              <LiveActivationBadge isDemoMode={isDemoMode} />
+
               {/* Main Headline - Human & Compelling */}
               <div className="space-y-4">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                   Como foi buscar cuidado na sua cidade?
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                  Compartilhe sua experiência em apenas 2 minutos e ajude a revelar como as pessoas acessam o cuidado no Noroeste Fluminense.
+                  Em 2 minutos, sua experiência entra no Mapa do Cuidado e ajuda a revelar os caminhos do Noroeste Fluminense.
                 </p>
               </div>
 
@@ -98,11 +102,11 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 {/* Primary CTA */}
                 <Button href="/participar" variant="primary" className="text-base sm:text-lg py-4 px-6">
-                  Participar agora — leva 2 minutos
+                  Compartilhar minha experiência
                 </Button>
                 {/* Secondary CTA */}
                 <Button href="/mapa" variant="secondary" className="text-base sm:text-lg py-4 px-6">
-                  Ver o mapa ao vivo
+                  Ver o mapa sendo construído
                 </Button>
               </div>
 
