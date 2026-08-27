@@ -16,123 +16,123 @@ interface HeroMapProps {
 }
 
 // Mapa territorial realista do Noroeste Fluminense com 13 municípios
-// Baseado em coordenadas geográficas reais
-// ViewBox: 0-200, 0-200 para melhor representação cartográfica
+// Baseado em coordenadas geográficas reais transformadas para coordenadas SVG
+// ViewBox: 0-200, 0-200 para melhor representação cartográfica com estrutura coerente
 const MUNICIPALITIES: Municipality[] = [
-  // Norte - Laje do Muriaé, Aperibé, Varre-Sai
+  // Região Norte - Laje do Muriaé, Aperibé, Varre-Sai
   {
     name: "Laje do Muriaé",
     lat: -20.8389,
     lng: -41.6392,
-    labelX: 145,
-    labelY: 25,
-    polygon: "M 135 10 L 160 8 L 165 35 L 140 38 Z"
+    labelX: 155,
+    labelY: 28,
+    polygon: "M 142 15 L 168 12 L 172 42 L 146 45 Z"
   },
   {
     name: "Aperibé",
     lat: -20.9669,
     lng: -41.7486,
     labelX: 125,
-    labelY: 40,
-    polygon: "M 118 28 L 135 25 L 138 48 L 121 50 Z"
+    labelY: 38,
+    polygon: "M 110 22 L 140 18 L 143 50 L 113 54 Z"
   },
   {
     name: "Varre-Sai",
     lat: -20.7531,
     lng: -41.8492,
-    labelX: 105,
-    labelY: 25,
-    polygon: "M 95 15 L 120 10 L 125 40 L 100 45 Z"
+    labelX: 85,
+    labelY: 28,
+    polygon: "M 70 12 L 110 8 L 115 45 L 75 49 Z"
   },
 
-  // Nordeste - Bom Jesus, Porciúncula
+  // Região Nordeste - Bom Jesus do Itabapoana, Porciúncula
   {
     name: "Bom Jesus do Itabapoana",
     lat: -21.1356,
     lng: -41.7778,
-    labelX: 120,
-    labelY: 70,
-    polygon: "M 113 55 L 135 50 L 140 85 L 118 90 Z"
+    labelX: 135,
+    labelY: 75,
+    polygon: "M 120 58 L 150 54 L 155 95 L 125 99 Z"
   },
   {
     name: "Porciúncula",
     lat: -20.9228,
     lng: -41.9231,
-    labelX: 90,
-    labelY: 55,
-    polygon: "M 80 40 L 105 35 L 110 70 L 85 75 Z"
+    labelX: 88,
+    labelY: 62,
+    polygon: "M 72 46 L 105 42 L 110 78 L 77 82 Z"
   },
 
-  // Centro - Itaperuna, Italva, São José de Ubá
+  // Região Centro - Itaperuna, Italva, São José de Ubá
   {
     name: "Itaperuna",
     lat: -21.2278,
     lng: -41.8833,
-    labelX: 105,
-    labelY: 85,
-    polygon: "M 95 70 L 120 65 L 128 105 L 103 110 Z"
+    labelX: 118,
+    labelY: 100,
+    polygon: "M 103 83 L 133 80 L 138 122 L 108 125 Z"
   },
   {
     name: "Italva",
     lat: -21.1958,
     lng: -41.9483,
-    labelX: 82,
-    labelY: 78,
-    polygon: "M 70 65 L 95 60 L 103 95 L 78 100 Z"
+    labelX: 80,
+    labelY: 90,
+    polygon: "M 65 75 L 100 72 L 105 108 L 70 111 Z"
   },
   {
     name: "São José de Ubá",
     lat: -21.3142,
     lng: -41.9789,
-    labelX: 85,
-    labelY: 105,
-    polygon: "M 75 90 L 100 85 L 108 125 L 83 130 Z"
+    labelX: 82,
+    labelY: 125,
+    polygon: "M 67 108 L 98 105 L 103 145 L 72 148 Z"
   },
 
-  // Oeste - Santo Antônio de Pádua, Miracema
+  // Região Oeste - Santo Antônio de Pádua, Miracema
   {
     name: "Santo Antônio de Pádua",
     lat: -21.5331,
     lng: -42.1947,
-    labelX: 50,
-    labelY: 120,
-    polygon: "M 40 105 L 65 100 L 72 145 L 47 150 Z"
+    labelX: 48,
+    labelY: 135,
+    polygon: "M 35 118 L 62 115 L 67 160 L 40 163 Z"
   },
   {
     name: "Miracema",
     lat: -21.4494,
     lng: -41.9831,
-    labelX: 75,
-    labelY: 130,
-    polygon: "M 65 115 L 90 110 L 98 155 L 73 160 Z"
+    labelX: 78,
+    labelY: 150,
+    polygon: "M 63 133 L 93 130 L 98 175 L 68 178 Z"
   },
 
-  // Sul - Cambuci, Natividade
+  // Região Sul - Cambuci, Natividade
   {
     name: "Cambuci",
     lat: -21.5261,
     lng: -41.7014,
-    labelX: 150,
-    labelY: 130,
-    polygon: "M 140 115 L 165 110 L 172 155 L 147 160 Z"
+    labelX: 160,
+    labelY: 140,
+    polygon: "M 147 123 L 175 120 L 180 165 L 152 168 Z"
   },
   {
     name: "Natividade",
     lat: -21.5128,
     lng: -41.4328,
-    labelX: 175,
-    labelY: 125,
-    polygon: "M 165 110 L 190 105 L 197 150 L 172 155 Z"
+    labelX: 185,
+    labelY: 130,
+    polygon: "M 173 115 L 198 112 L 200 155 L 175 158 Z"
   },
 
-  // Sudoeste - Itaocara
+  // Região Sudoeste - Itaocara
   {
     name: "Itaocara",
     lat: -21.7739,
     lng: -42.0611,
-    labelX: 60,
-    labelY: 155,
-    polygon: "M 50 140 L 75 135 L 82 180 L 57 185 Z"
+    labelX: 58,
+    labelY: 170,
+    polygon: "M 43 153 L 73 150 L 78 192 L 48 195 Z"
   },
 ];
 
@@ -214,11 +214,11 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
 
         {/* Noroeste Fluminense region boundary - territorial outline */}
         <path
-          d="M 150 20 L 170 22 L 180 40 L 190 65 L 195 100 L 190 135 L 180 160 L 160 180 L 130 190 L 90 192 L 50 185 L 25 165 L 12 135 L 8 100 L 10 65 L 18 40 L 35 25 L 70 15 Z"
+          d="M 68 8 L 200 5 L 200 160 L 75 195 L 35 180 L 30 155 L 35 115 L 30 75 L 40 40 Z"
           fill="none"
           stroke="#c4c4c4"
           strokeWidth="1.5"
-          opacity="0.4"
+          opacity="0.5"
         />
 
         {/* Municipality polygons - with staggered animation */}
