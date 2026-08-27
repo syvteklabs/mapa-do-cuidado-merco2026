@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
-import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import LiveActivationBadge from "@/components/LiveActivationBadge";
@@ -130,10 +129,6 @@ export default function Home() {
         <LiveActivityBar />
 
         {/* Secondary Sections */}
-        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <ProofOfMovement stats={stats} />
-        </section>
-
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <HowItWorks />
         </section>
