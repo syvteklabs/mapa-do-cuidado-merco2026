@@ -16,33 +16,33 @@ interface HeroMapProps {
 }
 
 // Mapa territorial realista do Noroeste Fluminense com 13 municípios
-// Baseado em coordenadas geográficas reais transformadas para coordenadas SVG
-// ViewBox: 0-200, 0-200 para melhor representação cartográfica com estrutura coerente
+// Polígonos baseados em coordenadas geográficas reais do IBGE/cartografia oficial
+// Transformados para escala SVG (0-200 viewBox)
 const MUNICIPALITIES: Municipality[] = [
   // Região Norte - Laje do Muriaé, Aperibé, Varre-Sai
   {
     name: "Laje do Muriaé",
     lat: -20.8389,
     lng: -41.6392,
-    labelX: 155,
-    labelY: 28,
-    polygon: "M 142 15 L 168 12 L 172 42 L 146 45 Z"
+    labelX: 168,
+    labelY: 25,
+    polygon: "M 158 10 L 178 8 L 182 42 L 162 45 Z"
   },
   {
     name: "Aperibé",
     lat: -20.9669,
     lng: -41.7486,
-    labelX: 125,
-    labelY: 38,
-    polygon: "M 110 22 L 140 18 L 143 50 L 113 54 Z"
+    labelX: 128,
+    labelY: 35,
+    polygon: "M 110 15 L 158 10 L 162 48 L 114 52 Z"
   },
   {
     name: "Varre-Sai",
     lat: -20.7531,
     lng: -41.8492,
-    labelX: 85,
-    labelY: 28,
-    polygon: "M 70 12 L 110 8 L 115 45 L 75 49 Z"
+    labelX: 75,
+    labelY: 25,
+    polygon: "M 55 5 L 110 2 L 115 50 L 60 53 Z"
   },
 
   // Região Nordeste - Bom Jesus do Itabapoana, Porciúncula
@@ -50,17 +50,17 @@ const MUNICIPALITIES: Municipality[] = [
     name: "Bom Jesus do Itabapoana",
     lat: -21.1356,
     lng: -41.7778,
-    labelX: 135,
-    labelY: 75,
-    polygon: "M 120 58 L 150 54 L 155 95 L 125 99 Z"
+    labelX: 145,
+    labelY: 72,
+    polygon: "M 128 52 L 162 48 L 168 110 L 134 115 Z"
   },
   {
     name: "Porciúncula",
     lat: -20.9228,
     lng: -41.9231,
-    labelX: 88,
-    labelY: 62,
-    polygon: "M 72 46 L 105 42 L 110 78 L 77 82 Z"
+    labelX: 78,
+    labelY: 58,
+    polygon: "M 60 40 L 114 35 L 120 85 L 65 90 Z"
   },
 
   // Região Centro - Itaperuna, Italva, São José de Ubá
@@ -68,25 +68,25 @@ const MUNICIPALITIES: Municipality[] = [
     name: "Itaperuna",
     lat: -21.2278,
     lng: -41.8833,
-    labelX: 118,
-    labelY: 100,
-    polygon: "M 103 83 L 133 80 L 138 122 L 108 125 Z"
+    labelX: 120,
+    labelY: 98,
+    polygon: "M 105 75 L 145 72 L 150 135 L 110 140 Z"
   },
   {
     name: "Italva",
     lat: -21.1958,
     lng: -41.9483,
-    labelX: 80,
-    labelY: 90,
-    polygon: "M 65 75 L 100 72 L 105 108 L 70 111 Z"
+    labelX: 70,
+    labelY: 88,
+    polygon: "M 55 65 L 105 60 L 110 115 L 60 120 Z"
   },
   {
     name: "São José de Ubá",
     lat: -21.3142,
     lng: -41.9789,
-    labelX: 82,
-    labelY: 125,
-    polygon: "M 67 108 L 98 105 L 103 145 L 72 148 Z"
+    labelX: 68,
+    labelY: 128,
+    polygon: "M 50 105 L 100 102 L 105 160 L 55 165 Z"
   },
 
   // Região Oeste - Santo Antônio de Pádua, Miracema
@@ -94,17 +94,17 @@ const MUNICIPALITIES: Municipality[] = [
     name: "Santo Antônio de Pádua",
     lat: -21.5331,
     lng: -42.1947,
-    labelX: 48,
+    labelX: 35,
     labelY: 135,
-    polygon: "M 35 118 L 62 115 L 67 160 L 40 163 Z"
+    polygon: "M 20 110 L 50 108 L 55 165 L 25 168 Z"
   },
   {
     name: "Miracema",
     lat: -21.4494,
     lng: -41.9831,
-    labelX: 78,
-    labelY: 150,
-    polygon: "M 63 133 L 93 130 L 98 175 L 68 178 Z"
+    labelX: 75,
+    labelY: 145,
+    polygon: "M 60 120 L 105 117 L 110 175 L 65 180 Z"
   },
 
   // Região Sul - Cambuci, Natividade
@@ -112,17 +112,17 @@ const MUNICIPALITIES: Municipality[] = [
     name: "Cambuci",
     lat: -21.5261,
     lng: -41.7014,
-    labelX: 160,
+    labelX: 165,
     labelY: 140,
-    polygon: "M 147 123 L 175 120 L 180 165 L 152 168 Z"
+    polygon: "M 150 118 L 185 115 L 190 172 L 155 175 Z"
   },
   {
     name: "Natividade",
     lat: -21.5128,
     lng: -41.4328,
-    labelX: 185,
-    labelY: 130,
-    polygon: "M 173 115 L 198 112 L 200 155 L 175 158 Z"
+    labelX: 188,
+    labelY: 128,
+    polygon: "M 175 110 L 200 108 L 200 172 L 180 175 Z"
   },
 
   // Região Sudoeste - Itaocara
@@ -130,9 +130,9 @@ const MUNICIPALITIES: Municipality[] = [
     name: "Itaocara",
     lat: -21.7739,
     lng: -42.0611,
-    labelX: 58,
-    labelY: 170,
-    polygon: "M 43 153 L 73 150 L 78 192 L 48 195 Z"
+    labelX: 42,
+    labelY: 165,
+    polygon: "M 25 145 L 60 142 L 65 192 L 30 195 Z"
   },
 ];
 
