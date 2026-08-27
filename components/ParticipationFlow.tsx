@@ -2,6 +2,7 @@
 
 import { useParticipationForm } from "@/lib/hooks/useParticipationForm";
 import { useErrorRecovery } from "@/lib/hooks/useErrorRecovery";
+import { useFormTracking } from "@/lib/hooks/useAnalyticsTracking";
 import Link from "next/link";
 import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
@@ -35,8 +36,6 @@ export default function ParticipationFlow() {
     clearError,
   } = useErrorRecovery();
 
-  const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
-
   const progressSteps = [
     { id: "location", label: "Localização" },
     { id: "question", label: "Experiência" },
@@ -45,6 +44,20 @@ export default function ParticipationFlow() {
   const currentProgress =
     progressSteps.findIndex((s) => s.id === step) + 1;
   const totalProgress = progressSteps.length;
+
+  // Map internal step names to progress numbers for analytics
+  const getAnalyticsStep = () => {
+    if (step === "start") return 0;
+    if (step === "location") return 1;
+    if (step === "question") return 2;
+    if (step === "sending" || step === "confirmation") return 3;
+    return 0;
+  };
+
+  const analyticsStep = getAnalyticsStep();
+  useFormTracking(analyticsStep, totalProgress);
+
+  const filteredCidades = cidades.filter((c) => c.uf === formData.estado);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">

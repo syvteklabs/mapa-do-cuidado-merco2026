@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
@@ -9,6 +10,8 @@ import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import LiveActivationBadge from "@/components/LiveActivationBadge";
+import { usePageTracking } from "@/lib/hooks/useAnalyticsTracking";
+import { trackParticipateClick } from "@/lib/analytics/analytics";
 
 interface StatsData {
   total: number;
@@ -18,6 +21,8 @@ interface StatsData {
 export default function Home() {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [isDemoMode, setIsDemoMode] = useState(false);
+
+  usePageTracking();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -101,9 +106,13 @@ export default function Home() {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 {/* Primary CTA */}
-                <Button href="/participar" variant="primary" className="text-base sm:text-lg py-4 px-6">
+                <Link
+                  href="/participar"
+                  onClick={trackParticipateClick}
+                  className="inline-flex items-center justify-center px-6 py-4 sm:py-5 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-base sm:text-lg bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus:ring-blue-500"
+                >
                   Compartilhar minha experiência
-                </Button>
+                </Link>
                 {/* Secondary CTA */}
                 <Button href="/mapa" variant="secondary" className="text-base sm:text-lg py-4 px-6">
                   Ver o mapa sendo construído

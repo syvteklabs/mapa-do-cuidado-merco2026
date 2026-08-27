@@ -6,10 +6,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useExpansionForm } from "@/lib/hooks/useExpansionForm";
 import { useErrorRecovery } from "@/lib/hooks/useErrorRecovery";
+import { usePageTracking } from "@/lib/hooks/useAnalyticsTracking";
+import { trackExpansionRegister } from "@/lib/analytics/analytics";
 import { ESTADOS_BR } from "@/lib/hooks/useParticipationForm";
 import ErrorContingency from "@/components/ErrorContingency";
 
 export default function ExpansionPage() {
+  usePageTracking();
   const router = useRouter();
   const { step, formData, isLoading, error, updateFormData, submitForm, reset } =
     useExpansionForm();
@@ -26,6 +29,7 @@ export default function ExpansionPage() {
     try {
       const success = await submitForm();
       if (success) {
+        trackExpansionRegister();
         const territorio = `${formData.cidade} — ${formData.estado}`;
         router.push(`/mapa?novo-territorio=${encodeURIComponent(territorio)}`);
       }
