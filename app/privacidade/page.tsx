@@ -121,7 +121,7 @@ export default function PrivacyPage() {
                   <span className="text-lg flex-shrink-0">🗺️</span>
                   <div>
                     <p className="font-semibold text-gray-900">Criar visualizações no mapa</p>
-                    <p className="text-gray-600">Mostrar onde os desafios de cuidado são mais prevalentes</p>
+                    <p className="text-gray-600">Mostrar onde os desafios de cuidado estão sendo relatados</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">

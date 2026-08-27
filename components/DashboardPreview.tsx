@@ -548,15 +548,24 @@ export default function DashboardPreview() {
               </div>
             </div>
 
-            {/* SECTION 3: Main Territory Signals - Principais Sinais do Território */}
+            {/* SECTION 3: Main Territory Signals - Sinais Iniciais ou Principais */}
             {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
               <div className="space-y-8 sm:space-y-10 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 border-2 border-indigo-300 rounded-3xl p-8 sm:p-10 lg:p-12 shadow-lg">
                 <div className="space-y-3">
-                  <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
-                    🎯 Principais Sinais do Território
-                  </h2>
+                  <div className="flex items-center gap-3">
+                    <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
+                      🎯 {stats.total < 30 ? "Sinais Iniciais do Território" : "Principais Sinais do Território"}
+                    </h2>
+                    {stats.total < 30 && (
+                      <span className="bg-amber-200 text-amber-900 font-bold px-3 py-1 rounded-full text-sm whitespace-nowrap">
+                        Amostra pequena
+                      </span>
+                    )}
+                  </div>
                   <p className={`text-gray-700 leading-relaxed font-semibold max-w-3xl ${isTV ? "text-xl" : "text-base"}`}>
-                    As principais necessidades reveladas pela experiência compartilhada:
+                    {stats.total < 30
+                      ? "Os padrões iniciais emergindo da experiência compartilhada:"
+                      : "As necessidades mais frequentes reveladas pela experiência compartilhada:"}
                   </p>
                 </div>
 
@@ -593,23 +602,30 @@ export default function DashboardPreview() {
                               </div>
                             </div>
 
-                            <div className="space-y-2">
-                              <div className={`w-full bg-white/60 rounded-full overflow-hidden ${isTV ? "h-5" : "h-3"}`}>
-                                <div
-                                  className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-full transition-all duration-700 ease-out"
-                                  style={{
-                                    width: `${percentage}%`,
-                                    height: isTV ? "20px" : "12px",
-                                  }}
-                                />
+                            {/* Small sample: show absolute numbers, large sample: show percentages */}
+                            {stats.total < 30 ? (
+                              <div className="text-sm text-gray-700 font-medium">
+                                Apareceu em <strong>{count}</strong> de <strong>{stats.total}</strong> experiência{stats.total !== 1 ? "s" : ""} compartilhada{stats.total !== 1 ? "s" : ""}
                               </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-xs text-gray-600 font-semibold">Frequência</span>
-                                <span className={`font-bold text-gray-700 ${isTV ? "text-lg" : "text-sm"}`}>
-                                  {percentage}% das participações
-                                </span>
+                            ) : (
+                              <div className="space-y-2">
+                                <div className={`w-full bg-white/60 rounded-full overflow-hidden ${isTV ? "h-5" : "h-3"}`}>
+                                  <div
+                                    className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-full transition-all duration-700 ease-out"
+                                    style={{
+                                      width: `${percentage}%`,
+                                      height: isTV ? "20px" : "12px",
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-xs text-gray-600 font-semibold">Frequência</span>
+                                  <span className={`font-bold text-gray-700 ${isTV ? "text-lg" : "text-sm"}`}>
+                                    {percentage}% — {count} de {stats.total} relato{stats.total !== 1 ? "s" : ""}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
+                            )}
                           </div>
                         </div>
                       );
@@ -619,7 +635,7 @@ export default function DashboardPreview() {
                 {/* Insight Summary */}
                 <div className="bg-white/80 border border-indigo-200 rounded-2xl p-6 text-center">
                   <p className={`text-indigo-900 font-semibold ${isTV ? "text-xl" : "text-base"}`}>
-                    💡 <strong>{Object.keys(stats.byCategory).length}</strong> necessidades identificadas a partir de <strong>{stats.total}</strong> histórias compartilhadas
+                    ℹ️ <strong>{Object.keys(stats.byCategory).length}</strong> {stats.total < 30 ? "padrões emergentes" : "necessidades"} identificadas a partir de <strong>{stats.total}</strong> relato{stats.total !== 1 ? "s" : ""}
                   </p>
                 </div>
               </div>
