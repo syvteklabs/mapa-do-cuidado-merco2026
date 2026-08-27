@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ShareableCard from "./ShareableCard";
 
 interface RewardStats {
   total: number;
@@ -133,6 +134,9 @@ export default function ParticipationRewardScreen({
           clínica. Apenas os dados agregados aparecem no mapa.
         </p>
       </div>
+
+      {/* Shareable Card */}
+      <ShareableCard municipio={municipio} tema={stats?.themeName} />
 
       {/* CTAs */}
       <div className="space-y-3 pt-4">
