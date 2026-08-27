@@ -14,7 +14,7 @@ export default function ComoFuncionaPage() {
               Como funciona o Mapa do Cuidado
             </h1>
             <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto">
-              Um processo simples, transparente e seguro para mapear os caminhos do cuidado na Noroeste Fluminense
+              Um processo simples, transparente e seguro para mapear os caminhos do cuidado no Noroeste Fluminense
             </p>
           </div>
         </section>
@@ -35,60 +35,60 @@ export default function ComoFuncionaPage() {
               {/* FAQ Item 1 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Como funciona a privacidade?
+                  O que é o Mapa do Cuidado?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Não solicitamos seu nome, email, telefone ou dados que identifiquem você. Você compartilha apenas seu município e sua experiência de cuidado. Os dados são agregados (combinados) antes de serem visualizados no mapa. Como todo site, processos técnicos podem envolver dados como IP, mas suas respostas não são rastreadas individualmente. Veja nossa <a href="/privacidade" className="text-blue-600 hover:text-blue-700 font-semibold underline">política de privacidade</a> para detalhes completos.
+                  O Mapa do Cuidado é uma ferramenta de escuta participativa que visualiza os caminhos do cuidado no Noroeste Fluminense. Você compartilha sua experiência, agregamos os dados de muitas pessoas, e geramos sinais que podem apoiar conversas, estudos e decisões futuras sobre o território.
                 </p>
               </div>
 
               {/* FAQ Item 2 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Quanto tempo leva para participar?
+                  O que será perguntado?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Apenas 2 minutos. O formulário é rápido e direto, com perguntas claras sobre sua experiência de cuidado. Sem burocracia, sem informações desnecessárias.
+                  Apenas perguntas sobre sua experiência de cuidado: qual seu município, que tipo de necessidade você tem, quem ajuda você, e qual é seu sentimento sobre esse caminho. Nenhuma pergunta sobre identificação pessoal. Leva apenas 2 minutos.
                 </p>
               </div>
 
               {/* FAQ Item 3 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  O que vocês fazem com os dados que coletam?
+                  Minha participação é identificada?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Os dados são agregados (combinados) e usados para criar visualizações dos caminhos do cuidado, identificar padrões regionais e ajudar gestores a entender as necessidades reais. Os dados não são comercializados nem vendidos. Dados técnicos (IP, logs) são processados conforme políticas dos operadores (Supabase, Vercel). Dados agregados podem ser usados para pesquisa e política pública. Veja nossa política de privacidade para detalhes sobre quem tem acesso aos dados.
+                  Não. Você não precisa fornecer seu nome, email, telefone ou dados que identifiquem você. Você compartilha apenas seu município e sua experiência de cuidado. Os dados são agregados (combinados) antes de serem visualizados no mapa. Veja nossa <a href="/privacidade" className="text-blue-600 hover:text-blue-700 font-semibold underline">política de privacidade</a> para detalhes completos.
                 </p>
               </div>
 
               {/* FAQ Item 4 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Posso confiar que minha participação fará diferença?
+                  Como os resultados são apresentados?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Absolutamente. O Mapa do Cuidado foi criado com base em pesquisa participativa real. Cada contribuição é agregada e visualizada no mapa, ajudando formuladores de políticas a entender os caminhos do cuidado na sua região.
+                  Os dados são agregados em visualizações que mostram padrões dos caminhos do cuidado por município: quais necessidades aparecem, quem oferece ajuda, qual é o sentimento geral. O mapa mostra apenas os padrões, nunca dados individuais.
                 </p>
               </div>
 
               {/* FAQ Item 5 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Qual é a diferença entre &quot;Participação&quot; e &quot;Agregação&quot;?
+                  O Mapa representa toda a população?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Participação é quando você compartilha sua experiência. Agregação é quando juntamos muitas experiências anônimas para identificar padrões. O mapa mostra apenas os padrões agregados, nunca dados individuais.
+                  Não. É uma escuta participativa qualitativa, não uma pesquisa estatística. Quanto mais pessoas participam, melhores são os sinais. Mas os dados refletem quem participou, não necessariamente toda a população. Isso é importante e transparente.
                 </p>
               </div>
 
               {/* FAQ Item 6 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Posso participar mais de uma vez?
+                  Posso participar novamente?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Sim! Cada participação é registrada como uma contribuição independente. Se sua experiência de cuidado mudou ou você tem uma nova perspectiva, estamos sempre abertos a ouvir.
+                  Sim! Cada participação é uma contribuição independente. Se sua experiência de cuidado mudou ou você tem uma nova perspectiva, estamos sempre abertos a ouvir.
                 </p>
               </div>
             </div>
