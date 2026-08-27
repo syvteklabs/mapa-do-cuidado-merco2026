@@ -1,10 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Popup, CircleMarker } from "react-leaflet";
 import L from "leaflet";
 import { MUNICIPIOS_GEOJSON } from "@/lib/noroeste-geojson";
 import "leaflet/dist/leaflet.css";
+
+const pulseStyle = `
+  @keyframes pulse {
+    0%, 100% { opacity: 1; r: 8px; }
+    50% { opacity: 0.6; r: 12px; }
+  }
+
+  @keyframes pulse-inner {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .marker-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .marker-pulse-inner {
+    animation: pulse-inner 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+`;
 
 interface OpenStreetMapViewProps {
   stats?: Record<string, number> | null;
@@ -123,6 +143,7 @@ export default function OpenStreetMapView({
 
   return (
     <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg flex flex-col bg-white">
+      <style>{pulseStyle}</style>
       {/* Leaflet Map */}
       <MapContainer
         bounds={bounds}
@@ -139,6 +160,53 @@ export default function OpenStreetMapView({
         {geojsonData && (
           <GeoJSON data={geojsonData} style={styleFeature} onEachFeature={onEachFeature} />
         )}
+
+        {/* Municipality Markers */}
+        {Object.values(MUNICIPIOS_GEOJSON).map((municipio) => {
+          const count = municipalitiesData[municipio.name] || 0;
+          const color = count === 0 ? "#9ca3af" : "#22c55e";
+          const radius = count === 0 ? 6 : 8;
+
+          return (
+            <CircleMarker
+              key={municipio.name}
+              center={[municipio.centroid[1], municipio.centroid[0]]}
+              radius={radius}
+              pathOptions={{
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.8,
+                weight: 2,
+              }}
+              className="marker-pulse"
+              eventHandlers={{
+                mouseover: (e) => {
+                  e.target.setStyle({
+                    fillOpacity: 1,
+                    weight: 3,
+                    radius: radius + 2,
+                  });
+                },
+                mouseout: (e) => {
+                  e.target.setStyle({
+                    fillOpacity: 0.8,
+                    weight: 2,
+                    radius: radius,
+                  });
+                },
+              }}
+            >
+              <Popup>
+                <div className="text-center">
+                  <h4 className="font-bold text-green-700">{municipio.name}</h4>
+                  <p className="text-sm text-gray-700">
+                    {count} {count === 1 ? "participação" : "participações"}
+                  </p>
+                </div>
+              </Popup>
+            </CircleMarker>
+          );
+        })}
       </MapContainer>
 
       {/* Legend and info footer */}
