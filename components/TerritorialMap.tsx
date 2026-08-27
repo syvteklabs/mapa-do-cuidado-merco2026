@@ -142,7 +142,7 @@ export default function TerritorialMap({
               />
 
               {/* Municipality label */}
-              {count > 0 || true && (
+              {true && (
                 <g>
                   <text
                     x={getCentroidLabel(municipioName)[0]}
