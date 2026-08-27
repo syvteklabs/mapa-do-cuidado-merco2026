@@ -3,17 +3,35 @@
 import { useEffect, useState, useMemo } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { supabaseService } from "@/lib/supabase-service";
+import { createClient } from "@/lib/supabase";
 import type { DashboardStats } from "@/types/database";
 import { getCategoryLabel, getSentimentLabel } from "@/lib/dictionaries";
+
+interface NewVoiceNotification {
+  id: string;
+  municipio: string;
+  showUntil: number;
+}
 
 interface PanelScreen {
   id: number;
   name: string;
-  component: React.ComponentType<{ stats: DashboardStats; isTV: boolean }>;
+  component: React.ComponentType<{
+    stats: DashboardStats;
+    isTV: boolean;
+    highlightedMunicipio?: string | null;
+  }>;
 }
 
 // Screen 1: Overview
-const OverviewScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
+const OverviewScreen = ({
+  stats,
+  highlightedMunicipio,
+}: {
+  stats: DashboardStats;
+  isTV?: boolean;
+  highlightedMunicipio?: string | null;
+}) => {
   return (
     <div className="flex flex-col justify-center items-center h-full text-center px-8">
       <h1 className="text-8xl font-black text-blue-600 mb-8">
@@ -57,7 +75,14 @@ const OverviewScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) =>
 };
 
 // Screen 2: Map
-const MapScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
+const MapScreen = ({
+  stats,
+  highlightedMunicipio,
+}: {
+  stats: DashboardStats;
+  isTV?: boolean;
+  highlightedMunicipio?: string | null;
+}) => {
   const participatingCount = Object.keys(stats.byMunicipio).filter(
     m => (stats.byMunicipio[m] || 0) > 0
   ).length;
@@ -87,7 +112,14 @@ const MapScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
 };
 
 // Screen 3: Needs/Categories
-const NeedsScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
+const NeedsScreen = ({
+  stats,
+  highlightedMunicipio,
+}: {
+  stats: DashboardStats;
+  isTV?: boolean;
+  highlightedMunicipio?: string | null;
+}) => {
   const topCategories = useMemo(() => {
     const categories = stats.byCategory;
     return Object.entries(categories)
@@ -134,7 +166,14 @@ const NeedsScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
 };
 
 // Screen 4: Sentiments
-const SentimentsScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
+const SentimentsScreen = ({
+  stats,
+  highlightedMunicipio,
+}: {
+  stats: DashboardStats;
+  isTV?: boolean;
+  highlightedMunicipio?: string | null;
+}) => {
   const sentiments = useMemo(() => {
     const sent = stats.bySentiment || {};
     return Object.entries(sent)
@@ -181,7 +220,14 @@ const SentimentsScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) 
 };
 
 // Screen 5: Municipalities
-const MunicipalitiesScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
+const MunicipalitiesScreen = ({
+  stats,
+  highlightedMunicipio,
+}: {
+  stats: DashboardStats;
+  isTV?: boolean;
+  highlightedMunicipio?: string | null;
+}) => {
   const municipalities = useMemo(() => {
     const munis = stats.byMunicipio;
     return Object.entries(munis)
@@ -197,26 +243,49 @@ const MunicipalitiesScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean
       </h2>
 
       <div className="grid grid-cols-2 gap-6 w-full max-w-5xl">
-        {municipalities.map(([muni, count]) => (
-          <div key={muni} className="bg-emerald-50 rounded-2xl p-6 border-4 border-emerald-200">
-            <p className="text-4xl font-bold text-emerald-900 mb-2">
-              {muni as string}
-            </p>
-            <p className="text-5xl font-black text-emerald-600">
-              {count as number}
-            </p>
-            <p className="text-3xl text-emerald-700">
-              {(count as number) === 1 ? "experiência" : "experiências"}
-            </p>
-          </div>
-        ))}
+        {municipalities.map(([muni, count]) => {
+          const isHighlighted = highlightedMunicipio === (muni as string);
+          return (
+            <div
+              key={muni}
+              className={`rounded-2xl p-6 border-4 transition-all duration-300 ${
+                isHighlighted
+                  ? "bg-emerald-100 border-emerald-500 ring-4 ring-emerald-400 ring-offset-2 scale-105 shadow-2xl"
+                  : "bg-emerald-50 border-emerald-200"
+              }`}
+            >
+              <p className="text-4xl font-bold text-emerald-900 mb-2">
+                {muni as string}
+              </p>
+              <p
+                className={`text-5xl font-black transition-colors ${
+                  isHighlighted ? "text-emerald-700" : "text-emerald-600"
+                }`}
+              >
+                {count as number}
+              </p>
+              <p className={`text-3xl transition-colors ${
+                isHighlighted ? "text-emerald-800" : "text-emerald-700"
+              }`}>
+                {(count as number) === 1 ? "experiência" : "experiências"}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
 // Screen 6: QR Code
-const QRCodeScreen = ({ stats }: { stats: DashboardStats; isTV?: boolean }) => {
+const QRCodeScreen = ({
+  stats,
+  highlightedMunicipio,
+}: {
+  stats: DashboardStats;
+  isTV?: boolean;
+  highlightedMunicipio?: string | null;
+}) => {
   const participationUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://mapadeducuidado.merco'}/participar`;
 
   return (
@@ -265,6 +334,8 @@ export default function TVPanelPage() {
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [notification, setNotification] = useState<NewVoiceNotification | null>(null);
+  const [highlightedMunicipio, setHighlightedMunicipio] = useState<string | null>(null);
 
   // Fetch stats
   useEffect(() => {
@@ -283,6 +354,67 @@ export default function TVPanelPage() {
     fetchStats();
     const interval = setInterval(fetchStats, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
+  }, []);
+
+  // Real-time subscription for new contributions
+  useEffect(() => {
+    const supabase = createClient();
+    let lastSeenId: string | null = null;
+
+    const subscription = supabase
+      .channel("mapa_contribuicoes_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "mapa_contribuicoes",
+        },
+        (payload) => {
+          const newContribuicao = payload.new as any;
+          const municipio = newContribuicao.municipio;
+
+          if (municipio && municipio !== lastSeenId) {
+            lastSeenId = municipio;
+            const notificationId = `${municipio}-${Date.now()}`;
+
+            // Show notification
+            setNotification({
+              id: notificationId,
+              municipio,
+              showUntil: Date.now() + 4000,
+            });
+
+            // Highlight municipality
+            setHighlightedMunicipio(municipio);
+
+            // Auto-dismiss after 4 seconds
+            setTimeout(() => {
+              setNotification(null);
+              setHighlightedMunicipio(null);
+            }, 4000);
+
+            // Refresh stats immediately
+            const fetchStats = async () => {
+              try {
+                const response = await supabaseService.getContribuicoesStats();
+                if (response.success && response.data) {
+                  setStats(response.data);
+                  setLastUpdated(new Date());
+                }
+              } catch (error) {
+                console.error("Error fetching stats:", error);
+              }
+            };
+            fetchStats();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Auto-rotate screens every 12 seconds
@@ -318,7 +450,7 @@ export default function TVPanelPage() {
           isTransitioning ? "opacity-0" : "opacity-100"
         }`}
       >
-        <CurrentScreenComponent stats={stats} isTV={true} />
+        <CurrentScreenComponent stats={stats} isTV={true} highlightedMunicipio={highlightedMunicipio} />
       </div>
 
       {/* QR Code corner (always visible except on QR screen) */}
@@ -371,6 +503,45 @@ export default function TVPanelPage() {
           />
         ))}
       </div>
+
+      {/* New Voice Notification Toast */}
+      {notification && (
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
+          <div className="animate-in fade-in duration-300">
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-4 border-emerald-400 rounded-3xl shadow-2xl p-12 max-w-3xl mx-auto text-center">
+              <div className="space-y-6">
+                <div className="text-8xl animate-pulse">✨</div>
+                <p className="text-6xl font-black text-emerald-900 leading-tight">
+                  Uma nova experiência<br />acaba de entrar no mapa
+                </p>
+                <div className="bg-white rounded-2xl p-8 border-2 border-emerald-300">
+                  <p className="text-5xl font-bold text-emerald-700">
+                    {notification.municipio}
+                  </p>
+                  <p className="text-4xl text-emerald-600 mt-3">
+                    agora soma mais uma contribuição
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Highlight pulse animation style */}
+      <style>{`
+        @keyframes pulse-highlight {
+          0%, 100% {
+            opacity: 0;
+          }
+          50% {
+            opacity: 0.3;
+          }
+        }
+        .animate-pulse-highlight {
+          animation: pulse-highlight 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+      `}</style>
     </div>
   );
 }
