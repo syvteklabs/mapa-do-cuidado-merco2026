@@ -9,6 +9,7 @@ import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import LiveActivationBadge from "@/components/LiveActivationBadge";
+import LiveActivityBar from "@/components/LiveActivityBar";
 
 interface StatsData {
   total: number;
@@ -133,6 +134,9 @@ export default function Home() {
             <HeroMap />
           </div>
         </section>
+
+        {/* Live Activity Bar */}
+        <LiveActivityBar />
 
         {/* Proof of Movement - Live engagement stats */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">

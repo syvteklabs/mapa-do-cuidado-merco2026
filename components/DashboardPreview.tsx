@@ -6,6 +6,7 @@ import ExpansionUnified from "./ExpansionUnified";
 import DemoBanner from "./DemoBanner";
 import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
+import LiveActivityBar from "./LiveActivityBar";
 import { DEMO_STATS } from "@/lib/demo-data";
 
 interface DashboardStats {
@@ -259,6 +260,9 @@ export default function DashboardPreview() {
       `}</style>
       {/* Demo Mode Banner */}
       {isDemoMode && <DemoBanner />}
+
+      {/* Live Activity Bar */}
+      <LiveActivityBar />
 
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
