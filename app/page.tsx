@@ -58,11 +58,10 @@ export default function Home() {
               {/* Main Headline - Human & Compelling */}
               <div className="space-y-4">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Sua experiência importa no cuidado
+                  Como foi buscar cuidado na sua cidade?
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                  Escuta participativa rápida, voluntária e anônima sobre os
-                  caminhos do cuidado no Noroeste Fluminense.
+                  Compartilhe sua experiência em apenas 2 minutos e ajude a revelar como as pessoas acessam o cuidado no Noroeste Fluminense.
                 </p>
               </div>
 
@@ -76,7 +75,7 @@ export default function Home() {
                   <span className="text-2xl flex-shrink-0">📊</span>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">
-                      {isDemoMode ? "Exemplo de participação" : "Território ganhando visibilidade"}
+                      {isDemoMode ? "Exemplo de participação" : "Sua experiência ajuda a revelar o território"}
                     </h3>
                     <p className="text-sm text-gray-700">
                       {getParticipationMessage()}
@@ -89,7 +88,7 @@ export default function Home() {
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Participação protegida</h3>
                     <p className="text-sm text-gray-700">
-                      Respostas apresentadas de forma agregada. Nenhum nome, contato ou informação clínica é solicitado ou armazenado.
+                      Não solicitamos nome, telefone, contato ou informação clínica. As respostas aparecem apenas de forma agrupada no mapa.
                     </p>
                   </div>
                 </div>
@@ -103,16 +102,16 @@ export default function Home() {
                 </Button>
                 {/* Secondary CTA */}
                 <Button href="/mapa" variant="secondary" className="text-base sm:text-lg py-4 px-6">
-                  Explorar o mapa
+                  Ver o mapa ao vivo
                 </Button>
               </div>
 
               {/* Trust indicator */}
               <div className="pt-4 border-t border-gray-200">
                 <p className="text-sm text-gray-600">
-                  <span className="font-semibold">✓ Protegido</span> •
-                  <span className="font-semibold ml-1">Rápido</span> •
-                  <span className="font-semibold ml-1">Agregado</span>
+                  <span className="font-semibold">✓ Sem nome ou contato</span> •
+                  <span className="font-semibold ml-1">Participação voluntária</span> •
+                  <span className="font-semibold ml-1">Resultados agregados</span>
                 </p>
               </div>
             </div>

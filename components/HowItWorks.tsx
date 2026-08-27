@@ -4,24 +4,21 @@ export default function HowItWorks() {
   const steps = [
     {
       number: "1",
-      title: "Participação",
-      description: "Você compartilha sua experiência de cuidado de forma rápida, anônima e voluntária. Nenhum dado pessoal é coletado.",
+      title: "Compartilhe",
+      description: "Responda algumas perguntas sobre sua experiência de acesso ao cuidado. Leva cerca de 2 minutos.",
       icon: "🗣️",
-      details: "2 minutos • Sem identificação • Totalmente anônimo",
     },
     {
       number: "2",
-      title: "Agregação",
-      description: "Suas respostas são combinadas com outras participações. Os dados são processados de forma segura e privada.",
+      title: "Conecte",
+      description: "Sua resposta é agrupada com as demais, sem identificação pessoal.",
       icon: "🔗",
-      details: "Dados anônimos • Sem armazenamento pessoal • Totalmente seguro",
     },
     {
       number: "3",
-      title: "Visualização",
-      description: "Os padrões e tendências aparecem no mapa. Você pode explorar os caminhos do cuidado na sua região.",
+      title: "Descubra",
+      description: "O mapa revela percepções, padrões e diferenças entre os municípios da região.",
       icon: "🗺️",
-      details: "Mapa interativo • Insights em tempo real • Dados agregados",
     },
   ];
 
@@ -33,7 +30,7 @@ export default function HowItWorks() {
           Como funciona
         </h2>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-          Três passos simples para mapear os caminhos do cuidado na sua região
+          Você participa. O território ganha voz.
         </p>
       </div>
 
@@ -59,20 +56,9 @@ export default function HowItWorks() {
               </div>
 
               {/* Description */}
-              <p className="text-gray-700 text-base leading-relaxed mb-6">
+              <p className="text-gray-700 text-base leading-relaxed">
                 {step.description}
               </p>
-
-              {/* Details */}
-              <div className="pt-6 border-t border-gray-200">
-                <p className="text-xs text-gray-600 space-y-1">
-                  {step.details.split(" • ").map((detail, i) => (
-                    <span key={i} className="block">
-                      ✓ {detail}
-                    </span>
-                  ))}
-                </p>
-              </div>
             </div>
 
             {/* Arrow connector (hidden on mobile) */}
@@ -92,24 +78,24 @@ export default function HowItWorks() {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="text-center">
-            <p className="text-3xl mb-2">🔒</p>
-            <p className="font-semibold text-gray-900 mb-2">Privacidade</p>
-            <p className="text-sm text-gray-600">
-              Seus dados pessoais nunca são coletados ou armazenados
-            </p>
-          </div>
-          <div className="text-center">
             <p className="text-3xl mb-2">⚡</p>
             <p className="font-semibold text-gray-900 mb-2">Rápido</p>
             <p className="text-sm text-gray-600">
-              Leva apenas 2 minutos para compartilhar sua experiência
+              Leva cerca de 2 minutos.
             </p>
           </div>
           <div className="text-center">
-            <p className="text-3xl mb-2">💡</p>
-            <p className="font-semibold text-gray-900 mb-2">Impacto</p>
+            <p className="text-3xl mb-2">🔒</p>
+            <p className="font-semibold text-gray-900 mb-2">Protegido</p>
             <p className="text-sm text-gray-600">
-              Suas contribuições formam insights coletivos que geram mudança
+              Não solicitamos nome, telefone ou contato.
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-3xl mb-2">👥</p>
+            <p className="font-semibold text-gray-900 mb-2">Coletivo</p>
+            <p className="text-sm text-gray-600">
+              Cada participação amplia a compreensão sobre a experiência de cuidado na região.
             </p>
           </div>
         </div>

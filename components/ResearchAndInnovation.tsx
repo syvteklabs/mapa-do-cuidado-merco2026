@@ -2,17 +2,17 @@ export default function ResearchAndInnovation() {
   const institutions = [
     {
       title: "SAEG · IFF Campos",
-      description: "Grupo de pesquisa dedicado a estudar os caminhos do cuidado e acesso de pessoas no território",
+      description: "Pesquisa acadêmica e desenvolvimento científico.",
       category: "Pesquisa",
     },
     {
       title: "HUB RJ · FAPERJ",
-      description: "Ecossistema de inovação que conecta pesquisa acadêmica com soluções aplicadas em saúde",
+      description: "Conexão com o ecossistema de inovação do estado.",
       category: "Inovação",
     },
     {
       title: "TEC Incubadora · UENF",
-      description: "Espaço para transformar ideias de tecnologia em saúde em empreendimentos reais",
+      description: "Desenvolvimento e amadurecimento da solução.",
       category: "Empreendedorismo",
     },
   ];
@@ -23,12 +23,17 @@ export default function ResearchAndInnovation() {
         {/* Header */}
         <div className="text-center space-y-4">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-            Pesquisa, território e inovação aplicada
+            Pesquisa conectada ao território
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            O Mapa do Cuidado integra pesquisa acadêmica qualitativa com inovação aplicada, conectando vozes da comunidade com ecossistemas de conhecimento e empreendedorismo no Noroeste Fluminense.
+            O Mapa do Cuidado é uma experiência de inovação da SyVtek Care que transforma participações voluntárias em uma visualização coletiva do Noroeste Fluminense.
           </p>
         </div>
+
+        {/* Introduction */}
+        <p className="text-gray-700 text-center mb-8">
+          O projeto se conecta a ambientes de pesquisa, inovação e empreendedorismo:
+        </p>
 
         {/* Institutional Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -50,9 +55,6 @@ export default function ResearchAndInnovation() {
               <p className="text-gray-600 text-sm leading-relaxed flex-1">
                 {institution.description}
               </p>
-              <div className="mt-4 text-blue-600 text-sm font-semibold group-hover:translate-x-1 transition-transform">
-                Saiba mais →
-              </div>
             </div>
           ))}
         </div>
@@ -60,8 +62,8 @@ export default function ResearchAndInnovation() {
         {/* Legal Disclaimer */}
         <div className="bg-gray-50 border-l-4 border-gray-300 rounded-lg p-6">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold block mb-2">Transparência:</span>
-            As conexões mencionadas acima com instituições acadêmicas e de inovação refletem parcerias de pesquisa e desenvolvimento. Não implicam em validação, financiamento ou responsabilidade institucional específica sobre o Mapa do Cuidado. A SyVtek Care desenvolve e mantém o projeto de forma independente.
+            <span className="font-semibold block mb-2">Nota de transparência:</span>
+            Essas conexões representam vínculos de pesquisa, inovação e desenvolvimento. Não significam validação, financiamento ou responsabilidade institucional sobre o Mapa do Cuidado.
           </p>
         </div>
       </div>
