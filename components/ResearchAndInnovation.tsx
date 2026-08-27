@@ -1,19 +1,19 @@
 export default function ResearchAndInnovation() {
   const institutions = [
     {
-      title: "SAEG · IFF Campos",
-      description: "Pesquisa acadêmica e desenvolvimento científico.",
-      category: "Pesquisa",
+      title: "Mestrado Profissional SAEG · IFF Campus Campos Centro",
+      description: "A SyVtek Care nasce de uma trajetória de pesquisa aplicada vinculada ao Mestrado Profissional em Sistemas Aplicados à Engenharia e Gestão do IFF. A pesquisa fornece base científica para o desenvolvimento de tecnologias voltadas à continuidade e à coordenação do cuidado.",
+      category: "Pesquisa aplicada",
     },
     {
       title: "HUB RJ · FAPERJ",
-      description: "Conexão com o ecossistema de inovação do estado.",
-      category: "Inovação",
+      description: "A trajetória tecnológica que deu origem à SyVtek Care foi selecionada pelo HUB RJ, programa da FAPERJ, recebendo fomento público para o desenvolvimento e a evolução da solução.",
+      category: "Fomento à inovação",
     },
     {
       title: "TEC Incubadora · UENF",
-      description: "Desenvolvimento e amadurecimento da solução.",
-      category: "Empreendedorismo",
+      description: "A SyVtek Care foi aprovada para incubação na TEC Incubadora, ambiente vinculado à UENF que apoia o desenvolvimento e o amadurecimento de empresas inovadoras.",
+      category: "Incubação",
     },
   ];
 
@@ -23,17 +23,14 @@ export default function ResearchAndInnovation() {
         {/* Header */}
         <div className="text-center space-y-4">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-            Pesquisa conectada ao território
+            Uma experiência conectada à pesquisa e à inovação
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            O Mapa do Cuidado é uma experiência de inovação da SyVtek Care que transforma participações voluntárias em uma visualização coletiva do Noroeste Fluminense.
+            O Mapa do Cuidado é uma ativação independente da SyVtek Care. A experiência transforma participações voluntárias e anônimas em uma visualização coletiva sobre os caminhos do cuidado no Noroeste Fluminense.
+            <br className="mt-4" />
+            A iniciativa integra uma trajetória construída entre pesquisa acadêmica, fomento à inovação e incubação de empresas.
           </p>
         </div>
-
-        {/* Introduction */}
-        <p className="text-gray-700 text-center mb-8">
-          O projeto se conecta a ambientes de pesquisa, inovação e empreendedorismo:
-        </p>
 
         {/* Institutional Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -62,8 +59,8 @@ export default function ResearchAndInnovation() {
         {/* Legal Disclaimer */}
         <div className="bg-gray-50 border-l-4 border-gray-300 rounded-lg p-6">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold block mb-2">Nota de transparência:</span>
-            Essas conexões representam vínculos de pesquisa, inovação e desenvolvimento. Não significam validação, financiamento ou responsabilidade institucional sobre o Mapa do Cuidado.
+            <span className="font-semibold block mb-2">Transparência institucional:</span>
+            O Mapa do Cuidado é uma iniciativa da SyVtek Care. As referências ao SAEG/IFF, HUB RJ/FAPERJ e TEC Incubadora/UENF representam etapas reais da trajetória de pesquisa, fomento e incubação da empresa. Não significam aprovação científica dos resultados, certificação, responsabilidade institucional ou financiamento específico desta ativação.
           </p>
         </div>
       </div>

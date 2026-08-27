@@ -44,9 +44,9 @@ export default function Home() {
 
   const getParticipationMessage = () => {
     if (!stats) return "Convidamos você a compartilhar sua experiência.";
-    if (stats.total === 0) return "Seja o primeiro a contribuir e ajude a mapear os caminhos do cuidado.";
-    if (stats.total === 1) return "Uma pessoa já começou a compartilhar. Sua contribuição ajuda a construir um mapa mais completo.";
-    return `${stats.total} ${stats.total === 1 ? "pessoa já começou" : "pessoas já começaram"} a compartilhar suas experiências. Cada contribuição nos ajuda a enxergar melhor os caminhos do cuidado.`;
+    if (isDemoMode) return "Demonstração com dados fictícios";
+    if (stats.total === 0) return "O Mapa do Cuidado está começando agora.";
+    return `${stats.total} ${stats.total === 1 ? "experiência já ajuda" : "experiências já ajudam"} a revelar os caminhos do cuidado no território.`;
   };
 
   return (
@@ -64,10 +64,10 @@ export default function Home() {
               {/* Main Headline - Human & Compelling */}
               <div className="space-y-4">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Como foi buscar cuidado na sua cidade?
+                  Como foi seu caminho para conseguir cuidado na sua cidade?
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                  Em 2 minutos, sua experiência entra no Mapa do Cuidado e ajuda a revelar os caminhos do Noroeste Fluminense.
+                  Em cerca de 2 minutos, você compartilha sua experiência e ajuda a construir um retrato coletivo do cuidado no Noroeste Fluminense.
                 </p>
               </div>
 
@@ -81,11 +81,10 @@ export default function Home() {
                   <span className="text-2xl flex-shrink-0">📊</span>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">
-                      {isDemoMode ? "Exemplo de participação" : "Sua experiência ajuda a revelar o território"}
+                      {isDemoMode ? "Demonstração" : "O que sua experiência revela"}
                     </h3>
                     <p className="text-sm text-gray-700">
                       {getParticipationMessage()}
-                      {isDemoMode && " (dados de demonstração)"}
                     </p>
                   </div>
                 </div>
@@ -94,7 +93,7 @@ export default function Home() {
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Participação protegida</h3>
                     <p className="text-sm text-gray-700">
-                      Não solicitamos nome, telefone, contato ou informação clínica. As respostas aparecem apenas de forma agrupada no mapa.
+                      Não solicitamos nome, telefone ou informações clínicas. Os resultados são apresentados apenas de forma coletiva.
                     </p>
                   </div>
                 </div>
@@ -108,7 +107,7 @@ export default function Home() {
                 </Button>
                 {/* Secondary CTA */}
                 <Button href="/mapa" variant="secondary" className="text-base sm:text-lg py-4 px-6">
-                  Ver o mapa sendo construído
+                  Explorar o mapa
                 </Button>
               </div>
 
@@ -154,7 +153,7 @@ export default function Home() {
 
         {/* Brand Footer */}
         <section className="bg-white border-t border-gray-200 py-8 mt-8">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center space-y-3">
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center space-y-4">
             <div>
               <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
                 SyVtek Care
@@ -164,10 +163,16 @@ export default function Home() {
               </p>
             </div>
             <p className="text-sm text-gray-600">
-              Uma escuta participativa rápida, voluntária e anônima para mapear os caminhos do cuidado
+              Escuta participativa, voluntária e anônima sobre os caminhos do cuidado no Noroeste Fluminense.
             </p>
-            <p className="text-xs text-gray-500">
-              Merco Noroeste Fluminense 2026
+            <p className="text-xs text-gray-600">
+              Experiência apresentada na Merco Noroeste 2026
+            </p>
+            <p className="text-xs text-gray-500 pt-2 border-t border-gray-200">
+              Uma iniciativa da SyVtek Care, construída em uma trajetória de pesquisa aplicada no SAEG/IFF, fomento à inovação pelo HUB RJ/FAPERJ e incubação na TEC Incubadora/UENF.
+            </p>
+            <p className="text-xs text-gray-500 italic">
+              Esses vínculos representam etapas da trajetória da SyVtek Care e não implicam validação, certificação ou responsabilidade institucional sobre o Mapa do Cuidado.
             </p>
           </div>
         </section>

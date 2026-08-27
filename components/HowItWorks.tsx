@@ -8,19 +8,19 @@ export default function HowItWorks() {
     {
       number: "1",
       title: "Compartilhe",
-      description: "Responda algumas perguntas sobre sua experiência de acesso ao cuidado. Leva cerca de 2 minutos.",
+      description: "Responda algumas perguntas sobre sua experiência para conseguir cuidado. Leva cerca de 2 minutos.",
       icon: IconMessage,
     },
     {
       number: "2",
-      title: "Conecte",
-      description: "Sua resposta é agrupada com as demais, sem identificação pessoal.",
+      title: "Some sua voz",
+      description: "Sua resposta é reunida às demais, sem identificação pessoal.",
       icon: IconLink,
     },
     {
       number: "3",
-      title: "Descubra",
-      description: "O mapa revela percepções, padrões e diferenças entre os municípios da região.",
+      title: "Explore",
+      description: "O mapa apresenta percepções, temas e diferenças observadas entre os municípios.",
       icon: IconMap,
     },
   ];
@@ -33,7 +33,7 @@ export default function HowItWorks() {
           Como funciona
         </h2>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-          Você participa. O território ganha voz.
+          Você compartilha. O território ganha visibilidade.
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export default function HowItWorks() {
             </div>
             <p className="font-semibold text-gray-900 mb-2">Rápido</p>
             <p className="text-sm text-gray-600">
-              Leva cerca de 2 minutos.
+              Você participa em cerca de 2 minutos.
             </p>
           </div>
           <div className="text-center">
@@ -98,7 +98,7 @@ export default function HowItWorks() {
             </div>
             <p className="font-semibold text-gray-900 mb-2">Protegido</p>
             <p className="text-sm text-gray-600">
-              Não solicitamos nome, telefone ou contato.
+              Não solicitamos nome, telefone ou informações clínicas.
             </p>
           </div>
           <div className="text-center">
@@ -107,7 +107,7 @@ export default function HowItWorks() {
             </div>
             <p className="font-semibold text-gray-900 mb-2">Coletivo</p>
             <p className="text-sm text-gray-600">
-              Cada participação amplia a compreensão sobre a experiência de cuidado na região.
+              Cada participação amplia a compreensão sobre os caminhos do cuidado na região.
             </p>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function HowItWorks() {
           href="/participar"
           className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors"
         >
-          Participar agora
+          Compartilhar minha experiência
         </a>
       </div>
     </div>

@@ -140,8 +140,8 @@ export default function LiveActivityBar({
                   </span>
                   <p className="text-xs sm:text-sm text-gray-600">
                     {stats.municipios === 1
-                      ? "município presente"
-                      : "municípios presentes"}
+                      ? "município com participação registrada"
+                      : "municípios com participação registrada"}
                   </p>
                 </div>
 
