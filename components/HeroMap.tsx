@@ -221,12 +221,12 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
           opacity="0.8"
         />
 
-        {/* Municipality points - cities represented as circles */}
+        {/* Municipality polygons with participation colors */}
         {MUNICIPALITIES.map((municipality, index) => {
           const count = municipalitiesData[municipality.name] || 0;
           const color = getColorForParticipations(count, maxCount);
           const borderColor = getBorderColor(count);
-          const radius = count === 0 ? 3 : Math.min(3 + (count / maxCount) * 3, 6);
+          const strokeWidth = hoveredMunicipality === municipality.name ? 2.5 : 1.5;
 
           return (
             <g
@@ -235,22 +235,30 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
               onMouseLeave={() => setHoveredMunicipality(null)}
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* City point circle */}
-              <circle
+              {/* Municipality polygon */}
+              <path
                 className="municipality-path"
-                cx={municipality.labelX}
-                cy={municipality.labelY}
-                r={radius}
+                d={municipality.polygon}
                 fill={color}
                 stroke={borderColor}
-                strokeWidth="1.5"
+                strokeWidth={strokeWidth}
+                opacity="0.9"
+              />
+
+              {/* City point - small circle at center */}
+              <circle
+                cx={municipality.labelX}
+                cy={municipality.labelY}
+                r="1.5"
+                fill="#16a34a"
+                opacity="0.7"
               />
 
               {/* Municipality label on hover */}
               {hoveredMunicipality === municipality.name && (
                 <text
                   x={municipality.labelX}
-                  y={municipality.labelY - radius - 2}
+                  y={municipality.labelY - 8}
                   fontSize="2"
                   fontWeight="600"
                   fill="#166534"
@@ -259,22 +267,6 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
                   style={{ opacity: 1, pointerEvents: "none" }}
                 >
                   {municipality.name}
-                </text>
-              )}
-
-              {/* Participation count label */}
-              {count > 0 && (
-                <text
-                  x={municipality.labelX}
-                  y={municipality.labelY + radius + 3}
-                  fontSize="1.2"
-                  fontWeight="600"
-                  fill="#166534"
-                  textAnchor="middle"
-                  className="municipality-label"
-                  style={{ opacity: 0.8, pointerEvents: "none" }}
-                >
-                  {count}
                 </text>
               )}
 
