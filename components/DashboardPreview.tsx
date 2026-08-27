@@ -7,6 +7,7 @@ import DemoBanner from "./DemoBanner";
 import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import LiveActivityBar from "./LiveActivityBar";
+import LearningsBlock from "./LearningsBlock";
 import { DEMO_STATS } from "@/lib/demo-data";
 import { getCategoryLabel, getSentimentLabel } from "@/lib/dictionaries";
 
@@ -639,6 +640,18 @@ export default function DashboardPreview() {
                   </p>
                 </div>
               </div>
+            )}
+
+            {/* SECTION 3.5: What we're learning - O que estamos aprendendo */}
+            {stats && (
+              <LearningsBlock
+                total={stats.total}
+                byCategory={stats.byCategory}
+                byMunicipio={stats.byMunicipio}
+                activeMunicipios={activemunicipios}
+                totalMunicipios={MUNICIPIOS_NOROESTE.length}
+                isTV={isTV}
+              />
             )}
 
             {/* SECTION 4: Municipality Participation - Participação por Município */}
