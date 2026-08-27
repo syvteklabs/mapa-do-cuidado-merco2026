@@ -124,7 +124,7 @@ export default function Home() {
 
             {/* Right Column - Visual Map */}
             <div className="hidden lg:block h-96 lg:h-full min-h-96">
-              <HeroMap />
+              <HeroMap stats={stats?.byMunicipio} />
             </div>
           </div>
         </section>
@@ -132,7 +132,7 @@ export default function Home() {
         {/* Mobile Map - Show on small screens */}
         <section className="lg:hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
           <div className="h-64 sm:h-80">
-            <HeroMap />
+            <HeroMap stats={stats?.byMunicipio} />
           </div>
         </section>
 
