@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { IconSuccess } from "./icons/Icons";
+import { colors } from "@/lib/designTokens";
 
 interface ActivityStats {
   total: number;
@@ -68,9 +70,9 @@ export default function LiveActivityBar({
       {showNotification && (
         <div className="animate-in slide-in-from-top-2 duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
-              <span className="text-xl">✨</span>
-              <p className="text-sm font-medium text-green-800">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
+              <IconSuccess size={20} color={colors.success[600]} className="flex-shrink-0" />
+              <p className="text-sm font-medium text-emerald-800">
                 Nova experiência adicionada ao mapa agora.
               </p>
               <button
@@ -78,7 +80,7 @@ export default function LiveActivityBar({
                   setShowNotification(false);
                   onNotificationClose?.();
                 }}
-                className="ml-auto text-green-600 hover:text-green-700 font-semibold"
+                className="ml-auto text-emerald-600 hover:text-emerald-700 font-semibold"
               >
                 ✕
               </button>
@@ -88,7 +90,7 @@ export default function LiveActivityBar({
       )}
 
       {/* Activity Bar */}
-      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 border-y border-indigo-200 py-6">
+      <div className="bg-blue-50 border-y border-blue-200 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-center sm:gap-8">
             <h2 className="text-center font-bold text-gray-900 text-lg">

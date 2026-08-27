@@ -7,6 +7,8 @@ import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
 import PrivacyDisclosure from "./PrivacyDisclosure";
 import ParticipationRewardScreen from "./ParticipationRewardScreen";
+import { IconExpand, IconSecurity, IconChart } from "./icons/Icons";
+import { colors } from "@/lib/designTokens";
 
 export default function ParticipationFlow() {
   const {
@@ -105,22 +107,22 @@ export default function ParticipationFlow() {
             </div>
 
             <div className="space-y-4 text-left">
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0" aria-hidden="true">⏱️</span>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 flex gap-3">
+                <IconExpand size={20} color={colors.primary[600]} className="flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Rápido</p>
                   <p className="text-sm text-gray-600">Apenas 2 minutos</p>
                 </div>
               </div>
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0" aria-hidden="true">🔒</span>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 flex gap-3">
+                <IconSecurity size={20} color={colors.success[600]} className="flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Privacidade</p>
                   <p className="text-sm text-gray-600">Não solicitamos dados que identificam você</p>
                 </div>
               </div>
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
-                <span className="text-2xl flex-shrink-0" aria-hidden="true">📊</span>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 flex gap-3">
+                <IconChart size={20} color={colors.primary[600]} className="flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Agregado</p>
                   <p className="text-sm text-gray-600">Suas respostas são combinadas em um mapa coletivo</p>
