@@ -44,7 +44,6 @@ const getColorForParticipations = (count: number, maxCount: number): string => {
 export default function OpenStreetMapView({
   stats = null,
 }: OpenStreetMapViewProps) {
-  const [geojsonData, setGeojsonData] = useState<any>(null);
   const [municipalitiesData, setMunicipalitiesData] = useState<
     Record<string, number>
   >(stats || {});
@@ -55,85 +54,10 @@ export default function OpenStreetMapView({
     }
   }, [stats]);
 
-  useEffect(() => {
-    // Converter os dados geográficos para GeoJSON
-    const features = Object.values(MUNICIPIOS_GEOJSON).map((municipio) => {
-      const count = municipalitiesData[municipio.name] || 0;
-      return {
-        type: "Feature",
-        properties: {
-          name: municipio.name,
-          count: count,
-          centroid: municipio.centroid,
-        },
-        geometry: {
-          type: "Polygon",
-          coordinates: [municipio.coordinates],
-        },
-      };
-    });
-
-    setGeojsonData({
-      type: "FeatureCollection",
-      features: features,
-    });
-  }, [municipalitiesData]);
-
   const maxCount = Math.max(
     ...Object.values(municipalitiesData).filter((v) => typeof v === "number"),
     1
   );
-
-  const onEachFeature = (feature: any, layer: L.Layer) => {
-    const name = feature.properties.name;
-    const count = feature.properties.count;
-
-    // Adicionar popup
-    const popupContent = `
-      <div class="p-2">
-        <h3 class="font-bold text-green-700">${name}</h3>
-        <p class="text-sm text-gray-700">
-          <span class="font-semibold">${count}</span> ${
-      count === 1 ? "participação" : "participações"
-    }
-        </p>
-      </div>
-    `;
-
-    layer.bindPopup(popupContent);
-
-    // Hover effects
-    layer.on("mouseover", (e: L.LeafletEvent) => {
-      const target = e.target as L.Path;
-      target.setStyle({
-        weight: 3,
-        opacity: 1,
-      });
-    });
-
-    layer.on("mouseout", (e: L.LeafletEvent) => {
-      const target = e.target as L.Path;
-      target.setStyle({
-        weight: 2,
-        opacity: 0.7,
-      });
-    });
-  };
-
-  const styleFeature = (feature: any) => {
-    const count = feature.properties.count;
-    const color = getColorForParticipations(count, maxCount);
-    const borderColor = count === 0 ? "#d1d5db" : "#22c55e";
-
-    return {
-      fillColor: color,
-      weight: 2,
-      opacity: 0.7,
-      color: borderColor,
-      dashArray: "3",
-      fillOpacity: 0.85,
-    };
-  };
 
   // Calcular bounds para o mapa
   const bounds = [
@@ -155,11 +79,6 @@ export default function OpenStreetMapView({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-
-        {/* GeoJSON Layer */}
-        {geojsonData && (
-          <GeoJSON data={geojsonData} style={styleFeature} onEachFeature={onEachFeature} />
-        )}
 
         {/* Municipality Markers */}
         {Object.values(MUNICIPIOS_GEOJSON).map((municipio) => {
@@ -219,19 +138,19 @@ export default function OpenStreetMapView({
         <div className="flex flex-wrap gap-3 text-xs">
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-50 border border-gray-300"></div>
-            <span className="text-gray-600">Sem participação</span>
+            <span className="text-gray-600">Sem participações</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-200 border border-green-300"></div>
-            <span className="text-gray-600">Poucas</span>
+            <span className="text-gray-600">Poucas participações</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-500 border border-green-600"></div>
-            <span className="text-gray-600">Muitas</span>
+            <span className="text-gray-600">Participação crescente</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-700 border border-green-800"></div>
-            <span className="text-gray-600">Destaque</span>
+            <span className="text-gray-600">Maior participação</span>
           </div>
         </div>
 

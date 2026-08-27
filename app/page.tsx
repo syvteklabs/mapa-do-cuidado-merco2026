@@ -24,6 +24,7 @@ const OpenStreetMapView = dynamic(() => import("@/components/OpenStreetMapView")
 interface StatsData {
   total: number;
   byMunicipio: Record<string, number>;
+  municipiosComParticipacao?: number;
 }
 
 export default function Home() {
@@ -51,11 +52,9 @@ export default function Home() {
     fetchStats();
   }, []);
 
-  const getParticipationMessage = () => {
-    if (!stats) return "Convidamos você a compartilhar sua experiência.";
-    if (stats.total === 0) return "Seja o primeiro a contribuir.";
-    if (stats.total === 1) return "Uma pessoa já começou a compartilhar.";
-    return `${stats.total} pessoas já compartilharam suas experiências.`;
+  const getMunicipiosCount = () => {
+    if (!stats || !stats.byMunicipio) return 0;
+    return Object.values(stats.byMunicipio).filter((count) => count > 0).length;
   };
 
   return (
@@ -70,36 +69,49 @@ export default function Home() {
               <LiveActivationBadge isDemoMode={isDemoMode} />
 
               <div className="space-y-3">
+                <p className="text-sm font-semibold text-green-700 uppercase tracking-wide">
+                  Experiência ao vivo na Merco Noroeste 2026
+                </p>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Como foi buscar cuidado na sua cidade?
+                  {stats && stats.total > 0
+                    ? `${stats.total} experiências já ajudam a revelar os caminhos do cuidado no território.`
+                    : "Como foi seu caminho para conseguir cuidado na sua cidade?"
+                  }
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                  Em 2 minutos, sua experiência entra no Mapa do Cuidado e ajuda a revelar os caminhos do Noroeste Fluminense.
+                  {stats && stats.total > 0
+                    ? "Explore como as participações começam a revelar percepções e diferenças entre os municípios."
+                    : "Em cerca de 2 minutos, você compartilha sua experiência e ajuda a construir um retrato coletivo do cuidado no Noroeste Fluminense."
+                  }
                 </p>
               </div>
 
-              {/* Compact Info Card */}
-              <div className={`border-2 rounded-lg p-5 space-y-3 ${
+              {/* Info Card */}
+              <div className={`border-2 rounded-lg p-5 space-y-2 ${
                 isDemoMode
                   ? "bg-yellow-50 border-yellow-300"
-                  : "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
+                  : "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
               }`}>
                 <p className="text-sm text-gray-700">
-                  <span className="font-semibold">{getParticipationMessage()}</span>
-                  {isDemoMode && " (dados de demonstração)"}
+                  <span className="font-semibold">Sua experiência também pode transformar este mapa.</span>
                 </p>
                 <p className="text-sm text-gray-700">
-                  <span className="font-semibold">🔒 Protegido:</span> Sem nome, telefone ou dados clínicos. Resultados apenas agregados.
+                  <span className="font-semibold">🔒 Participação protegida:</span> não solicitamos nome, telefone ou informações clínicas. Os resultados são apresentados apenas de forma coletiva.
                 </p>
+                {isDemoMode && (
+                  <p className="text-xs text-yellow-700 font-medium pt-2 border-t border-yellow-200">
+                    Visualização demonstrativa com dados fictícios
+                  </p>
+                )}
               </div>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button href="/participar" variant="primary" className="text-base py-3 px-6">
-                  Compartilhar experiência
+                  Compartilhar minha experiência
                 </Button>
                 <Button href="/mapa" variant="secondary" className="text-base py-3 px-6">
-                  Ver mapa
+                  Explorar o mapa
                 </Button>
               </div>
             </div>
@@ -122,7 +134,7 @@ export default function Home() {
 
         {/* Secondary Sections */}
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <ProofOfMovement />
+          <ProofOfMovement stats={stats} />
         </section>
 
         <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">

@@ -1,11 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useMovementStats } from "@/lib/hooks/useMovementStats";
 import { IconExpand, IconAlert, IconSuccess, IconLive } from "./icons/Icons";
 import { colors } from "@/lib/designTokens";
 
-export default function ProofOfMovement() {
-  const { stats, loading, error } = useMovementStats();
+interface ProofOfMovementProps {
+  stats?: { total: number; byMunicipio?: Record<string, number> } | null;
+}
+
+export default function ProofOfMovement({ stats: passedStats }: ProofOfMovementProps) {
+  const { stats: fetchedStats, loading, error } = useMovementStats();
+  const stats = passedStats || fetchedStats;
 
   // Skeleton loader
   if (loading) {
@@ -58,28 +64,25 @@ export default function ProofOfMovement() {
   }
 
   // Calculate insights
-  const municipiosParticipantes = Object.keys(stats.byMunicipio).length;
-  const categoriasAbordadas = Object.keys(stats.byCategory).length;
+  const municipiosParticipantes = stats?.byMunicipio
+    ? Object.values(stats.byMunicipio).filter((count) => count > 0).length
+    : 0;
 
   // Generate insight message
   const getInsight = () => {
-    if (stats.total === 0) {
-      return "Seja o primeiro a contribuir e ajude a mapear os caminhos do cuidado na sua região.";
+    if (!stats || stats.total === 0) {
+      return "Comece a compartilhar sua experiência e ajude a revelar os caminhos do cuidado na sua região.";
     }
 
-    if (stats.total < 10) {
-      return `${stats.total} ${stats.total === 1 ? "pessoa começou" : "pessoas começaram"} a compartilhar experiências de cuidado. Mais contribuições ajudam a construir um mapa mais completo.`;
+    if (stats.total < 20) {
+      return `Com ${stats.total} contribuições distribuídas por ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"}, o território começa a revelar seus primeiros sinais.`;
     }
 
     if (stats.total < 50) {
-      return `Com ${stats.total} contribuições de ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"}, já é possível ver padrões emergindo nos caminhos do cuidado.`;
+      return `${stats.total} participações de ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"} começam a revelar percepções e diferenças nos caminhos do cuidado.`;
     }
 
-    if (stats.total < 100) {
-      return `${stats.total} participações mostram que cuidado é assunto prioritário em ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"} do Noroeste.`;
-    }
-
-    return `${stats.total} pessoas já compartilharam suas experiências de cuidado, revelando necessidades em ${categoriasAbordadas} áreas diferentes e impactando ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"}.`;
+    return `${stats.total} participações de ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"} revelam uma diversidade de experiências e percepções sobre os caminhos do cuidado no Noroeste Fluminense.`;
   };
 
   return (
@@ -89,11 +92,11 @@ export default function ProofOfMovement() {
         <div className="flex items-center gap-3">
           <IconExpand size={28} color={colors.secondary[600]} className="flex-shrink-0" />
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            O mapa está acontecendo agora
+            O território está falando
           </h2>
         </div>
         <p className="text-sm text-gray-700">
-          Acompanhe as experiências compartilhadas durante a Merco Noroeste 2026
+          Acompanhe como as experiências compartilhadas durante a Merco Noroeste 2026 começam a revelar percepções e diferenças entre os municípios.
         </p>
       </div>
 
@@ -105,7 +108,7 @@ export default function ProofOfMovement() {
             Participações
           </p>
           <p className="text-3xl sm:text-4xl font-bold text-emerald-900">
-            {stats.total}
+            {stats?.total || 0}
           </p>
           <p className="text-xs text-emerald-600 mt-1">experiências compartilhadas</p>
         </div>
@@ -118,7 +121,7 @@ export default function ProofOfMovement() {
           <p className="text-3xl sm:text-4xl font-bold text-emerald-900">
             {municipiosParticipantes}
           </p>
-          <p className="text-xs text-emerald-600 mt-1">com participações registradas</p>
+          <p className="text-xs text-emerald-600 mt-1">com participação registrada</p>
         </div>
 
         {/* Categories addressed */}
@@ -127,7 +130,7 @@ export default function ProofOfMovement() {
             Temas
           </p>
           <p className="text-3xl sm:text-4xl font-bold text-emerald-900">
-            {categoriasAbordadas}
+            {4}
           </p>
           <p className="text-xs text-emerald-600 mt-1">identificados até agora</p>
         </div>
