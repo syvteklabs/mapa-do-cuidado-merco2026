@@ -22,7 +22,7 @@ export default function PrivacyDisclosure({ variant = "minimal" }: PrivacyDisclo
               <strong>O que você fornece:</strong> Seu município de residência (sem rua/número) e qual experiência de cuidado você compartilha.
             </p>
             <p>
-              <strong>Como usamos:</strong> Seus dados são agregados (combinados com outros) para criar visualizações no mapa e informar políticas públicas.
+              <strong>Como usamos:</strong> Seus dados são agregados (combinados com outros) para criar visualizações no mapa e gerar sinais que podem apoiar análises e decisões.
             </p>
             <p>
               <strong>Nota:</strong> A Lista de Expansão coleta nome e contato. Veja nossa política completa para detalhes sobre ambos os processos.

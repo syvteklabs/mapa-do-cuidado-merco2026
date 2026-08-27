@@ -202,7 +202,7 @@ export default function PrivacyPage() {
                 <li className="flex items-start gap-3">
                   <span className="text-lg flex-shrink-0">🤝</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Pesquisa participativa</p>
+                    <p className="font-semibold text-gray-900">Escuta participativa</p>
                     <p className="text-gray-600">Usar para pesquisa qualitativa e advocacy em saúde pública</p>
                   </div>
                 </li>
@@ -231,7 +231,7 @@ export default function PrivacyPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-bold">•</span>
-                  <span>Números absolutos (ex: 100 participações) indicam <strong>tendências</strong>, não prevalência exata</span>
+                  <span>Números absolutos (ex: 100 participações) indicam <strong>tendências</strong>, não recorrência entre as contribuições exata</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-bold">•</span>
@@ -239,9 +239,22 @@ export default function PrivacyPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="font-bold">•</span>
-                  <span>Cada voz tem igual peso (não ajustamos por demografia)</span>
+                  <span>Cada contribuição é contabilizada da mesma forma (não ajustamos por demografia)</span>
                 </li>
               </ul>
+            </div>
+
+            {/* Methodological Note */}
+            <div className="space-y-4 border-t border-gray-200 pt-12 bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900">
+                📋 Nota metodológica sobre os resultados
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                Os resultados apresentados no Mapa do Cuidado representam as contribuições recebidas nesta ativação. Eles revelam percepções e sinais iniciais, mas não representam estatisticamente toda a população do território.
+              </p>
+              <p className="text-sm text-gray-600">
+                Use os dados como um indicador de padrões e tendências, não como verdade absoluta sobre a população.
+              </p>
             </div>
 
             {/* Data Differentiation */}
@@ -257,7 +270,13 @@ export default function PrivacyPage() {
                 <div className="border-2 border-blue-200 rounded-lg p-6 space-y-3">
                   <h3 className="text-xl font-bold text-gray-900">Contribuição</h3>
                   <p className="text-gray-600">
-                    Cada experiência que você compartilha via formulário. Uma pessoa pode fazer múltiplas contribuições.
+                    Cada experiência que você compartilha via formulário. Uma pessoa pode fazer múltiplas contribuições. Cada contribuição é contabilizada separadamente no mapa, sem identificação de autor.
+                  </p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    <strong>Controles:</strong> Implementamos proteções contra duplicação artificial (bots, preenchimentos automáticos). Participações repetidas são registradas como contribuições independentes.
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Implicação para interpretação:</strong> A mesma pessoa pode aparecer múltiplas vezes no mapa se compartilhou várias experiências. Isso é intencional e reflete a diversidade de experiências, não a quantidade de pessoas.
                   </p>
                   <p className="text-sm text-blue-600 font-semibold">Ex: &quot;Você enviou 2 contribuições&quot;</p>
                 </div>
@@ -443,9 +462,9 @@ export default function PrivacyPage() {
                 Para registrar interesse em expandir o mapa, coletamos:
               </p>
               <div className="space-y-3">
-                <div className="border-2 border-emerald-300 bg-emerald-50 rounded-lg p-4">
-                  <p className="font-bold text-emerald-900 mb-1">Nome *</p>
-                  <p className="text-sm text-emerald-700">Obrigatório. Identificar você para possível contato</p>
+                <div className="border-2 border-blue-200 bg-blue-50 rounded-lg p-4">
+                  <p className="font-semibold text-blue-900 mb-1">Nome (opcional)</p>
+                  <p className="text-sm text-blue-700">Se fornecido, ajuda na personalização do contato</p>
                 </div>
                 <div className="border-2 border-emerald-300 bg-emerald-50 rounded-lg p-4">
                   <p className="font-bold text-emerald-900 mb-1">Cidade *</p>
