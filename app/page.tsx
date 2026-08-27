@@ -11,6 +11,7 @@ import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import LiveActivationBadge from "@/components/LiveActivationBadge";
 import { usePageTracking } from "@/lib/hooks/useAnalyticsTracking";
+import { useDemoMode } from "@/lib/hooks/useDemoMode";
 import { trackParticipateClick } from "@/lib/analytics/analytics";
 
 interface StatsData {
@@ -20,7 +21,7 @@ interface StatsData {
 
 export default function Home() {
   const [stats, setStats] = useState<StatsData | null>(null);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const { isDemoMode } = useDemoMode();
 
   usePageTracking();
 
@@ -34,11 +35,9 @@ export default function Home() {
           const data = await response.json();
           if (data.data) {
             setStats(data.data);
-            setIsDemoMode(false);
           }
         }
       } catch {
-        setIsDemoMode(true);
         setStats({ total: 0, byMunicipio: {} });
       }
     };
@@ -62,7 +61,7 @@ export default function Home() {
             {/* Left Column - Content */}
             <div className="space-y-8">
               {/* Live Activation Badge */}
-              <LiveActivationBadge isDemoMode={isDemoMode} />
+              <LiveActivationBadge />
 
               {/* Main Headline - Human & Compelling */}
               <div className="space-y-4">
@@ -77,7 +76,7 @@ export default function Home() {
               {/* Results & Impact - Show what participation achieves */}
               <div className={`border-2 rounded-lg p-6 space-y-4 ${
                 isDemoMode
-                  ? "bg-yellow-50 border-yellow-300"
+                  ? "bg-amber-50 border-amber-300"
                   : "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
               }`}>
                 <div className="flex items-start gap-3">

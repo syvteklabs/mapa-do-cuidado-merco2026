@@ -73,6 +73,10 @@ export default function DashboardPreview() {
         if (!response.ok) throw new Error("Servidor retornou erro");
         const data = await response.json();
 
+        // Verificar se está em modo demo via flag do API
+        const isDemo = data.isDemoMode === true;
+        setIsDemoMode(isDemo);
+
         // Se temos dados de contribuições, usar dados por município
         if (data.data) {
           setStats(data.data);
@@ -91,7 +95,6 @@ export default function DashboardPreview() {
           setMunicipiosCategories(byMunicipioCategories);
           setLastUpdate(new Date());
           setError(null);
-          setIsDemoMode(false);
         }
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
@@ -281,11 +284,11 @@ export default function DashboardPreview() {
                 {/* Status Seal */}
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
                   isDemoMode
-                    ? "bg-yellow-50 border-yellow-300"
+                    ? "bg-amber-50 border-amber-300"
                     : "bg-green-50 border-green-300"
                 } ${isTV ? "px-4 py-2 gap-3" : ""}`}>
-                  <span className={`${isDemoMode ? "text-yellow-600" : "text-green-600"} font-semibold ${isTV ? "text-lg" : "text-xs"}`}>
-                    {isDemoMode ? "🎬 Demonstração" : "🟢 Dados ao vivo"}
+                  <span className={`${isDemoMode ? "text-amber-700 font-semibold" : "text-green-600 font-semibold"} ${isTV ? "text-lg" : "text-xs"}`}>
+                    {isDemoMode ? "🎬 Prévia demonstrativa" : "🟢 Dados ao vivo"}
                   </span>
                 </div>
               </div>
@@ -293,7 +296,8 @@ export default function DashboardPreview() {
               <div className={`flex items-center justify-between text-gray-600 ${isTV ? "text-lg" : "text-xs"}`}>
                 <span>
                   {loading && <span className="inline-block animate-pulse">Atualizando...</span>}
-                  {!loading && <span>Atualizado: <span className="font-semibold">{formatLastUpdate(lastUpdate)}</span></span>}
+                  {!loading && !isDemoMode && <span>Atualizado: <span className="font-semibold">{formatLastUpdate(lastUpdate)}</span></span>}
+                  {!loading && isDemoMode && <span className="text-amber-700 font-semibold">Visualizando dados fictícios</span>}
                 </span>
                 <Link
                   href="/"

@@ -74,15 +74,20 @@ export async function GET() {
         {
           success: false,
           error: result.error,
+          isDemoMode: true,
         },
         { status: 500 }
       );
     }
 
+    // Demo mode is ON when total responses is 0
+    const isDemoMode = (result.data?.total || 0) === 0;
+
     return NextResponse.json(
       {
         success: true,
         data: result.data,
+        isDemoMode,
       },
       { status: 200 }
     );
@@ -92,6 +97,7 @@ export async function GET() {
       {
         success: false,
         error: "Erro ao buscar estatísticas",
+        isDemoMode: true,
       },
       { status: 500 }
     );
