@@ -53,25 +53,23 @@ export default function Home() {
 
   const getParticipationMessage = () => {
     if (!stats) return "Convidamos você a compartilhar sua experiência.";
-    if (stats.total === 0) return "Seja o primeiro a contribuir e ajude a mapear os caminhos do cuidado.";
-    if (stats.total === 1) return "Uma pessoa já começou a compartilhar. Sua contribuição ajuda a construir um mapa mais completo.";
-    return `${stats.total} ${stats.total === 1 ? "pessoa já começou" : "pessoas já começaram"} a compartilhar suas experiências. Cada contribuição nos ajuda a enxergar melhor os caminhos do cuidado.`;
+    if (stats.total === 0) return "Seja o primeiro a contribuir.";
+    if (stats.total === 1) return "Uma pessoa já começou a compartilhar.";
+    return `${stats.total} pessoas já compartilharam suas experiências.`;
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
       <main className="flex-1 w-full">
-        {/* Hero Section - Two Column */}
-        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+        {/* Hero Section */}
+        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Column - Content */}
-            <div className="space-y-8">
-              {/* Live Activation Badge */}
+            {/* Content Column */}
+            <div className="space-y-6">
               <LiveActivationBadge isDemoMode={isDemoMode} />
 
-              {/* Main Headline - Human & Compelling */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                   Como foi buscar cuidado na sua cidade?
                 </h1>
@@ -80,106 +78,58 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Results & Impact - Show what participation achieves */}
-              <div className={`border-2 rounded-lg p-6 space-y-4 ${
+              {/* Compact Info Card */}
+              <div className={`border-2 rounded-lg p-5 space-y-3 ${
                 isDemoMode
                   ? "bg-yellow-50 border-yellow-300"
                   : "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
               }`}>
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">📊</span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">
-                      {isDemoMode ? "Exemplo de participação" : "Sua experiência ajuda a revelar o território"}
-                    </h3>
-                    <p className="text-sm text-gray-700">
-                      {getParticipationMessage()}
-                      {isDemoMode && " (dados de demonstração)"}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">🔒</span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">Participação protegida</h3>
-                    <p className="text-sm text-gray-700">
-                      Não solicitamos nome, telefone, contato ou informação clínica. As respostas aparecem apenas de forma agrupada no mapa.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                {/* Primary CTA */}
-                <Button href="/participar" variant="primary" className="text-base sm:text-lg py-4 px-6">
-                  Compartilhar minha experiência
-                </Button>
-                {/* Secondary CTA */}
-                <Button href="/mapa" variant="secondary" className="text-base sm:text-lg py-4 px-6">
-                  Ver o mapa sendo construído
-                </Button>
-              </div>
-
-              {/* Trust indicator */}
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">✓ Sem nome ou contato</span> •
-                  <span className="font-semibold ml-1">Participação voluntária</span> •
-                  <span className="font-semibold ml-1">Resultados agregados</span>
+                <p className="text-sm text-gray-700">
+                  <span className="font-semibold">{getParticipationMessage()}</span>
+                  {isDemoMode && " (dados de demonstração)"}
                 </p>
+                <p className="text-sm text-gray-700">
+                  <span className="font-semibold">🔒 Protegido:</span> Sem nome, telefone ou dados clínicos. Resultados apenas agregados.
+                </p>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Button href="/participar" variant="primary" className="text-base py-3 px-6">
+                  Compartilhar experiência
+                </Button>
+                <Button href="/mapa" variant="secondary" className="text-base py-3 px-6">
+                  Ver mapa
+                </Button>
               </div>
             </div>
 
-            {/* Right Column - Visual Map */}
+            {/* Map Column */}
             <div className="hidden lg:block h-96 lg:h-full min-h-96">
               <OpenStreetMapView stats={stats?.byMunicipio} />
             </div>
           </div>
         </section>
 
-        {/* Mobile Map - Show on small screens */}
-        <section className="lg:hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
+        {/* Mobile Map */}
+        <section className="lg:hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8">
           <div className="h-64 sm:h-80">
             <OpenStreetMapView stats={stats?.byMunicipio} />
           </div>
         </section>
 
-        {/* Live Activity Bar */}
         <LiveActivityBar />
 
-        {/* Proof of Movement - Live engagement stats */}
-        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        {/* Secondary Sections */}
+        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <ProofOfMovement />
         </section>
 
-        {/* How It Works - Three step process */}
-        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <HowItWorks />
         </section>
 
-        {/* Research and Innovation */}
         <ResearchAndInnovation />
-
-        {/* Brand Footer */}
-        <section className="bg-white border-t border-gray-200 py-8 mt-8">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center space-y-3">
-            <div>
-              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
-                SyVtek Care
-              </p>
-              <p className="text-gray-700 font-medium mt-1">
-                Mapa do Cuidado
-              </p>
-            </div>
-            <p className="text-sm text-gray-600">
-              Uma escuta participativa rápida, voluntária e anônima para mapear os caminhos do cuidado
-            </p>
-            <p className="text-xs text-gray-500">
-              Merco Noroeste Fluminense 2026
-            </p>
-          </div>
-        </section>
       </main>
       <PersistentMobileCTA />
       <Footer />
