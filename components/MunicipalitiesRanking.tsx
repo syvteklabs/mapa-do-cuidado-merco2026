@@ -228,7 +228,7 @@ export default function MunicipalitiesRanking({
 
       {/* Hint */}
       <p className="text-xs text-gray-500 text-center italic px-4">
-        💡 Clique em um card para selecioná-lo e centralizá-lo no mapa
+        💡 Clique em um card para selecioná-lo e ver detalhes no mapa
       </p>
     </div>
   );
