@@ -69,18 +69,15 @@ export default function Home() {
               <LiveActivationBadge isDemoMode={isDemoMode} />
 
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-green-700 uppercase tracking-wide">
-                  Experiência ao vivo na Merco Noroeste 2026
-                </p>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                   {stats && stats.total > 0
-                    ? `${stats.total} experiências já ajudam a revelar os caminhos do cuidado no território.`
+                    ? `${stats.total} experiências já fazem parte do mapa`
                     : "Como foi seu caminho para conseguir cuidado na sua cidade?"
                   }
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
                   {stats && stats.total > 0
-                    ? "Explore como as participações começam a revelar percepções e diferenças entre os municípios."
+                    ? "Experiência ao vivo na Merco Noroeste 2026. Explore como as participações começam a revelar percepções e diferenças entre os municípios."
                     : "Em cerca de 2 minutos, você compartilha sua experiência e ajuda a construir um retrato coletivo do cuidado no Noroeste Fluminense."
                   }
                 </p>
