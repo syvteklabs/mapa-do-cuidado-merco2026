@@ -6,6 +6,7 @@ import Link from "next/link";
 import OutOfRegionFlow from "./OutOfRegionFlow";
 import ErrorContingency from "./ErrorContingency";
 import PrivacyDisclosure from "./PrivacyDisclosure";
+import ParticipationRewardScreen from "./ParticipationRewardScreen";
 
 export default function ParticipationFlow() {
   const {
@@ -14,6 +15,7 @@ export default function ParticipationFlow() {
     isLoading,
     error,
     participationNumber,
+    rewardStats,
     nextStep,
     updateFormData,
     submitForm,
@@ -315,47 +317,11 @@ export default function ParticipationFlow() {
 
         {/* Step: Confirmation */}
         {step === "confirmation" && (
-          <div className="text-center space-y-8">
-            <div>
-              <div className="mb-4 text-5xl">✓</div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-                Sua voz entrou no mapa.
-              </h2>
-              <p className="text-lg text-gray-600 mb-2">
-                Sua experiência agora faz parte do Mapa do Cuidado.
-              </p>
-              {participationNumber && (
-                <p className="text-2xl font-bold text-blue-600 mb-3">
-                  Você é a participação nº {participationNumber} deste mapa.
-                </p>
-              )}
-              <p className="text-gray-600 italic">
-                &quot;Quando uma experiência é compartilhada, o cuidado deixa de ser invisível.&quot;
-              </p>
-            </div>
-
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-left">
-              <p className="text-sm text-gray-600">
-                Sua contribuição anônima e voluntária ajuda a construir um mapa
-                real dos caminhos do cuidado em nossa região.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <Link
-                href={`/mapa?destaque=${encodeURIComponent(formData.municipio)}`}
-                className="block w-full bg-blue-600 text-white py-4 sm:py-5 px-6 rounded-lg font-semibold text-center text-lg sm:text-xl hover:bg-blue-700 active:bg-blue-800 transition-colors"
-              >
-                Ver minha cidade no mapa
-              </Link>
-              <button
-                onClick={reset}
-                className="w-full bg-gray-200 text-gray-900 py-4 sm:py-5 px-6 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-300 active:bg-gray-400 transition-colors"
-              >
-                Nova Participação
-              </button>
-            </div>
-          </div>
+          <ParticipationRewardScreen
+            municipio={formData.municipio}
+            stats={rewardStats}
+            onNewParticipation={reset}
+          />
         )}
       </main>
 

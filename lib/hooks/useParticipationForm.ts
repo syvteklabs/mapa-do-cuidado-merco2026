@@ -124,6 +124,12 @@ export function useParticipationForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [participationNumber, setParticipationNumber] = useState<number | null>(null);
+  const [rewardStats, setRewardStats] = useState<{
+    total: number;
+    municipios: number;
+    temas: number;
+    themeName?: string;
+  } | null>(null);
   const [showOutOfRegion, setShowOutOfRegion] = useState(false);
   const [savedNotification, setSavedNotification] = useState(false);
 
@@ -222,6 +228,23 @@ export function useParticipationForm() {
         setParticipationNumber(data.total);
       }
 
+      // Obter estatísticas atualizadas para a tela de recompensa
+      const statsResponse = await fetch("/api/contribuicoes");
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        if (statsData.data) {
+          const themeName = CATEGORIAS.find(
+            (cat) => cat.id === formData.resposta_categoria
+          )?.label;
+          setRewardStats({
+            total: statsData.data.total || 0,
+            municipios: Object.keys(statsData.data.byMunicipio || {}).length,
+            temas: Object.keys(statsData.data.byCategory || {}).length,
+            themeName,
+          });
+        }
+      }
+
       setIsLoading(false);
       nextStep("confirmation");
     } catch (err) {
@@ -257,6 +280,7 @@ export function useParticipationForm() {
     isLoading,
     error,
     participationNumber,
+    rewardStats,
     nextStep,
     updateFormData,
     submitForm,
