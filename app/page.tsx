@@ -1,53 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
 import HeroMap from "@/components/HeroMap";
-import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
-import LiveActivationBadge from "@/components/LiveActivationBadge";
-import LiveActivityBar from "@/components/LiveActivityBar";
 import PersistentMobileCTA from "@/components/PersistentMobileCTA";
 
-interface StatsData {
-  total: number;
-  byMunicipio: Record<string, number>;
-}
-
 export default function Home() {
-  const [stats, setStats] = useState<StatsData | null>(null);
-  const [isDemoMode, setIsDemoMode] = useState(false);
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch("/api/contribuicoes", {
-          signal: AbortSignal.timeout(5000),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.data) {
-            setStats(data.data);
-            setIsDemoMode(false);
-          }
-        }
-      } catch {
-        setIsDemoMode(true);
-        setStats({ total: 0, byMunicipio: {} });
-      }
-    };
-    fetchStats();
-  }, []);
-
-  const getParticipationMessage = () => {
-    if (!stats) return "Convidamos você a compartilhar sua experiência.";
-    if (isDemoMode) return "Demonstração com dados fictícios";
-    if (stats.total === 0) return "O Mapa do Cuidado está começando agora.";
-    return `${stats.total} ${stats.total === 1 ? "experiência já ajuda" : "experiências já ajudam"} a revelar os caminhos do cuidado no território.`;
-  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -58,9 +19,6 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Content */}
             <div className="space-y-8">
-              {/* Live Activation Badge */}
-              <LiveActivationBadge isDemoMode={isDemoMode} />
-
               {/* Main Headline - Human & Compelling */}
               <div className="space-y-4">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
@@ -71,23 +29,8 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Results & Impact - Show what participation achieves */}
-              <div className={`border-2 rounded-lg p-6 space-y-4 ${
-                isDemoMode
-                  ? "bg-yellow-50 border-yellow-300"
-                  : "bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200"
-              }`}>
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">📊</span>
-                  <div>
-                    <h3 className="font-bold text-gray-900 mb-1">
-                      {isDemoMode ? "Demonstração" : "O que sua experiência revela"}
-                    </h3>
-                    <p className="text-sm text-gray-700">
-                      {getParticipationMessage()}
-                    </p>
-                  </div>
-                </div>
+              {/* Protection Information */}
+              <div className="border-2 rounded-lg p-6 bg-gradient-to-br from-indigo-50 to-blue-50 border-indigo-200 space-y-3">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl flex-shrink-0">🔒</span>
                   <div>
@@ -123,7 +66,7 @@ export default function Home() {
 
             {/* Right Column - Visual Map */}
             <div className="hidden lg:block h-96 lg:h-full min-h-96">
-              <HeroMap stats={stats?.byMunicipio} />
+              <HeroMap />
             </div>
           </div>
         </section>
@@ -131,16 +74,8 @@ export default function Home() {
         {/* Mobile Map - Show on small screens */}
         <section className="lg:hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
           <div className="h-64 sm:h-80">
-            <HeroMap stats={stats?.byMunicipio} />
+            <HeroMap />
           </div>
-        </section>
-
-        {/* Live Activity Bar */}
-        <LiveActivityBar />
-
-        {/* Proof of Movement - Live engagement stats */}
-        <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <ProofOfMovement />
         </section>
 
         {/* How It Works - Three step process */}
@@ -150,32 +85,6 @@ export default function Home() {
 
         {/* Research and Innovation */}
         <ResearchAndInnovation />
-
-        {/* Brand Footer */}
-        <section className="bg-white border-t border-gray-200 py-8 mt-8">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div>
-              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
-                SyVtek Care
-              </p>
-              <p className="text-gray-700 font-medium mt-1">
-                Mapa do Cuidado
-              </p>
-            </div>
-            <p className="text-sm text-gray-600">
-              Escuta participativa, voluntária e anônima sobre os caminhos do cuidado no Noroeste Fluminense.
-            </p>
-            <p className="text-xs text-gray-600">
-              Experiência apresentada na Merco Noroeste 2026
-            </p>
-            <p className="text-xs text-gray-500 pt-2 border-t border-gray-200">
-              Uma iniciativa da SyVtek Care, construída em uma trajetória de pesquisa aplicada no SAEG/IFF, fomento à inovação pelo HUB RJ/FAPERJ e incubação na TEC Incubadora/UENF.
-            </p>
-            <p className="text-xs text-gray-500 italic">
-              Esses vínculos representam etapas da trajetória da SyVtek Care e não implicam validação, certificação ou responsabilidade institucional sobre o Mapa do Cuidado.
-            </p>
-          </div>
-        </section>
       </main>
       <PersistentMobileCTA />
       <Footer />
