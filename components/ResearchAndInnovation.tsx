@@ -1,19 +1,19 @@
 export default function ResearchAndInnovation() {
   const institutions = [
     {
-      title: "SAEG · IFF Campos",
-      description: "Pesquisa acadêmica e desenvolvimento científico.",
-      category: "Pesquisa",
+      title: "Mestrado Profissional SAEG · IFF",
+      description: "Pesquisa aplicada que fundamenta o desenvolvimento de tecnologias para continuidade e coordenação do cuidado.",
+      category: "Pesquisa aplicada",
     },
     {
       title: "HUB RJ · FAPERJ",
-      description: "Conexão com o ecossistema de inovação do estado.",
-      category: "Inovação",
+      description: "Trajetória selecionada e fomentada para o desenvolvimento e a evolução tecnológica da solução.",
+      category: "Fomento à inovação",
     },
     {
       title: "TEC Incubadora · UENF",
-      description: "Desenvolvimento e amadurecimento da solução.",
-      category: "Empreendedorismo",
+      description: "Ambiente de incubação e apoio ao amadurecimento da SyVtek Care como empresa inovadora.",
+      category: "Incubação",
     },
   ];
 
@@ -23,17 +23,12 @@ export default function ResearchAndInnovation() {
         {/* Header */}
         <div className="text-center space-y-4">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-            Pesquisa conectada ao território
+            Uma experiência conectada à pesquisa e à inovação
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            O Mapa do Cuidado é uma experiência de inovação da SyVtek Care que transforma participações voluntárias em uma visualização coletiva do Noroeste Fluminense.
+            O Mapa do Cuidado é uma ativação da SyVtek Care que transforma participações voluntárias e anônimas em uma visão coletiva sobre os caminhos do cuidado no Noroeste Fluminense.
           </p>
         </div>
-
-        {/* Introduction */}
-        <p className="text-gray-700 text-center mb-8">
-          O projeto se conecta a ambientes de pesquisa, inovação e empreendedorismo:
-        </p>
 
         {/* Institutional Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -59,11 +54,10 @@ export default function ResearchAndInnovation() {
           ))}
         </div>
 
-        {/* Legal Disclaimer */}
-        <div className="bg-gray-50 border-l-4 border-gray-300 rounded-lg p-6">
+        {/* Transparency Note */}
+        <div className="bg-gray-50 border-l-4 border-gray-300 rounded-lg p-6 mt-8">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-semibold block mb-2">Nota de transparência:</span>
-            Essas conexões representam vínculos de pesquisa, inovação e desenvolvimento. Não significam validação, financiamento ou responsabilidade institucional sobre o Mapa do Cuidado.
+            Pesquisa, fomento e incubação fazem parte da trajetória da SyVtek Care e não representam validação institucional dos dados ou resultados do Mapa do Cuidado.
           </p>
         </div>
       </div>

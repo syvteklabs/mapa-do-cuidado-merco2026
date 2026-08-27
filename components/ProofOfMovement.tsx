@@ -1,11 +1,29 @@
 "use client";
 
 import { useMovementStats } from "@/lib/hooks/useMovementStats";
+import { useEffect, useState } from "react";
 import { IconExpand, IconAlert, IconSuccess, IconLive } from "./icons/Icons";
 import { colors } from "@/lib/designTokens";
 
 export default function ProofOfMovement() {
   const { stats, loading, error } = useMovementStats();
+  const [isDemoMode, setIsDemoMode] = useState(false);
+
+  useEffect(() => {
+    const checkDemoMode = async () => {
+      try {
+        const response = await fetch("/api/contribuicoes", {
+          signal: AbortSignal.timeout(5000),
+        });
+        if (!response.ok) {
+          setIsDemoMode(true);
+        }
+      } catch {
+        setIsDemoMode(true);
+      }
+    };
+    checkDemoMode();
+  }, []);
 
   // Skeleton loader
   if (loading) {
@@ -64,22 +82,14 @@ export default function ProofOfMovement() {
   // Generate insight message
   const getInsight = () => {
     if (stats.total === 0) {
-      return "Seja o primeiro a contribuir e ajude a mapear os caminhos do cuidado na sua região.";
+      return "O território aguarda suas primeiras contribuições.";
     }
 
-    if (stats.total < 10) {
-      return `${stats.total} ${stats.total === 1 ? "pessoa começou" : "pessoas começaram"} a compartilhar experiências de cuidado. Mais contribuições ajudam a construir um mapa mais completo.`;
+    if (stats.total < 30) {
+      return `Com ${stats.total} ${stats.total === 1 ? "contribuição" : "contribuições"} distribuídas por ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"}, o território começa a revelar seus primeiros sinais.`;
     }
 
-    if (stats.total < 50) {
-      return `Com ${stats.total} contribuições de ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"}, já é possível ver padrões emergindo nos caminhos do cuidado.`;
-    }
-
-    if (stats.total < 100) {
-      return `${stats.total} participações mostram que cuidado é assunto prioritário em ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"} do Noroeste.`;
-    }
-
-    return `${stats.total} pessoas já compartilharam suas experiências de cuidado, revelando necessidades em ${categoriasAbordadas} áreas diferentes e impactando ${municipiosParticipantes} ${municipiosParticipantes === 1 ? "município" : "municípios"}.`;
+    return `As contribuições já permitem observar tendências iniciais nos caminhos do cuidado.`;
   };
 
   return (
@@ -89,11 +99,11 @@ export default function ProofOfMovement() {
         <div className="flex items-center gap-3">
           <IconExpand size={28} color={colors.secondary[600]} className="flex-shrink-0" />
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            O mapa está acontecendo agora
+            O Mapa do Cuidado está acontecendo agora
           </h2>
         </div>
         <p className="text-sm text-gray-700">
-          Acompanhe as experiências compartilhadas durante a Merco Noroeste 2026
+          Acompanhe como as experiências compartilhadas durante a Merco Noroeste 2026 começam a revelar percepções e diferenças entre os municípios.
         </p>
       </div>
 
@@ -145,10 +155,21 @@ export default function ProofOfMovement() {
 
       {/* Live indicator */}
       <div className="flex items-center justify-center gap-2">
-        <IconLive size={12} color={colors.success[600]} />
-        <p className="text-xs text-emerald-700 font-medium">
-          Dados ao vivo — atualizado a cada 30 segundos
-        </p>
+        {isDemoMode ? (
+          <>
+            <IconAlert size={12} color={colors.warning[600]} />
+            <p className="text-xs text-amber-700 font-medium">
+              Visualização demonstrativa com dados fictícios
+            </p>
+          </>
+        ) : (
+          <>
+            <IconLive size={12} color={colors.success[600]} />
+            <p className="text-xs text-emerald-700 font-medium">
+              Dados atualizados a cada 30 segundos
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

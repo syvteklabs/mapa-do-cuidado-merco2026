@@ -282,26 +282,26 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
       {/* Support text and legend */}
       <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-br from-green-50 to-blue-50 border-t border-green-100">
         <p className="text-xs sm:text-sm text-gray-700 font-medium mb-2">
-          Um território formado por 13 municípios e muitas experiências de cuidado.
+          Um território formado por 13 municípios e diferentes experiências de cuidado.
         </p>
 
         {/* Color legend */}
         <div className="flex flex-wrap gap-3 text-xs">
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-50 border border-gray-300"></div>
-            <span className="text-gray-600">Sem participação</span>
+            <span className="text-gray-600">Sem participações</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-200 border border-green-300"></div>
-            <span className="text-gray-600">Poucas</span>
+            <span className="text-gray-600">Poucas participações</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-500 border border-green-600"></div>
-            <span className="text-gray-600">Muitas</span>
+            <span className="text-gray-600">Participação crescente</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-sm bg-green-700 border border-green-800"></div>
-            <span className="text-gray-600">Destaque</span>
+            <span className="text-gray-600">Maior participação</span>
           </div>
         </div>
 
