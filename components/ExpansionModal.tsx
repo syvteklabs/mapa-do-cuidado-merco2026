@@ -74,7 +74,7 @@ export default function ExpansionModal({
               {/* Nome */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Seu nome
+                  Seu nome <span className="text-gray-500 font-normal">(opcional)</span>
                 </label>
                 <input
                   type="text"
@@ -117,36 +117,40 @@ export default function ExpansionModal({
                 </select>
               </div>
 
-              {/* WhatsApp */}
+              {/* Contato */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  WhatsApp (opcional)
+                  Contato <span className="text-red-600">*</span> — informe pelo menos um
                 </label>
-                <input
-                  type="tel"
-                  value={formData.contato_whatsapp}
-                  onChange={(e) =>
-                    updateFormData("contato_whatsapp", e.target.value)
-                  }
-                  placeholder="(11) 99999-9999"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+                <p className="text-xs text-gray-600 mb-3">
+                  Forneceremos pelo menos WhatsApp ou e-mail para entrar em contato.
+                </p>
 
-              {/* E-mail */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  E-mail (opcional)
-                </label>
-                <input
-                  type="email"
-                  value={formData.contato_email}
-                  onChange={(e) =>
-                    updateFormData("contato_email", e.target.value)
-                  }
-                  placeholder="seu@email.com"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                {/* WhatsApp */}
+                <div className="mb-3">
+                  <input
+                    type="tel"
+                    value={formData.contato_whatsapp}
+                    onChange={(e) =>
+                      updateFormData("contato_whatsapp", e.target.value)
+                    }
+                    placeholder="WhatsApp: (11) 99999-9999"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                {/* E-mail */}
+                <div>
+                  <input
+                    type="email"
+                    value={formData.contato_email}
+                    onChange={(e) =>
+                      updateFormData("contato_email", e.target.value)
+                    }
+                    placeholder="E-mail: seu@email.com"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
               </div>
 
               {/* Tipo de Participante */}
