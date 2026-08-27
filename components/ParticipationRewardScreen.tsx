@@ -49,8 +49,11 @@ export default function ParticipationRewardScreen({
       {/* Main Message */}
       <div className="space-y-4">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          Sua experiência agora faz parte do mapa.
+          Obrigado por ajudar o território a enxergar melhor.
         </h2>
+        <p className="text-lg sm:text-xl text-gray-600">
+          Sua experiência agora faz parte do mapa.
+        </p>
 
         {municipio && stats && (
           <div className="space-y-3">

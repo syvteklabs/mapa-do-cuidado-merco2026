@@ -142,17 +142,20 @@ export default function EventModeFlow() {
         {/* Step: Question */}
         {step === "question" && (
           <div className="w-full max-w-3xl space-y-8">
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                Como foi buscar cuidado na sua cidade?
+            <div className="text-center space-y-3">
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">
+                O que mais marcou esse caminho?
               </h2>
-              <p className="text-xl sm:text-2xl text-gray-600">
-                {formData.municipio}
+              <p className="text-xl sm:text-2xl text-gray-700">
+                em {formData.municipio}
+              </p>
+              <p className="text-lg sm:text-xl text-gray-600">
+                Escolha o que melhor descreve sua experiência.
               </p>
             </div>
 
             <div className="space-y-4 px-4 sm:px-0">
-              {categorias.map((cat) => (
+              {categorias.map((cat: any) => (
                 <button
                   key={cat.id}
                   onClick={() =>
@@ -164,7 +167,7 @@ export default function EventModeFlow() {
                       : "bg-white border-2 border-gray-300 text-gray-900 hover:border-indigo-400 hover:bg-indigo-50"
                   }`}
                 >
-                  {cat.label}
+                  {cat.humanLabel || cat.label}
                 </button>
               ))}
 

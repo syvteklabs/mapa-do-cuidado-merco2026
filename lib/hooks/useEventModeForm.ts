@@ -14,26 +14,32 @@ const CATEGORIAS = [
   {
     id: "dificuldade-continuar",
     label: "Dificuldade para continuar o tratamento",
+    humanLabel: "Achei difícil continuar o tratamento",
   },
   {
     id: "falta-orientacao",
     label: "Falta de orientação",
+    humanLabel: "Faltou orientação sobre como buscar ajuda",
   },
   {
     id: "espera-encaminhamento",
     label: "Espera por encaminhamento",
+    humanLabel: "Esperei muito por um encaminhamento",
   },
   {
     id: "interrupcao-acompanhamento",
     label: "Interrupção do acompanhamento",
+    humanLabel: "Perdi o acompanhamento no caminho",
   },
   {
     id: "mais-apoio",
     label: "Necessidade de mais apoio ao paciente ou à família",
+    humanLabel: "Precisei de mais apoio para mim ou minha família",
   },
   {
     id: "outra-percepcao",
     label: "Outra percepção",
+    humanLabel: "Outra coisa marcou essa experiência",
   },
 ];
 

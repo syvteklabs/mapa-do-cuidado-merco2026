@@ -141,10 +141,13 @@ export default function ParticipationFlow() {
         {/* Step: Location */}
         {step === "location" && (
           <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
-                Onde você está?
+            <div className="space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                De qual cidade vem a sua experiência?
               </h2>
+              <p className="text-base sm:text-lg text-gray-600">
+                Isso nos ajuda a construir um mapa real do seu território.
+              </p>
             </div>
 
             <div className="space-y-4">
@@ -243,18 +246,17 @@ export default function ParticipationFlow() {
         {/* Step: Question */}
         {step === "question" && (
           <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Qual é a sua experiência?
+            <div className="space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                O que mais marcou esse caminho?
               </h2>
-              <p className="text-gray-600 text-sm">
-                Selecione a opção que melhor descreve sua experiência com o
-                cuidado.
+              <p className="text-base sm:text-lg text-gray-600">
+                Escolha o que melhor descreve sua experiência.
               </p>
             </div>
 
             <div className="space-y-3">
-              {categorias.map((cat) => (
+              {categorias.map((cat: any) => (
                 <button
                   key={cat.id}
                   onClick={() =>
@@ -266,7 +268,7 @@ export default function ParticipationFlow() {
                       : "bg-white border-2 border-gray-300 text-gray-900 hover:border-blue-400 active:bg-blue-50"
                   }`}
                 >
-                  {cat.label}
+                  {cat.humanLabel || cat.label}
                 </button>
               ))}
             </div>
