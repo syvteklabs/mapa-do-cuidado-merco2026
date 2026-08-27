@@ -115,15 +115,15 @@ export default function ParticipationFlow() {
               <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
                 <span className="text-2xl flex-shrink-0" aria-hidden="true">🔒</span>
                 <div>
-                  <p className="font-semibold text-gray-900 text-sm">Anônimo</p>
-                  <p className="text-sm text-gray-600">Nenhum dado pessoal é coletado</p>
+                  <p className="font-semibold text-gray-900 text-sm">Privacidade</p>
+                  <p className="text-sm text-gray-600">Não solicitamos dados que identificam você</p>
                 </div>
               </div>
               <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-5 flex gap-3">
                 <span className="text-2xl flex-shrink-0" aria-hidden="true">📊</span>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">Agregado</p>
-                  <p className="text-sm text-gray-600">Suas respostas formam um mapa coletivo</p>
+                  <p className="text-sm text-gray-600">Suas respostas são combinadas em um mapa coletivo</p>
                 </div>
               </div>
             </div>

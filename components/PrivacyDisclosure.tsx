@@ -16,13 +16,16 @@ export default function PrivacyDisclosure({ variant = "minimal" }: PrivacyDisclo
           </h3>
           <div className="space-y-3 text-sm text-gray-700">
             <p>
-              <strong>O que não coletamos:</strong> Nome, email, telefone, endereço, dados clínicos, ou localização em tempo real. Você permanece totalmente anônimo.
+              <strong>O que não solicitamos:</strong> Nome, email, telefone, endereço residencial completo, dados clínicos, ou informações de identificação pessoal.
             </p>
             <p>
-              <strong>O que coletamos:</strong> Apenas seu município e qual experiência de cuidado você compartilha.
+              <strong>O que você fornece:</strong> Seu município de residência (sem rua/número) e qual experiência de cuidado você compartilha.
             </p>
             <p>
-              <strong>Como usamos:</strong> Seus dados anônimos agregados criam visualizações no mapa para informar políticas públicas.
+              <strong>Como usamos:</strong> Seus dados são agregados (combinados com outros) para criar visualizações no mapa e informar políticas públicas.
+            </p>
+            <p>
+              <strong>Processamento técnico:</strong> Como todo site, processos técnicos de infraestrutura podem envolver dados como IP e navegador. Veja nossa política completa para detalhes.
             </p>
             <p>
               <strong>Isto não é pesquisa populacional:</strong> É uma escuta participativa qualitativa. Números indicam tendências, não prevalência estatística.
@@ -49,7 +52,7 @@ export default function PrivacyDisclosure({ variant = "minimal" }: PrivacyDisclo
         >
           Como os dados são usados
         </Link>
-        {" "}• Totalmente anônimo • Sem dados pessoais coletados
+        {" "}• Sem dados pessoais solicitados • Dados agregados
       </p>
     </div>
   );

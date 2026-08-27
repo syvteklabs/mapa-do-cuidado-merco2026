@@ -18,6 +18,18 @@ export default function PrivacyPage() {
           </div>
         </section>
 
+        {/* Important Notice */}
+        <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-6 space-y-3">
+            <h2 className="text-2xl font-bold text-amber-900">
+              ⚠️ Nota importante sobre privacidade
+            </h2>
+            <p className="text-gray-800 leading-relaxed">
+              Este documento descreve como o Mapa do Cuidado coleta, processa e protege dados. <strong>Não coletamos dados que identificam você pessoalmente</strong> (nome, email, CPF, etc.), mas é importante entender que qualquer comunicação pela internet envolve processamento técnico de dados. Veja abaixo o que coletamos e como protegemos.
+            </p>
+          </div>
+        </section>
+
         {/* Content section */}
         <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="space-y-12">
@@ -27,14 +39,14 @@ export default function PrivacyPage() {
                 O que NÃO coletamos
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Sua privacidade é nossa prioridade. Explicitamente, <strong>não coletamos</strong>:
+                Sua privacidade é nossa prioridade. Explicitamente, <strong>não solicitamos</strong>:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-2xl flex-shrink-0">✗</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Nome ou identificação</p>
-                    <p className="text-gray-600">Você permanece totalmente anônimo</p>
+                    <p className="font-semibold text-gray-900">Nome ou identificação pessoal</p>
+                    <p className="text-gray-600">Você não precisa fornecer seu nome ou dados identificadores</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -78,17 +90,17 @@ export default function PrivacyPage() {
             {/* Data Collection */}
             <div className="space-y-4 border-t border-gray-200 pt-12">
               <h2 className="text-3xl font-bold text-gray-900">
-                Quais dados coletamos
+                Dados que você fornece
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Coletamos apenas o mínimo necessário para mapear os caminhos do cuidado:
+                Você compartilha voluntariamente:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-2xl flex-shrink-0">✓</span>
                   <div>
                     <p className="font-semibold text-gray-900">Município de residência</p>
-                    <p className="text-gray-600">Usado para geolocalizar insights no mapa</p>
+                    <p className="text-gray-600">Usado para geolocalizar insights no mapa (sem rua ou número)</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -101,48 +113,81 @@ export default function PrivacyPage() {
                 <li className="flex items-start gap-3">
                   <span className="text-2xl flex-shrink-0">✓</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Timestamp anônimo</p>
-                    <p className="text-gray-600">Quando você participou (não é rastreável até você)</p>
+                    <p className="font-semibold text-gray-900">Sentimento associado</p>
+                    <p className="text-gray-600">Como você se sentiu (ex: seguro, preocupado, esperançoso)</p>
                   </div>
                 </li>
               </ul>
             </div>
 
-            {/* How Data is Used */}
+            {/* Technical Data */}
             <div className="space-y-4 border-t border-gray-200 pt-12">
               <h2 className="text-3xl font-bold text-gray-900">
-                Como os dados são usados
+                Dados técnicos processados pela infraestrutura
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Seus dados anônimos são usados <strong>exclusivamente</strong> para:
+                Como qualquer site, a infraestrutura técnica pode processar:
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl flex-shrink-0">⚙️</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">Logs de servidor</p>
+                    <p className="text-gray-600">Endereço IP, navegador usado, data/hora de acesso (processados conforme política Vercel/Supabase)</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl flex-shrink-0">⚙️</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">Cookies e rastreamento</p>
+                    <p className="text-gray-600">Apenas cookies técnicos necessários (sem cookies de publicidade ou rastreamento)</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl flex-shrink-0">⚙️</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">Dados de conexão</p>
+                    <p className="text-gray-600">Informações técnicas sobre sua conexão (DNS, tempo de resposta)</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Purpose */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Finalidade do processamento
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Os dados que você fornece são usados para:
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-lg flex-shrink-0">🗺️</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Criar visualizações no mapa</p>
-                    <p className="text-gray-600">Mostrar onde os desafios de cuidado estão sendo relatados</p>
+                    <p className="font-semibold text-gray-900">Criar visualizações agregadas</p>
+                    <p className="text-gray-600">Mostrar onde os desafios de cuidado estão sendo relatados (sem identificar indivíduos)</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-lg flex-shrink-0">📊</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Gerar insights agregados</p>
-                    <p className="text-gray-600">Identificar padrões e tendências regionais</p>
+                    <p className="font-semibold text-gray-900">Análise de padrões</p>
+                    <p className="text-gray-600">Identificar tendências regionais e insights coletivos</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-lg flex-shrink-0">🤝</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Informar políticas públicas</p>
-                    <p className="text-gray-600">Ajudar gestores a entender necessidades reais da região</p>
+                    <p className="font-semibold text-gray-900">Pesquisa participativa</p>
+                    <p className="text-gray-600">Usar para pesquisa qualitativa e advocacy em saúde pública</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-lg flex-shrink-0">📈</span>
                   <div>
-                    <p className="font-semibold text-gray-900">Relatórios de participação</p>
-                    <p className="text-gray-600">Mostrar engagement do mapa publicamente</p>
+                    <p className="font-semibold text-gray-900">Transparência</p>
+                    <p className="text-gray-600">Compartilhar estatísticas agregadas publicamente (total de participações, distribuição por município)</p>
                   </div>
                 </li>
               </ul>
@@ -255,6 +300,107 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
+            {/* Data Controller */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Responsável pelos dados
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  <strong>Controlador de dados (Data Controller):</strong> SyVtek Care
+                </p>
+                <p>
+                  Responsável por decidir como e por que os dados são processados.
+                </p>
+              </div>
+            </div>
+
+            {/* Operators */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Operadores (Processadores de dados)
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Os seguintes serviços processam seus dados:
+              </p>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-3">
+                  <span className="font-bold">•</span>
+                  <span><strong>Supabase</strong> - Banco de dados e API (hospedagem de dados)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold">•</span>
+                  <span><strong>Vercel</strong> - Hospedagem da aplicação web</span>
+                </li>
+              </ul>
+              <p className="text-sm text-gray-600 mt-4">
+                Estes serviços têm seus próprios termos de privacidade. Recomendamos revisar:
+              </p>
+              <ul className="space-y-2 text-sm text-gray-600 mt-2">
+                <li>• Política de privacidade Supabase: https://supabase.com/privacy</li>
+                <li>• Política de privacidade Vercel: https://vercel.com/legal/privacy-policy</li>
+              </ul>
+            </div>
+
+            {/* Retention */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Período de retenção
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  <strong>Dados agregados e anônimos:</strong> Mantidos indefinidamente como histórico do mapeamento
+                </p>
+                <p>
+                  <strong>Dados brutos individuais:</strong> Podem ser excluídos após agregação para evitar reidentificação
+                </p>
+                <p>
+                  <strong>Logs técnicos:</strong> Retenção conforme política dos operadores (Supabase, Vercel)
+                </p>
+              </div>
+            </div>
+
+            {/* Legal Basis */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Base legal
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  O processamento é baseado em:
+                </p>
+                <ul className="space-y-2 ml-4">
+                  <li>✓ <strong>Consentimento:</strong> Você consente ao submeter o formulário</li>
+                  <li>✓ <strong>Interesse legítimo:</strong> Pesquisa de saúde pública e formulação de políticas</li>
+                  <li>✓ <strong>LGPD Art. 7º, II:</strong> Consentimento informado (Lei Geral de Proteção de Dados)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Rights and Requests */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Seus direitos e solicitações
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  Como as contribuições são processadas de forma anônima e agregada, certas solicitações (acesso, correção, exclusão) podem não ser possíveis para dados específicos.
+                </p>
+                <p>
+                  <strong>Se você deseja:</strong>
+                </p>
+                <ul className="space-y-2 ml-4 text-gray-700">
+                  <li>• Questionar como seus dados são usados</li>
+                  <li>• Exercer direitos de acesso ou portabilidade</li>
+                  <li>• Solicitar informações sobre retenção</li>
+                  <li>• Reportar preocupações de privacidade</li>
+                </ul>
+                <p className="mt-4">
+                  Entre em contato: <strong>contact@syvtek.care</strong>
+                </p>
+              </div>
+            </div>
+
             {/* Contact */}
             <div className="space-y-4 border-t border-gray-200 pt-12 bg-gray-50 rounded-lg p-6">
               <h2 className="text-2xl font-bold text-gray-900">
@@ -265,7 +411,8 @@ export default function PrivacyPage() {
               </p>
               <p className="text-sm text-gray-600 mt-4">
                 <strong>Email:</strong> contact@syvtek.care<br/>
-                <strong>Website:</strong> www.syvtek.care
+                <strong>Website:</strong> www.syvtek.care<br/>
+                <strong>Última atualização:</strong> Agosto de 2026
               </p>
             </div>
           </div>

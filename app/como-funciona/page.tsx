@@ -35,10 +35,10 @@ export default function ComoFuncionaPage() {
               {/* FAQ Item 1 */}
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Meus dados são realmente anônimos?
+                  Como funciona a privacidade?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Sim. Não coletamos seu nome, email, telefone ou qualquer informação que possa identificá-lo. Você compartilha apenas sua experiência de cuidado e a região em que vive. Os dados são agregados sem rastreamento individual.
+                  Não solicitamos seu nome, email, telefone ou dados que identifiquem você. Você compartilha apenas seu município e sua experiência de cuidado. Os dados são agregados (combinados) antes de serem visualizados no mapa. Como todo site, processos técnicos podem envolver dados como IP, mas suas respostas não são rastreadas individualmente. Veja nossa <a href="/privacidade" className="text-blue-600 hover:text-blue-700 font-semibold underline">política de privacidade</a> para detalhes completos.
                 </p>
               </div>
 
@@ -58,7 +58,7 @@ export default function ComoFuncionaPage() {
                   O que vocês fazem com os dados que coletam?
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  Os dados são agregados e usados apenas para criar visualizações dos caminhos do cuidado, identificar padrões e tendências, e ajudar gestores a melhor entender as necessidades da região. Nunca são compartilhados com terceiros.
+                  Os dados são agregados (combinados) e usados para criar visualizações dos caminhos do cuidado, identificar padrões regionais e ajudar gestores a entender as necessidades reais. Os dados não são comercializados nem vendidos. Dados técnicos (IP, logs) são processados conforme políticas dos operadores (Supabase, Vercel). Dados agregados podem ser usados para pesquisa e política pública. Veja nossa política de privacidade para detalhes sobre quem tem acesso aos dados.
                 </p>
               </div>
 
