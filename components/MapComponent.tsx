@@ -4,6 +4,16 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+// Configurar ícones padrão do Leaflet
+if (typeof window !== "undefined") {
+  delete (L.Icon.Default.prototype as any)._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+    iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  });
+}
+
 interface Municipality {
   name: string;
   lat: number;
@@ -33,22 +43,26 @@ export default function MapComponent({ municipalities, stats = {} }: MapComponen
   useEffect(() => {
     if (mapRef.current) return;
 
-    // Calcular centro e bounds do Noroeste Fluminense
-    const center = [-21.25, -41.9];
-    const bounds = L.latLngBounds(
-      [-20.6, -41.4],
-      [-21.85, -42.25]
-    );
+    try {
+      const mapElement = document.getElementById("map");
+      if (!mapElement) return;
 
-    // Inicializar mapa
-    const map = L.map("map", {
-      center: center as L.LatLngExpression,
-      zoom: 10,
-      maxBounds: bounds,
-      maxBoundsViscosity: 1.0,
-      zoomControl: false,
-      attributionControl: true,
-    });
+      // Calcular centro e bounds do Noroeste Fluminense
+      const center = [-21.25, -41.9];
+      const bounds = L.latLngBounds(
+        [-20.6, -41.4],
+        [-21.85, -42.25]
+      );
+
+      // Inicializar mapa
+      const map = L.map("map", {
+        center: center as L.LatLngExpression,
+        zoom: 10,
+        maxBounds: bounds,
+        maxBoundsViscosity: 1.0,
+        zoomControl: false,
+        attributionControl: true,
+      });
 
     // Adicionar OpenStreetMap
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -88,17 +102,20 @@ export default function MapComponent({ municipalities, stats = {} }: MapComponen
       markersRef.current.push(marker);
     });
 
-    // Ajustar zoom ao conteúdo
-    setTimeout(() => {
-      map.fitBounds(bounds, { padding: [50, 50] });
-    }, 100);
+      // Ajustar zoom ao conteúdo
+      setTimeout(() => {
+        map.fitBounds(bounds, { padding: [50, 50] });
+      }, 100);
 
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
+      return () => {
+        if (mapRef.current) {
+          mapRef.current.remove();
+          mapRef.current = null;
+        }
+      };
+    } catch (error) {
+      console.error("Erro ao inicializar mapa:", error);
+    }
   }, [municipalities, stats]);
 
   return (
