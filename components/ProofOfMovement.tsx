@@ -84,11 +84,11 @@ export default function ProofOfMovement() {
         <div className="flex items-center gap-2">
           <span className="text-2xl">🔄</span>
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Prova de Movimento
+            O mapa está acontecendo agora
           </h2>
         </div>
         <p className="text-sm text-gray-700">
-          Acompanhe em tempo real como o mapa está crescendo
+          Acompanhe as experiências compartilhadas durante a Merco Noroeste 2026
         </p>
       </div>
 
@@ -97,12 +97,12 @@ export default function ProofOfMovement() {
         {/* Total contributions */}
         <div className="bg-white border-2 border-emerald-300 rounded-lg p-4 sm:p-5 text-center">
           <p className="text-xs sm:text-sm font-semibold text-emerald-700 mb-2">
-            Contribuições
+            Participações
           </p>
           <p className="text-3xl sm:text-4xl font-bold text-emerald-900">
             {stats.total}
           </p>
-          <p className="text-xs text-emerald-600 mt-1">histórias compartilhadas</p>
+          <p className="text-xs text-emerald-600 mt-1">experiências compartilhadas</p>
         </div>
 
         {/* Participating municipalities */}
@@ -113,7 +113,7 @@ export default function ProofOfMovement() {
           <p className="text-3xl sm:text-4xl font-bold text-emerald-900">
             {municipiosParticipantes}
           </p>
-          <p className="text-xs text-emerald-600 mt-1">de 13 participantes</p>
+          <p className="text-xs text-emerald-600 mt-1">com participações registradas</p>
         </div>
 
         {/* Categories addressed */}
@@ -124,7 +124,7 @@ export default function ProofOfMovement() {
           <p className="text-3xl sm:text-4xl font-bold text-emerald-900">
             {categoriasAbordadas}
           </p>
-          <p className="text-xs text-emerald-600 mt-1">áreas de cuidado</p>
+          <p className="text-xs text-emerald-600 mt-1">identificados até agora</p>
         </div>
       </div>
 
