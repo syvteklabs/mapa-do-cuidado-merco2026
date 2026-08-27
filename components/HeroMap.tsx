@@ -1,105 +1,125 @@
 "use client";
 
 export default function HeroMap() {
-  // Municipalities with realistic geographic positions
   const municipalities = [
-    { name: "Aperibé", x: 28, y: 22 },
-    { name: "Porciúncula", x: 22, y: 28 },
-    { name: "Laje do Muriaé", x: 18, y: 32 },
-    { name: "Bom Jesus do Itabapoana", x: 25, y: 38 },
-    { name: "Varre-Sai", x: 20, y: 42 },
-    { name: "Italva", x: 35, y: 28 },
-    { name: "Itaperuna", x: 38, y: 35 },
-    { name: "São José de Ubá", x: 42, y: 40 },
-    { name: "Miracema", x: 35, y: 45 },
-    { name: "Natividade", x: 48, y: 32 },
-    { name: "Cambuci", x: 52, y: 38 },
-    { name: "Itaocara", x: 40, y: 50 },
-    { name: "Santo Antônio de Pádua", x: 45, y: 55 },
+    { name: "Aperibé", label: "Aperibé" },
+    { name: "Porciúncula", label: "Porciúncula" },
+    { name: "Laje do Muriaé", label: "Laje do Muriaé" },
+    { name: "Bom Jesus do Itabapoana", label: "Bom Jesus" },
+    { name: "Varre-Sai", label: "Varre-Sai" },
+    { name: "Italva", label: "Italva" },
+    { name: "Itaperuna", label: "Itaperuna", isHighlight: true },
+    { name: "São José de Ubá", label: "São José de Ubá" },
+    { name: "Miracema", label: "Miracema" },
+    { name: "Natividade", label: "Natividade" },
+    { name: "Cambuci", label: "Cambuci" },
+    { name: "Itaocara", label: "Itaocara" },
+    { name: "Santo Antônio de Pádua", label: "Santo Antônio" },
   ];
 
   return (
     <div className="relative w-full h-full bg-white rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg">
       {/* Map visualization */}
-      <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+      <svg className="w-full h-full" viewBox="0 0 140 180" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <linearGradient id="regionGradientGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#dcfce7', stopOpacity: 1 }} />
+          <linearGradient id="lightGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#f0fdf4', stopOpacity: 1 }} />
             <stop offset="100%" style={{ stopColor: '#e0f2fe', stopOpacity: 1 }} />
           </linearGradient>
-          <radialGradient id="highlightGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" style={{ stopColor: '#16a34a', stopOpacity: 0.3 }} />
-            <stop offset="100%" style={{ stopColor: '#16a34a', stopOpacity: 0 }} />
-          </radialGradient>
         </defs>
 
-        {/* Background - Noroeste Fluminense region (realistic shape) */}
+        {/* Base region - Noroeste Fluminense outline */}
         <path
-          d="M 15 20 L 30 15 L 45 18 L 55 25 L 58 40 L 55 60 L 40 65 L 25 62 L 15 50 Z"
-          fill="url(#regionGradientGreen)"
-          stroke="#4ade80"
-          strokeWidth="1.2"
+          d="M 20 30 L 50 10 L 80 15 L 100 25 L 110 50 L 115 85 L 105 115 L 80 130 L 50 125 L 30 110 L 15 80 Z"
+          fill="url(#lightGreen)"
+          stroke="#86efac"
+          strokeWidth="1.5"
         />
 
-        {/* Highlight the main region (Itaperuna area) */}
+        {/* Itaperuna region - highlighted in green */}
         <path
-          d="M 30 25 L 45 22 L 50 35 L 48 48 L 32 50 Z"
-          fill="#16a34a"
-          opacity="0.25"
-          stroke="#22c55e"
-          strokeWidth="0.8"
+          d="M 50 40 L 70 35 L 85 45 L 80 70 L 65 75 L 50 65 Z"
+          fill="#22c55e"
+          opacity="0.4"
+          stroke="#16a34a"
+          strokeWidth="1"
         />
 
-        {/* Internal territorial divisions (subtle) */}
-        <g stroke="#86efac" strokeWidth="0.4" opacity="0.4">
-          <line x1="28" y1="20" x2="48" y2="35" />
-          <line x1="22" y1="28" x2="40" y2="50" />
-          <line x1="35" y1="28" x2="40" y2="65" />
-          <line x1="45" y1="18" x2="55" y2="40" />
+        {/* Municipality boundaries - light dividing lines */}
+        <g stroke="#dcfce7" strokeWidth="0.8" opacity="0.8">
+          {/* North-South divisions */}
+          <line x1="40" y1="20" x2="40" y2="120" />
+          <line x1="60" y1="15" x2="60" y2="130" />
+          <line x1="80" y1="20" x2="80" y2="125" />
+          <line x1="100" y1="30" x2="100" y2="110" />
+
+          {/* East-West divisions */}
+          <line x1="20" y1="50" x2="115" y2="50" />
+          <line x1="20" y1="75" x2="115" y2="75" />
+          <line x1="25" y1="95" x2="110" y2="95" />
+
+          {/* Diagonal divisions */}
+          <line x1="30" y1="30" x2="80" y2="120" />
+          <line x1="70" y1="20" x2="105" y2="100" />
         </g>
 
-        {/* Municipality circles - larger and more visible */}
-        {municipalities.map((mun) => {
-          const isItaperuna = mun.name === "Itaperuna";
-          return (
-            <g key={mun.name}>
-              {/* Larger circle for all municipalities */}
-              <circle
-                cx={mun.x}
-                cy={mun.y}
-                r={isItaperuna ? 2.5 : 2}
-                fill={isItaperuna ? "#15803d" : "#22c55e"}
-                opacity={isItaperuna ? 1 : 0.8}
-                stroke={isItaperuna ? "#166534" : "#16a34a"}
-                strokeWidth="0.4"
-              />
-              {/* Pulse effect for Itaperuna */}
-              {isItaperuna && (
-                <circle
-                  cx={mun.x}
-                  cy={mun.y}
-                  r="4"
-                  fill="none"
-                  stroke="#15803d"
-                  strokeWidth="0.5"
-                  opacity="0.3"
-                >
-                  <animate attributeName="r" from="4" to="6" dur="2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" from="0.3" to="0" dur="2s" repeatCount="indefinite" />
-                </circle>
-              )}
-            </g>
-          );
-        })}
+        {/* Municipality circles/dots */}
+        {/* Porciúncula */}
+        <circle cx="32" cy="28" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
 
-        {/* Center point indicator */}
-        <circle cx="38" cy="35" r="1" fill="none" stroke="#dc2626" strokeWidth="0.4" opacity="0.3" />
+        {/* Aperibé */}
+        <circle cx="48" cy="20" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Laje do Muriaé */}
+        <circle cx="28" cy="50" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Bom Jesus do Itabapoana */}
+        <circle cx="38" cy="68" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Varre-Sai */}
+        <circle cx="32" cy="88" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Italva */}
+        <circle cx="55" cy="42" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Itaperuna - HIGHLIGHTED */}
+        <circle cx="65" cy="58" r="3.5" fill="#15803d" stroke="#166534" strokeWidth="1" />
+        <circle
+          cx="65"
+          cy="58"
+          r="6"
+          fill="none"
+          stroke="#15803d"
+          strokeWidth="0.8"
+          opacity="0.3"
+        >
+          <animate attributeName="r" from="6" to="9" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" from="0.3" to="0" dur="2s" repeatCount="indefinite" />
+        </circle>
+
+        {/* São José de Ubá */}
+        <circle cx="72" cy="72" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Miracema */}
+        <circle cx="58" cy="88" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Natividade */}
+        <circle cx="85" cy="48" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Cambuci */}
+        <circle cx="95" cy="62" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Itaocara */}
+        <circle cx="72" cy="105" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
+
+        {/* Santo Antônio de Pádua */}
+        <circle cx="58" cy="118" r="2.5" fill="#86efac" stroke="#22c55e" strokeWidth="0.5" />
 
         {/* Region label */}
-        <text x="38" y="78" textAnchor="middle" fontSize="3.5" fill="#166534" fontWeight="bold">
+        <text x="65" y="155" textAnchor="middle" fontSize="5" fill="#166534" fontWeight="bold" letterSpacing="0.5">
           Noroeste Fluminense
         </text>
-        <text x="38" y="84" textAnchor="middle" fontSize="2" fill="#4ade80">
+        <text x="65" y="168" textAnchor="middle" fontSize="3" fill="#4ade80">
           13 Municípios Conectados
         </text>
       </svg>
@@ -107,7 +127,7 @@ export default function HeroMap() {
       {/* Legend overlay */}
       <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur rounded-lg p-3 text-xs shadow-md">
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
           <span className="text-gray-700 font-medium">Municípios</span>
         </div>
         <div className="flex items-center gap-2">
