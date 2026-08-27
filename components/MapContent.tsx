@@ -339,8 +339,8 @@ export default function MapContent({
         <div className="text-xs sm:text-sm">
           <p className="text-gray-600 mb-2 font-medium line-clamp-2">
             {localSelectedMunicipio
-              ? `📍 ${localSelectedMunicipio}`
-              : "👆 Clique no mapa"}
+              ? localSelectedMunicipio
+              : "Clique no mapa"}
           </p>
           {localSelectedMunicipio && (
             <button

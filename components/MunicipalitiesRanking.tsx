@@ -205,15 +205,15 @@ export default function MunicipalitiesRanking({
       </div>
 
       {/* Methodology Note */}
-      <div className="bg-blue-50 border-2 border-blue-300 rounded-2xl p-5 sm:p-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 sm:p-6">
         <p className={`text-blue-900 font-medium leading-relaxed ${isTV ? "text-lg" : "text-sm"}`}>
-          ℹ️ Este mapa mostra a <strong>cobertura territorial</strong> das participações. Todos os municípios têm importância igual — a ausência de participações não significa menor necessidade de atenção.
+          Este mapa mostra a <strong>cobertura territorial</strong> das participações. Todos os municípios têm importância igual — a ausência de participações não significa menor necessidade de atenção.
         </p>
       </div>
 
       {/* Interaction Hint */}
       <p className={`text-gray-500 text-center italic px-4 ${isTV ? "text-base" : "text-xs"}`}>
-        💡 Clique em um card para selecioná-lo e centralizá-lo no mapa
+        Clique em um card para selecioná-lo e centralizá-lo no mapa
       </p>
     </div>
   );

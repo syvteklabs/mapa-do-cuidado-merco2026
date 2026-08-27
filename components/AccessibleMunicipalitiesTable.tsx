@@ -112,9 +112,9 @@ export default function AccessibleMunicipalitiesTable({
       </div>
 
       {/* Accessibility Note */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className={`text-blue-900 ${isTV ? "text-lg" : "text-sm"}`}>
-          <strong>♿ Tabela acessível:</strong> Esta tabela é uma alternativa totalmente acessível ao mapa. Use Tab para navegar entre células, Shift+Tab para voltar. Todos os dados estão em texto claro, sem dependência de cor.
+          <strong>Tabela acessível:</strong> Esta tabela é uma alternativa totalmente acessível ao mapa. Use Tab para navegar entre células, Shift+Tab para voltar. Todos os dados estão em texto claro, sem dependência de cor.
         </p>
       </div>
     </div>

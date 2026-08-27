@@ -120,9 +120,9 @@ export default function ExpansionTerritoriesSection({
       )}
 
       {/* Legend */}
-      <div className="bg-white border-2 border-purple-300 rounded-lg p-4 text-center">
+      <div className="bg-white border border-purple-200 rounded-lg p-4 text-center">
         <p className={`text-gray-600 ${isTV ? "text-lg" : "text-xs"}`}>
-          ℹ️ Manifestações de interesse para participação em próximos ciclos
+          Manifestações de interesse para participação em próximos ciclos
         </p>
       </div>
     </div>

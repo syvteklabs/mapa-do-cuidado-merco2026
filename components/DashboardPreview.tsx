@@ -522,28 +522,28 @@ export default function DashboardPreview() {
                     onClick={() => setDataView("participations")}
                     className={`px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
                       dataView === "participations"
-                        ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
+                        ? "bg-blue-500 text-white shadow-lg"
                         : "text-gray-700 hover:bg-gray-200"
                     }`}
                   >
-                    📊 Participações
+                    Participações
                   </button>
                   <button
                     onClick={() => setDataView("needs")}
                     className={`px-4 sm:px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 ${
                       dataView === "needs"
-                        ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg"
+                        ? "bg-amber-500 text-white shadow-lg"
                         : "text-gray-700 hover:bg-gray-200"
                     }`}
                   >
-                    🎯 Necessidades
+                    Necessidades
                   </button>
                 </div>
               </div>
 
               {/* Map Full Width */}
               {!showAccessibleTable && (
-                <div className="rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300" style={{
+                <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md bg-white hover:shadow-lg transition-shadow duration-300" style={{
                   height: isTV ? '700px' : 'clamp(400px, 60vh, 600px)',
                   minHeight: '400px'
                 }}>
@@ -675,9 +675,9 @@ export default function DashboardPreview() {
                 </div>
 
                 {/* Insight Summary */}
-                <div className="bg-white/80 border border-indigo-200 rounded-2xl p-6 text-center">
-                  <p className={`text-indigo-900 font-semibold ${isTV ? "text-xl" : "text-base"}`}>
-                    ℹ️ <strong>{Object.keys(stats.byCategory).length}</strong> {stats.total < 30 ? "padrões emergentes" : "necessidades"} identificadas a partir de <strong>{stats.total}</strong> relato{stats.total !== 1 ? "s" : ""}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+                  <p className={`text-blue-900 font-semibold ${isTV ? "text-xl" : "text-base"}`}>
+                    <strong>{Object.keys(stats.byCategory).length}</strong> {stats.total < 30 ? "padrões emergentes" : "necessidades"} identificadas a partir de <strong>{stats.total}</strong> relato{stats.total !== 1 ? "s" : ""}
                   </p>
                 </div>
               </div>
