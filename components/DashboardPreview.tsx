@@ -8,13 +8,14 @@ import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import LiveActivityBar from "./LiveActivityBar";
 import { DEMO_STATS } from "@/lib/demo-data";
-import { getCategoryLabel } from "@/lib/dictionaries";
+import { getCategoryLabel, getSentimentLabel } from "@/lib/dictionaries";
 
 interface DashboardStats {
   total: number;
   byState: Record<string, number>;
   byMunicipio: Record<string, number>;
   byCategory: Record<string, number>;
+  bySentiment?: Record<string, number>;
 }
 
 const MUNICIPIOS_NOROESTE = [
@@ -248,6 +249,27 @@ export default function DashboardPreview() {
   // Para TV, usar tamanhos maiores
   const isTV = typeof window !== "undefined" && window.innerWidth > 1920;
 
+  // Get top category and sentiment for hero section
+  const getTopCategory = () => {
+    if (!stats?.byCategory || Object.keys(stats.byCategory).length === 0) return null;
+    const entries = Object.entries(stats.byCategory);
+    return entries.reduce((max, [category, count]) =>
+      count > max[1] ? [category, count] : max
+    );
+  };
+
+  const getTopSentiment = () => {
+    if (!stats?.bySentiment || Object.keys(stats.bySentiment).length === 0) return null;
+    const entries = Object.entries(stats.bySentiment);
+    return entries.reduce((max, [sentiment, count]) =>
+      count > max[1] ? [sentiment, count] : max
+    );
+  };
+
+  const topCategory = getTopCategory();
+  const topSentiment = getTopSentiment();
+  const activemunicipios = stats ? Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length : 0;
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <style>{`
@@ -388,15 +410,103 @@ export default function DashboardPreview() {
 
         {stats && (
           <div className="space-y-8 sm:space-y-12 lg:space-y-14">
-            {/* SECTION 1: Map + Quick Stats Grid */}
+            {/* HERO SECTION: Central Question + 4 Key Indicators */}
+            <div className="space-y-6">
+              {/* Central Question */}
+              <div className="text-center space-y-3 pb-4">
+                <h2 className={`font-bold text-gray-900 ${isTV ? "text-6xl" : "text-4xl sm:text-5xl"}`}>
+                  O que o território está revelando agora?
+                </h2>
+                <p className={`text-gray-600 font-medium ${isTV ? "text-2xl" : "text-base sm:text-lg"}`}>
+                  Os números da participação no Noroeste Fluminense
+                </p>
+              </div>
+
+              {/* 4 Key Indicators - TV-optimized for no scrolling */}
+              <div className={`grid gap-4 sm:gap-5 ${isTV ? "grid-cols-4 gap-6" : "grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"}`}>
+                {/* Experiências Compartilhadas */}
+                <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-300 rounded-2xl p-6 sm:p-5 shadow-lg">
+                  <div className="text-center space-y-2">
+                    <p className={`text-blue-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
+                      Experiências
+                    </p>
+                    <p className={`font-black text-blue-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
+                      {stats.total}
+                    </p>
+                    <p className={`text-blue-700 font-semibold ${isTV ? "text-lg" : "text-xs"}`}>
+                      compartilhadas
+                    </p>
+                  </div>
+                </div>
+
+                {/* Municípios com Participação */}
+                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-400 rounded-2xl p-6 sm:p-5 shadow-lg">
+                  <div className="text-center space-y-2">
+                    <p className={`text-emerald-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
+                      Municípios
+                    </p>
+                    <p className={`font-black text-emerald-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
+                      {activemunicipios}
+                    </p>
+                    <p className={`text-emerald-700 font-semibold ${isTV ? "text-lg" : "text-xs"}`}>
+                      participando
+                    </p>
+                  </div>
+                </div>
+
+                {/* Principal Necessidade Relatada */}
+                <div className="bg-gradient-to-br from-rose-50 to-rose-100 border-2 border-rose-400 rounded-2xl p-6 sm:p-5 shadow-lg">
+                  <div className="text-center space-y-2">
+                    <p className={`text-rose-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
+                      Principal
+                    </p>
+                    {topCategory ? (
+                      <>
+                        <p className={`font-black text-rose-900 leading-tight ${isTV ? "text-2xl" : "text-sm"}`}>
+                          {getCategoryLabel(topCategory[0])}
+                        </p>
+                        <p className={`text-rose-700 font-semibold ${isTV ? "text-lg" : "text-xs"}`}>
+                          {topCategory[1]} menção{topCategory[1] !== 1 ? 's' : ''}
+                        </p>
+                      </>
+                    ) : (
+                      <p className={`text-rose-600 ${isTV ? "text-lg" : "text-xs"}`}>—</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Sentimento Mais Recorrente */}
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-2xl p-6 sm:p-5 shadow-lg">
+                  <div className="text-center space-y-2">
+                    <p className={`text-amber-600 font-bold uppercase tracking-wider ${isTV ? "text-xl" : "text-xs"}`}>
+                      Sentimento
+                    </p>
+                    {topSentiment ? (
+                      <>
+                        <p className={`font-black text-amber-900 ${isTV ? "text-4xl" : "text-3xl"}`}>
+                          {getSentimentLabel(topSentiment[0]).emoji}
+                        </p>
+                        <p className={`font-semibold text-amber-700 ${isTV ? "text-lg" : "text-xs"}`}>
+                          {getSentimentLabel(topSentiment[0]).label}
+                        </p>
+                      </>
+                    ) : (
+                      <p className={`text-amber-600 ${isTV ? "text-lg" : "text-xs"}`}>—</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 2: Territorial Map */}
             <div className="space-y-6">
               {/* Title + Toggle - Full Width */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
-                    Mapa Geográfico
+                    Mapa Territorial
                   </h2>
-                  <p className="text-gray-600 text-sm mt-1">Visualize a distribuição de participações no Noroeste Fluminense</p>
+                  <p className={`text-gray-600 ${isTV ? "text-lg" : "text-sm"} mt-1`}>Distribução de participações no Noroeste Fluminense</p>
                 </div>
                 {/* Data View Toggle */}
                 <div className="flex items-center gap-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl p-1.5 sm:p-2 shadow-sm border border-gray-200">
@@ -423,125 +533,30 @@ export default function DashboardPreview() {
                 </div>
               </div>
 
-              {/* Main Grid: Large Map + Side Stats */}
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                {/* Map - Large (3/4 on desktop) */}
-                <div className="lg:col-span-3 rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300" style={{
-                  height: isTV ? '700px' : 'clamp(400px, 70vh, 600px)',
-                  minHeight: '400px'
-                }}>
-                  <TerritorialMap
-                    municipiosStats={municipiosStats}
-                    municipiosCategories={municipiosCategories}
-                    selectedMunicipio={selectedMunicipio}
-                    onMunicipioSelect={setSelectedMunicipio}
-                    dataView={dataView}
-                  />
-                </div>
-
-                {/* Right Stats Panel (1/4 on desktop) */}
-                <div className="lg:col-span-1 space-y-4">
-                  {/* Total - Large Card */}
-                  <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-300 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className="text-center space-y-2">
-                      <p className="font-bold text-blue-600 uppercase text-xs tracking-wider">
-                        Total
-                      </p>
-                      <p className={`font-black text-blue-900 ${isTV ? "text-5xl" : "text-4xl sm:text-5xl"}`}>
-                        {stats.total}
-                      </p>
-                      <p className="text-blue-700 font-semibold text-sm">
-                        participações
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Quick Stats - 2 cards stacked */}
-                  {stats.total > 0 && (
-                    <>
-                      <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-400 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-                        <p className="text-emerald-600 font-bold text-xs uppercase tracking-wider mb-2">Municípios</p>
-                        <p className="font-black text-emerald-900 text-3xl mb-1">
-                          {Object.keys(stats.byMunicipio || {}).filter(m => (stats.byMunicipio || {})[m] > 0).length}
-                          <span className="text-xs text-emerald-700 font-semibold">/13</span>
-                        </p>
-                        <p className="text-emerald-700 font-semibold text-xs">ativos</p>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-rose-50 to-rose-100 border-2 border-rose-400 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-                        <p className="text-rose-600 font-bold text-xs uppercase tracking-wider mb-2">Temas</p>
-                        <p className="font-black text-rose-900 text-3xl">
-                          {Object.keys(stats.byCategory || {}).filter(c => (stats.byCategory || {})[c] > 0).length}
-                        </p>
-                        <p className="text-rose-700 font-semibold text-xs">identificados</p>
-                      </div>
-
-                      {/* Scope Info */}
-                      {stats.byState && stats.byState.RJ !== stats.total && (
-                        <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-2xl p-4 shadow-md">
-                          <div className="flex gap-2 text-xs">
-                            <span className="flex-shrink-0 text-xl">📍</span>
-                            <div>
-                              <p className="font-bold text-amber-900 mb-1 text-xs">Noroeste RJ</p>
-                              <p className="text-amber-800 font-semibold">
-                                <strong>{stats.byState.RJ}</strong> de <strong>{stats.total}</strong>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )}
-
-                  {/* Selected Municipality Info */}
-                  {selectedMunicipio && (
-                    <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 border-2 border-cyan-400 rounded-2xl p-4 shadow-lg animate-pulse">
-                      <div className="flex items-start gap-2">
-                        <span className="flex-shrink-0 text-2xl">📍</span>
-                        <div className="text-sm flex-1">
-                          <p className="font-bold text-cyan-900 mb-2 text-base">{selectedMunicipio}</p>
-                          <p className="text-cyan-800 font-semibold text-sm mb-3">
-                            {municipiosStats[selectedMunicipio] || 0} participações
-                          </p>
-                          <button
-                            onClick={() => setSelectedMunicipio(null)}
-                            className="w-full text-xs font-bold text-cyan-700 bg-cyan-200 hover:bg-cyan-300 py-2 px-3 rounded-lg transition-colors"
-                          >
-                            Limpar
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
+              {/* Map Full Width */}
+              <div className="rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300" style={{
+                height: isTV ? '700px' : 'clamp(400px, 60vh, 600px)',
+                minHeight: '400px'
+              }}>
+                <TerritorialMap
+                  municipiosStats={municipiosStats}
+                  municipiosCategories={municipiosCategories}
+                  selectedMunicipio={selectedMunicipio}
+                  onMunicipioSelect={setSelectedMunicipio}
+                  dataView={dataView}
+                />
               </div>
             </div>
 
-            {/* Municípios Ranking - Full Width Below */}
-            <div>
-              <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-4xl" : "text-xl"}`}>
-                Ranking de Participações
-              </h2>
-              <MunicipalitiesRanking
-                municipiosStats={municipiosStats}
-                selectedMunicipio={selectedMunicipio}
-                onMunicipioSelect={setSelectedMunicipio}
-                onCenterMap={(municipio) => {
-                  setSelectedMunicipio(municipio);
-                }}
-                isTV={isTV}
-              />
-            </div>
-
-            {/* Insights - Shared Experiences */}
+            {/* SECTION 3: Main Territory Signals - Principais Sinais do Território */}
             {stats.byCategory && Object.keys(stats.byCategory).length > 0 && (
               <div className="space-y-8 sm:space-y-10 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 border-2 border-indigo-300 rounded-3xl p-8 sm:p-10 lg:p-12 shadow-lg">
                 <div className="space-y-3">
                   <h2 className={`font-bold text-gray-900 ${isTV ? "text-5xl" : "text-3xl sm:text-4xl"}`}>
-                    🎯 Temas e Necessidades
+                    🎯 Principais Sinais do Território
                   </h2>
                   <p className={`text-gray-700 leading-relaxed font-semibold max-w-3xl ${isTV ? "text-xl" : "text-base"}`}>
-                    Os participantes compartilharam experiências que revelam as principais necessidades do território:
+                    As principais necessidades reveladas pela experiência compartilhada:
                   </p>
                 </div>
 
@@ -604,11 +619,27 @@ export default function DashboardPreview() {
                 {/* Insight Summary */}
                 <div className="bg-white/80 border border-indigo-200 rounded-2xl p-6 text-center">
                   <p className={`text-indigo-900 font-semibold ${isTV ? "text-xl" : "text-base"}`}>
-                    💡 <strong>{Object.keys(stats.byCategory).length}</strong> temas identificados a partir de <strong>{stats.total}</strong> histórias compartilhadas
+                    💡 <strong>{Object.keys(stats.byCategory).length}</strong> necessidades identificadas a partir de <strong>{stats.total}</strong> histórias compartilhadas
                   </p>
                 </div>
               </div>
             )}
+
+            {/* SECTION 4: Municipality Participation - Participação por Município */}
+            <div>
+              <h2 className={`font-bold text-gray-900 mb-6 ${isTV ? "text-4xl" : "text-3xl sm:text-4xl"}`}>
+                Participação por Município
+              </h2>
+              <MunicipalitiesRanking
+                municipiosStats={municipiosStats}
+                selectedMunicipio={selectedMunicipio}
+                onMunicipioSelect={setSelectedMunicipio}
+                onCenterMap={(municipio) => {
+                  setSelectedMunicipio(municipio);
+                }}
+                isTV={isTV}
+              />
+            </div>
 
             {/* Empty State */}
             {stats.total === 0 && (

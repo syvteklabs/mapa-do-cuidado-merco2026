@@ -152,10 +152,21 @@ export class SupabaseService {
         return { success: false, error: categoryError.message };
       }
 
+      // Count by sentiment
+      const { data: bySentimentRaw, error: sentimentError } = await client
+        .from("mapa_contribuicoes")
+        .select("sentimento, id");
+
+      if (sentimentError) {
+        console.error("Error fetching by sentiment:", sentimentError);
+        return { success: false, error: sentimentError.message };
+      }
+
       // Aggregate results
       const statePcts = new Map<string, number>();
       const municipioPcts = new Map<string, number>();
       const categoryPcts = new Map<string, number>();
+      const sentimentPcts = new Map<string, number>();
 
       if (byState) {
         byState.forEach(({ estado }) => {
@@ -178,6 +189,17 @@ export class SupabaseService {
         });
       }
 
+      if (bySentimentRaw) {
+        bySentimentRaw.forEach(({ sentimento }) => {
+          if (sentimento) {
+            sentimentPcts.set(
+              sentimento,
+              (sentimentPcts.get(sentimento) || 0) + 1
+            );
+          }
+        });
+      }
+
       return {
         success: true,
         data: {
@@ -185,6 +207,7 @@ export class SupabaseService {
           byState: Object.fromEntries(statePcts),
           byMunicipio: Object.fromEntries(municipioPcts),
           byCategory: Object.fromEntries(categoryPcts),
+          bySentiment: Object.fromEntries(sentimentPcts),
         },
       };
     } catch (err) {
