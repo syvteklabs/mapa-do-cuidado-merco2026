@@ -61,7 +61,7 @@ export default function TerritorialMap({
 
   // Calcular dimensões do SVG
   const bounds = useMemo(() => getNoroesteBounds(), []);
-  const padding = 10000; // ~0.09 graus de padding
+  const padding = 0.09; // ~0.09 graus de padding
 
   const minLng = bounds.west - padding;
   const maxLng = bounds.east + padding;
@@ -145,7 +145,7 @@ export default function TerritorialMap({
               />
 
               {/* Municipality label */}
-              {count > 0 || true && (
+              {(count > 0 || selectedMunicipio === municipioName) && (
                 <g>
                   <text
                     x={getCentroidLabel(municipioName)[0]}
