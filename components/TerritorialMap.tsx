@@ -20,6 +20,15 @@ export default function TerritorialMap({
 }: TerritorialMapProps) {
   const [hoveredMunicipio, setHoveredMunicipio] = useState<string | null>(null);
 
+  // Respect prefers-reduced-motion
+  const prefersReducedMotion = typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    : false;
+
+  const getPlural = (count: number, singular: string, plural: string) => {
+    return count === 1 ? singular : plural;
+  };
+
   // Calcular cores baseado na intensidade
   const getColorForMunicipio = (municipioName: string) => {
     const count = municipiosStats[municipioName] || 0;
@@ -137,7 +146,7 @@ export default function TerritorialMap({
                 }}
                 role="button"
                 tabIndex={0}
-                aria-label={`${municipioName}, ${count} participações`}
+                aria-label={`${municipioName}, ${count} ${getPlural(count, "participação", "participações")}`}
                 aria-pressed={isSelected}
               />
 
@@ -209,7 +218,7 @@ export default function TerritorialMap({
                     fill="#4b5563"
                     className="pointer-events-none select-none"
                   >
-                    {count > 0 ? `${count} participações` : "Sem dados"}
+                    {count > 0 ? `${count} ${getPlural(count, "participação", "participações")}` : "Sem dados"}
                   </text>
                 </g>
               )}

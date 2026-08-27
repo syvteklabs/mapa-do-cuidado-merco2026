@@ -149,13 +149,41 @@ export default function AccessibilityPage() {
               </ul>
             </div>
 
-            {/* WCAG Conformance */}
+            {/* Accessible Alternatives */}
             <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Alternativas acessíveis
+              </h2>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">✓</span>
+                  <span><strong>Tabela de dados:</strong> O mapa territorial possui uma tabela acessível equivalente que pode ser alternada com um clique</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">✓</span>
+                  <span><strong>Valores em texto:</strong> Todos os números e dados estão incluídos diretamente nos elementos, sem dependência de cores ou gráficos</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">✓</span>
+                  <span><strong>Rótulos singulares/plurais:</strong> Usamos "1 participação" e "2 participações" conforme apropriado</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">✓</span>
+                  <span><strong>Suporte a redução de movimento:</strong> Animações são respeitadas quando `prefers-reduced-motion` está ativado</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* WCAG Conformance */}
+            <div className="space-y-4 border-t border-gray-200 pt-12 bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
               <h2 className="text-3xl font-bold text-gray-900">
                 Conformidade com padrões
               </h2>
-              <p className="text-gray-700">
-                O Mapa do Cuidado segue as diretrizes <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong>, o padrão reconhecido internacionalmente para acessibilidade na web.
+              <p className="text-gray-700 leading-relaxed">
+                O Mapa do Cuidado foi desenvolvido com o objetivo de seguir as diretrizes <strong>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</strong>, o padrão reconhecido internacionalmente para acessibilidade na web.
+              </p>
+              <p className="text-blue-900 font-semibold">
+                ⚠️ <strong>Nota importante:</strong> A conformidade total com WCAG 2.1 AA exige auditoria técnica independente. Se encontrar problemas de acessibilidade, por favor nos informe para que possamos corrigir.
               </p>
             </div>
 

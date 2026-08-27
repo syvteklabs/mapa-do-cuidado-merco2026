@@ -8,6 +8,7 @@ import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import LiveActivityBar from "./LiveActivityBar";
 import LearningsBlock from "./LearningsBlock";
+import AccessibleMunicipalitiesTable from "./AccessibleMunicipalitiesTable";
 import { DEMO_STATS } from "@/lib/demo-data";
 import { getCategoryLabel, getSentimentLabel } from "@/lib/dictionaries";
 
@@ -58,6 +59,7 @@ export default function DashboardPreview() {
   const [retrying, setRetrying] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const [dataView, setDataView] = useState<"participations" | "needs">("participations");
+  const [showAccessibleTable, setShowAccessibleTable] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -535,17 +537,40 @@ export default function DashboardPreview() {
               </div>
 
               {/* Map Full Width */}
-              <div className="rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300" style={{
-                height: isTV ? '700px' : 'clamp(400px, 60vh, 600px)',
-                minHeight: '400px'
-              }}>
-                <TerritorialMap
+              {!showAccessibleTable && (
+                <div className="rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300" style={{
+                  height: isTV ? '700px' : 'clamp(400px, 60vh, 600px)',
+                  minHeight: '400px'
+                }}>
+                  <TerritorialMap
+                    municipiosStats={municipiosStats}
+                    municipiosCategories={municipiosCategories}
+                    selectedMunicipio={selectedMunicipio}
+                    onMunicipioSelect={setSelectedMunicipio}
+                    dataView={dataView}
+                  />
+                </div>
+              )}
+
+              {/* Accessible Table Alternative */}
+              {showAccessibleTable && stats && (
+                <AccessibleMunicipalitiesTable
                   municipiosStats={municipiosStats}
-                  municipiosCategories={municipiosCategories}
-                  selectedMunicipio={selectedMunicipio}
-                  onMunicipioSelect={setSelectedMunicipio}
+                  totalParticipations={stats.total}
                   dataView={dataView}
+                  isTV={isTV}
                 />
+              )}
+
+              {/* Toggle Button */}
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={() => setShowAccessibleTable(!showAccessibleTable)}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  aria-label={`${showAccessibleTable ? "Mostrar mapa" : "Mostrar tabela acessível"}`}
+                >
+                  {showAccessibleTable ? "👁️ Ver Mapa" : "♿ Tabela Acessível"}
+                </button>
               </div>
             </div>
 
