@@ -212,6 +212,15 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
         {/* Background */}
         <rect width="200" height="200" fill="#ffffff" />
 
+        {/* Noroeste Fluminense region - territorial boundary with light fill */}
+        <path
+          d="M 68 8 L 200 5 L 200 160 L 75 195 L 35 180 L 30 155 L 35 115 L 30 75 L 40 40 Z"
+          fill="#f0fdf4"
+          stroke="#86efac"
+          strokeWidth="2"
+          opacity="0.8"
+        />
+
         {/* Municipality points - cities represented as circles */}
         {MUNICIPALITIES.map((municipality, index) => {
           const count = municipalitiesData[municipality.name] || 0;
