@@ -93,24 +93,10 @@ export default function ExpansionPage() {
             </div>
 
             <div className="space-y-4">
-              {/* Nome */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Seu nome
-                </label>
-                <input
-                  type="text"
-                  value={formData.nome}
-                  onChange={(e) => updateFormData("nome", e.target.value)}
-                  placeholder="Digite seu nome"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
               {/* Cidade */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Cidade
+                  Cidade <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -124,7 +110,7 @@ export default function ExpansionPage() {
               {/* Estado */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Estado
+                  Estado <span className="text-red-600">*</span>
                 </label>
                 <select
                   value={formData.estado}
@@ -139,10 +125,17 @@ export default function ExpansionPage() {
                 </select>
               </div>
 
+              {/* Contact Required Note */}
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
+                <p className="text-sm font-semibold text-blue-900">
+                  ℹ️ Forneça ao menos WhatsApp ou e-mail para que possamos entrar em contato
+                </p>
+              </div>
+
               {/* WhatsApp */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  WhatsApp (opcional)
+                  WhatsApp
                 </label>
                 <input
                   type="tel"
@@ -171,6 +164,20 @@ export default function ExpansionPage() {
                 />
               </div>
 
+              {/* Nome (agora opcional) */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Seu nome (opcional)
+                </label>
+                <input
+                  type="text"
+                  value={formData.nome}
+                  onChange={(e) => updateFormData("nome", e.target.value)}
+                  placeholder="Seu nome (ajuda para personalização do contato)"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
               {/* Tipo de Participante */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -192,6 +199,13 @@ export default function ExpansionPage() {
                 </select>
               </div>
 
+              {/* Contact Usage Notice */}
+              <div className="bg-emerald-50 border-2 border-emerald-300 rounded-lg p-4">
+                <p className="text-sm text-emerald-900">
+                  <strong>📧 Como usaremos seu contato:</strong> Usaremos WhatsApp ou e-mail apenas para informar sobre uma possível expansão do Mapa do Cuidado para sua região. Nada de spam, nada de publicidade.
+                </p>
+              </div>
+
               {/* Consentimento */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <label className="flex items-start gap-3 cursor-pointer">
@@ -204,9 +218,7 @@ export default function ExpansionPage() {
                     className="mt-1 w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 flex-shrink-0"
                   />
                   <span className="text-sm text-gray-700">
-                    Autorizo a SyVtek Care a utilizar estes dados para entrar em
-                    contato sobre a possível expansão do Mapa do Cuidado para minha
-                    região.
+                    Autorizo a SyVtek Care a entrar em contato sobre possível expansão do Mapa do Cuidado para minha região <span className="text-red-600">*</span>
                   </span>
                 </label>
               </div>
@@ -228,10 +240,10 @@ export default function ExpansionPage() {
               </Link>
               <button
                 onClick={handleSubmit}
-                disabled={isLoading || !formData.consentimento_contato}
+                disabled={isLoading || !formData.consentimento_contato || (!formData.contato_whatsapp && !formData.contato_email)}
                 className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? "Registrando..." : "Registrar Interesse"}
+                {isLoading ? "Registrando..." : "Quero levar o Mapa para minha região"}
               </button>
             </div>
           </div>

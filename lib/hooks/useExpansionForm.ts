@@ -39,13 +39,13 @@ export function useExpansionForm() {
   );
 
   const submitForm = useCallback(async () => {
-    if (!formData.nome || !formData.cidade || !formData.estado) {
-      setError("Nome, cidade e estado são obrigatórios");
+    if (!formData.cidade || !formData.estado) {
+      setError("Cidade e estado são obrigatórios");
       return false;
     }
 
     if (!formData.contato_whatsapp && !formData.contato_email) {
-      setError("Forneça pelo menos WhatsApp ou e-mail");
+      setError("Forneça ao menos WhatsApp ou e-mail para contato");
       return false;
     }
 
