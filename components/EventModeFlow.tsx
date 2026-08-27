@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 interface Categoria {
   id: string;
   label: string;
+  humanLabel?: string;
 }
 
 const MUNICIPIOS_NOROESTE = [

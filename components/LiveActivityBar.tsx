@@ -25,8 +25,9 @@ export default function LiveActivityBar({
     temas: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [notificationHideTime, setNotificationHideTime] = useState<number | null>(null);
+  const [notificationHideTime, setNotificationHideTime] = useState<number | null>(showNewNotification ? null : null);
   const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const prevNotificationRef = useRef(showNewNotification);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -46,8 +47,6 @@ export default function LiveActivityBar({
         }
       } catch (error) {
         console.error("Error fetching stats:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -55,12 +54,18 @@ export default function LiveActivityBar({
   }, []);
 
   useEffect(() => {
+    if (!prevNotificationRef.current && showNewNotification) {
+      setNotificationHideTime(null);
+    }
+    prevNotificationRef.current = showNewNotification;
+  }, [showNewNotification]);
+
+  useEffect(() => {
     if (!showNewNotification) {
       if (notificationTimeoutRef.current) {
         clearTimeout(notificationTimeoutRef.current);
         notificationTimeoutRef.current = null;
       }
-      setNotificationHideTime(null);
       return;
     }
 
@@ -92,7 +97,7 @@ export default function LiveActivityBar({
               </p>
               <button
                 onClick={() => {
-                  setShowNotification(false);
+                  setNotificationHideTime(Date.now());
                   onNotificationClose?.();
                 }}
                 className="ml-auto text-emerald-600 hover:text-emerald-700 font-semibold"

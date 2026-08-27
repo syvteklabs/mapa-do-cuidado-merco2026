@@ -4,6 +4,11 @@ export type EventModeStep = "location" | "question" | "sending" | "confirmation"
 
 const EVENT_STORAGE_KEY = "mapa-cuidado-evento-temp";
 
+// Helper to trigger async updates without setState in effect
+const scheduleStateUpdates = (callback: () => void) => {
+  Promise.resolve().then(callback);
+};
+
 export interface EventFormData {
   estado: string;
   municipio: string;
@@ -93,17 +98,21 @@ export function useEventModeForm() {
 
   // Auto-reset após confirmação
   useEffect(() => {
-    if (step !== "confirmation" || autoResetCountdown !== null) {
+    if (step !== "confirmation") {
       return;
     }
-    setAutoResetCountdown(20);
+    if (autoResetCountdown !== null) {
+      return;
+    }
+    const timer = setTimeout(() => setAutoResetCountdown(20), 0);
+    return () => clearTimeout(timer);
   }, [step, autoResetCountdown]);
 
-  // Countdown timer
+  // Reset when countdown reaches 0
   useEffect(() => {
-    if (autoResetCountdown === null) return;
+    if (autoResetCountdown !== 0) return;
 
-    if (autoResetCountdown <= 0) {
+    scheduleStateUpdates(() => {
       setStep("location");
       setFormData(getInitialFormData());
       setError(null);
@@ -116,8 +125,12 @@ export function useEventModeForm() {
       } catch (err) {
         console.error("Failed to clear localStorage:", err);
       }
-      return;
-    }
+    });
+  }, [autoResetCountdown]);
+
+  // Countdown timer
+  useEffect(() => {
+    if (autoResetCountdown === null || autoResetCountdown <= 0) return;
 
     const timer = setTimeout(() => {
       setAutoResetCountdown(autoResetCountdown - 1);

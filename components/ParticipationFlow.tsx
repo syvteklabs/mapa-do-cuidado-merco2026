@@ -19,6 +19,7 @@ interface Categoria {
 interface Sentimento {
   id: string;
   label: string;
+  emoji: string;
 }
 
 export default function ParticipationFlow() {
