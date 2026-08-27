@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HowItWorks from "@/components/HowItWorks";
+import PersistentMobileCTA from "@/components/PersistentMobileCTA";
 
 export default function ComoFuncionaPage() {
   return (
@@ -121,6 +122,7 @@ export default function ComoFuncionaPage() {
           </div>
         </section>
       </main>
+      <PersistentMobileCTA />
       <Footer />
     </div>
   );

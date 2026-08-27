@@ -10,6 +10,7 @@ import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import LiveActivationBadge from "@/components/LiveActivationBadge";
 import LiveActivityBar from "@/components/LiveActivityBar";
+import PersistentMobileCTA from "@/components/PersistentMobileCTA";
 
 interface StatsData {
   total: number;
@@ -163,6 +164,7 @@ export default function Home() {
           </div>
         </section>
       </main>
+      <PersistentMobileCTA />
       <Footer />
     </div>
   );
