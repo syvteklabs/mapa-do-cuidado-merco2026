@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ExpansionUnified from "./ExpansionUnified";
+import ConfidenceIndicator from "./ConfidenceIndicator";
+import EngagementStrategy from "./EngagementStrategy";
 import DemoBanner from "./DemoBanner";
 import TerritorialMap from "./TerritorialMap";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
@@ -616,6 +618,27 @@ export default function DashboardPreview() {
                 </p>
               </div>
             )}
+
+            {/* Data Confidence Indicator */}
+            {stats.total > 0 && (
+              <ConfidenceIndicator
+                totalContributions={stats.total}
+                variant="inline"
+              />
+            )}
+
+            {/* Engagement Strategy - Missing Municipalities */}
+            {stats.total > 0 && (() => {
+              const missingMunicipios = MUNICIPIOS_NOROESTE.filter(
+                (municipio) => !municipiosStats[municipio] || municipiosStats[municipio] === 0
+              );
+              return missingMunicipios.length > 0 ? (
+                <EngagementStrategy
+                  missingMunicipios={missingMunicipios}
+                  totalMunicipios={MUNICIPIOS_NOROESTE.length}
+                />
+              ) : null;
+            })()}
 
             {/* Expansion Unified Section */}
             <ExpansionUnified isTV={isTV} newTerritory={newTerritory} />

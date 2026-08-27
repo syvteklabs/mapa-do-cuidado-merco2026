@@ -19,27 +19,46 @@ export default function ExpansionUnified({
   // If no data from either source, show just the call-to-action
   if (!loading && (!stats || stats.total === 0)) {
     return (
-      <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-lg p-8 sm:p-10">
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-2xl"}`}>
-            Expansão para novos territórios
-          </h2>
+      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-2 border-indigo-300 rounded-lg p-8 sm:p-10">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="text-center space-y-3">
+            <div className="text-4xl sm:text-5xl">🚀</div>
+            <h2 className={`font-bold text-gray-900 ${isTV ? "text-4xl" : "text-2xl"}`}>
+              Sua região quer participar?
+            </h2>
+          </div>
 
-          <p className={`text-gray-700 leading-relaxed ${isTV ? "text-xl" : "text-base"}`}>
-            O Mapa do Cuidado começou no Noroeste Fluminense. Sua região deseja
-            participar dos próximos ciclos?
+          <p className={`text-center text-gray-700 leading-relaxed ${isTV ? "text-xl" : "text-base"}`}>
+            O Mapa do Cuidado começou no Noroeste Fluminense. Nos próximos ciclos,
+            queremos expandir para outros territórios que compartilhem dessa visão participativa.
           </p>
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className={`inline-block bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 active:bg-purple-800 transition-colors ${
-              isTV
-                ? "py-4 px-8 text-xl"
-                : "py-3 px-6 text-base"
-            }`}
-          >
-            Registrar interesse na expansão
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className={`bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 active:bg-indigo-800 transition-colors ${
+                isTV
+                  ? "py-4 px-8 text-xl"
+                  : "py-3 px-6 text-base"
+              }`}
+            >
+              Registrar Interesse
+            </button>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className={`border-2 border-indigo-600 text-indigo-600 rounded-lg font-semibold hover:bg-indigo-50 active:bg-indigo-100 transition-colors ${
+                isTV
+                  ? "py-4 px-8 text-xl"
+                  : "py-3 px-6 text-base"
+              }`}
+            >
+              Saber Mais +
+            </button>
+          </div>
+
+          <p className="text-center text-xs sm:text-sm text-gray-600 italic">
+            Sua região será contactada para explorar possibilidades de colaboração
+          </p>
         </div>
       </div>
     );
