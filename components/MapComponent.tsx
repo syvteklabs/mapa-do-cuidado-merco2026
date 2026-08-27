@@ -1,0 +1,111 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+interface Municipality {
+  name: string;
+  lat: number;
+  lng: number;
+}
+
+interface MapComponentProps {
+  municipalities: Municipality[];
+  stats?: Record<string, number>;
+}
+
+const getColorForParticipations = (count: number, maxCount: number): string => {
+  if (count === 0) return "#d1d5db";
+  if (maxCount === 0) return "#d1d5db";
+
+  const ratio = count / maxCount;
+  if (ratio >= 0.75) return "#16a34a";
+  if (ratio >= 0.5) return "#22c55e";
+  if (ratio >= 0.25) return "#86efac";
+  return "#86efac";
+};
+
+export default function MapComponent({ municipalities, stats = {} }: MapComponentProps) {
+  const mapRef = useRef<L.Map | null>(null);
+  const markersRef = useRef<L.CircleMarker[]>([]);
+
+  useEffect(() => {
+    if (mapRef.current) return;
+
+    // Calcular centro e bounds do Noroeste Fluminense
+    const center = [-21.25, -41.9];
+    const bounds = L.latLngBounds(
+      [-20.6, -41.4],
+      [-21.85, -42.25]
+    );
+
+    // Inicializar mapa
+    const map = L.map("map", {
+      center: center as L.LatLngExpression,
+      zoom: 10,
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      zoomControl: false,
+      attributionControl: true,
+    });
+
+    // Adicionar OpenStreetMap
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    mapRef.current = map;
+
+    // Calcular max count para cores
+    const maxCount = Math.max(
+      ...Object.values(stats || {}).filter((v) => typeof v === "number"),
+      1
+    );
+
+    // Adicionar marcadores para cada município
+    municipalities.forEach((municipality) => {
+      const count = (stats || {})[municipality.name] || 0;
+      const color = getColorForParticipations(count, maxCount);
+      const radius = count === 0 ? 6 : Math.min(6 + (count / maxCount) * 4, 10);
+
+      const marker = L.circleMarker([municipality.lat, municipality.lng], {
+        radius: radius,
+        fillColor: color,
+        color: count === 0 ? "#9ca3af" : "#16a34a",
+        weight: 2,
+        opacity: 0.9,
+        fillOpacity: 0.8,
+      })
+        .bindPopup(
+          `<div class="font-semibold text-sm">${municipality.name}</div>
+           <div class="text-xs text-gray-600">Participações: ${count}</div>`,
+          { closeButton: false }
+        )
+        .addTo(map);
+
+      markersRef.current.push(marker);
+    });
+
+    // Ajustar zoom ao conteúdo
+    setTimeout(() => {
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }, 100);
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, [municipalities, stats]);
+
+  return (
+    <div
+      id="map"
+      className="w-full h-full"
+      style={{ minHeight: "100%" }}
+    />
+  );
+}
