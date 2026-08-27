@@ -212,22 +212,12 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
         {/* Background */}
         <rect width="200" height="200" fill="#ffffff" />
 
-        {/* Noroeste Fluminense region boundary - territorial outline */}
-        <path
-          d="M 68 8 L 200 5 L 200 160 L 75 195 L 35 180 L 30 155 L 35 115 L 30 75 L 40 40 Z"
-          fill="none"
-          stroke="#c4c4c4"
-          strokeWidth="1.5"
-          opacity="0.5"
-        />
-
-        {/* Municipality polygons - with staggered animation */}
+        {/* Municipality points - cities represented as circles */}
         {MUNICIPALITIES.map((municipality, index) => {
           const count = municipalitiesData[municipality.name] || 0;
           const color = getColorForParticipations(count, maxCount);
           const borderColor = getBorderColor(count);
-          const strokeWidth = getStrokeWidth(municipality.name);
-          const strokeOpacity = getStrokeOpacity(municipality.name);
+          const radius = count === 0 ? 3 : Math.min(3 + (count / maxCount) * 3, 6);
 
           return (
             <g
@@ -236,29 +226,49 @@ export default function HeroMap({ stats = null }: HeroMapProps) {
               onMouseLeave={() => setHoveredMunicipality(null)}
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <path
+              {/* City point circle */}
+              <circle
                 className="municipality-path"
-                d={municipality.polygon}
+                cx={municipality.labelX}
+                cy={municipality.labelY}
+                r={radius}
                 fill={color}
                 stroke={borderColor}
-                strokeWidth={strokeWidth}
-                opacity={strokeOpacity}
+                strokeWidth="1.5"
               />
+
               {/* Municipality label on hover */}
               {hoveredMunicipality === municipality.name && (
                 <text
                   x={municipality.labelX}
-                  y={municipality.labelY}
-                  fontSize="1.2"
+                  y={municipality.labelY - radius - 2}
+                  fontSize="2"
                   fontWeight="600"
                   fill="#166534"
                   textAnchor="middle"
                   className="municipality-label"
                   style={{ opacity: 1, pointerEvents: "none" }}
                 >
-                  {municipality.name.length > 15 ? municipality.name.substring(0, 12) + "..." : municipality.name}
+                  {municipality.name}
                 </text>
               )}
+
+              {/* Participation count label */}
+              {count > 0 && (
+                <text
+                  x={municipality.labelX}
+                  y={municipality.labelY + radius + 3}
+                  fontSize="1.2"
+                  fontWeight="600"
+                  fill="#166534"
+                  textAnchor="middle"
+                  className="municipality-label"
+                  style={{ opacity: 0.8, pointerEvents: "none" }}
+                >
+                  {count}
+                </text>
+              )}
+
               <title>{municipality.name}: {count} participação(ões)</title>
             </g>
           );
