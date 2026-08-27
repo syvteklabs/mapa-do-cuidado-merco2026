@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-export type ParticipationStep = "start" | "location" | "question" | "sending" | "confirmation";
+export type ParticipationStep = "start" | "location" | "question" | "emotion" | "sending" | "confirmation";
 
 const STORAGE_KEY = "mapa-cuidado-form-data";
 
@@ -8,6 +8,7 @@ export interface ParticipationFormData {
   estado: string;
   municipio: string;
   resposta_categoria: string;
+  sentimento?: string;
 }
 
 const CATEGORIAS = [
@@ -41,6 +42,17 @@ const CATEGORIAS = [
     label: "Outra percepção",
     humanLabel: "Outra coisa marcou essa experiência",
   },
+];
+
+const SENTIMENTOS = [
+  { id: "acolhido", label: "Acolhido", emoji: "🤗" },
+  { id: "seguro", label: "Seguro", emoji: "🛡️" },
+  { id: "confuso", label: "Confuso", emoji: "😕" },
+  { id: "cansado", label: "Cansado", emoji: "😴" },
+  { id: "preocupado", label: "Preocupado", emoji: "😟" },
+  { id: "desamparado", label: "Desamparado", emoji: "😔" },
+  { id: "esperancoso", label: "Esperançoso", emoji: "🌟" },
+  { id: "prefiro-nao", label: "Prefiro não responder", emoji: "🤐" },
 ];
 
 export const ESTADOS_BR = [
@@ -221,6 +233,7 @@ export function useParticipationForm() {
           municipio: formData.municipio,
           estado: formData.estado,
           resposta_categoria: formData.resposta_categoria,
+          sentimento: formData.sentimento || null,
         }),
       });
 
@@ -292,6 +305,7 @@ export function useParticipationForm() {
     submitForm,
     reset,
     categorias: CATEGORIAS,
+    sentimentos: SENTIMENTOS,
     estados: ESTADOS_BR,
     cidades: CIDADES_MERCO,
     showOutOfRegion,

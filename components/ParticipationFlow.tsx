@@ -21,6 +21,7 @@ export default function ParticipationFlow() {
     submitForm,
     reset,
     categorias,
+    sentimentos,
     estados,
     cidades,
     showOutOfRegion,
@@ -42,6 +43,7 @@ export default function ParticipationFlow() {
   const progressSteps = [
     { id: "location", label: "Localização" },
     { id: "question", label: "Experiência" },
+    { id: "emotion", label: "Sentimento" },
     { id: "sending", label: "Salvando" },
   ];
   const currentProgress =
@@ -287,6 +289,61 @@ export default function ParticipationFlow() {
                 Voltar
               </button>
               <button
+                onClick={() => nextStep("emotion")}
+                disabled={!formData.resposta_categoria || isLoading}
+                className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                Próximo
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Step: Emotion */}
+        {step === "emotion" && (
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                Como você se sentiu nesse caminho?
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600">
+                Sua emoção ajuda a construir uma compreensão mais profunda.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {sentimentos.map((sent: any) => (
+                <button
+                  key={sent.id}
+                  onClick={() =>
+                    updateFormData("sentimento", sent.id)
+                  }
+                  className={`w-full p-4 sm:p-5 rounded-lg font-semibold text-left text-base sm:text-lg transition-colors flex items-center gap-3 ${
+                    formData.sentimento === sent.id
+                      ? "bg-blue-600 text-white border-2 border-blue-600"
+                      : "bg-white border-2 border-gray-300 text-gray-900 hover:border-blue-400 active:bg-blue-50"
+                  }`}
+                >
+                  <span className="text-2xl">{sent.emoji}</span>
+                  <span>{sent.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => nextStep("question")}
+                className="flex-1 bg-gray-200 text-gray-900 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-300 active:bg-gray-400 transition-colors"
+              >
+                Voltar
+              </button>
+              <button
                 onClick={async () => {
                   try {
                     nextStep("sending");
@@ -295,13 +352,13 @@ export default function ParticipationFlow() {
                     const errorMsg =
                       err instanceof Error ? err.message : "Erro ao enviar resposta";
                     reportError(errorMsg, formData as unknown as Record<string, string>);
-                    nextStep("question");
+                    nextStep("emotion");
                   }
                 }}
-                disabled={!formData.resposta_categoria || isLoading}
+                disabled={isLoading}
                 className="flex-1 bg-blue-600 text-white py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? "Salvando..." : "Salvar resposta"}
+                {isLoading ? "Salvando..." : "Finalizar"}
               </button>
             </div>
           </div>
