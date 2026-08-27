@@ -1,16 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Button from "@/components/Button";
-import HeroMap from "@/components/HeroMap";
 import ProofOfMovement from "@/components/ProofOfMovement";
 import HowItWorks from "@/components/HowItWorks";
 import ResearchAndInnovation from "@/components/ResearchAndInnovation";
 import LiveActivationBadge from "@/components/LiveActivationBadge";
 import LiveActivityBar from "@/components/LiveActivityBar";
 import PersistentMobileCTA from "@/components/PersistentMobileCTA";
+
+const OpenStreetMapView = dynamic(() => import("@/components/OpenStreetMapView"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-100 rounded-2xl flex items-center justify-center">
+      <p className="text-gray-600">Carregando mapa...</p>
+    </div>
+  ),
+});
 
 interface StatsData {
   total: number;
@@ -124,7 +133,7 @@ export default function Home() {
 
             {/* Right Column - Visual Map */}
             <div className="hidden lg:block h-96 lg:h-full min-h-96">
-              <HeroMap stats={stats?.byMunicipio} />
+              <OpenStreetMapView stats={stats?.byMunicipio} />
             </div>
           </div>
         </section>
@@ -132,7 +141,7 @@ export default function Home() {
         {/* Mobile Map - Show on small screens */}
         <section className="lg:hidden max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
           <div className="h-64 sm:h-80">
-            <HeroMap stats={stats?.byMunicipio} />
+            <OpenStreetMapView stats={stats?.byMunicipio} />
           </div>
         </section>
 
