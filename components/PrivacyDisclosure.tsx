@@ -16,7 +16,7 @@ export default function PrivacyDisclosure({ variant = "minimal" }: PrivacyDisclo
           </h3>
           <div className="space-y-3 text-sm text-gray-700">
             <p>
-              <strong>O que não solicitamos:</strong> Nome, email, telefone, endereço residencial completo, dados clínicos, ou informações de identificação pessoal.
+              <strong>Para participação no Mapa:</strong> Não solicitamos nome, email, telefone, endereço residencial, dados clínicos ou identificação pessoal.
             </p>
             <p>
               <strong>O que você fornece:</strong> Seu município de residência (sem rua/número) e qual experiência de cuidado você compartilha.
@@ -25,7 +25,7 @@ export default function PrivacyDisclosure({ variant = "minimal" }: PrivacyDisclo
               <strong>Como usamos:</strong> Seus dados são agregados (combinados com outros) para criar visualizações no mapa e informar políticas públicas.
             </p>
             <p>
-              <strong>Processamento técnico:</strong> Como todo site, processos técnicos de infraestrutura podem envolver dados como IP e navegador. Veja nossa política completa para detalhes.
+              <strong>Nota:</strong> A Lista de Expansão coleta nome e contato. Veja nossa política completa para detalhes sobre ambos os processos.
             </p>
             <p>
               <strong>Isto não é pesquisa populacional:</strong> É uma escuta participativa qualitativa. Números indicam tendências, não prevalência estatística.

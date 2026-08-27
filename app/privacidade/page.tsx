@@ -22,10 +22,23 @@ export default function PrivacyPage() {
         <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-6 space-y-3">
             <h2 className="text-2xl font-bold text-amber-900">
-              ⚠️ Nota importante sobre privacidade
+              ⚠️ Dois processos diferentes, duas políticas
             </h2>
             <p className="text-gray-800 leading-relaxed">
-              Este documento descreve como o Mapa do Cuidado coleta, processa e protege dados. <strong>Não coletamos dados que identificam você pessoalmente</strong> (nome, email, CPF, etc.), mas é importante entender que qualquer comunicação pela internet envolve processamento técnico de dados. Veja abaixo o que coletamos e como protegemos.
+              Este documento descreve como o Mapa do Cuidado coleta e protege dados em dois contextos diferentes:
+            </p>
+            <ul className="space-y-2 text-gray-800">
+              <li className="flex gap-2">
+                <span className="font-bold">1.</span>
+                <span><strong>Participação no Mapa</strong> - Compartilhar experiência de cuidado (sem identificação)</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="font-bold">2.</span>
+                <span><strong>Lista de Expansão</strong> - Registrar interesse em expandir o mapa (com contato pessoal)</span>
+              </li>
+            </ul>
+            <p className="text-gray-800 leading-relaxed mt-3">
+              Leia abaixo as seções que se aplicam a você.
             </p>
           </div>
         </section>
@@ -33,6 +46,16 @@ export default function PrivacyPage() {
         {/* Content section */}
         <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="space-y-12">
+            {/* Section Header: Map Participation */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-8">
+              <h2 className="text-4xl font-bold text-blue-900 mb-3">
+                1️⃣ Participação no Mapa do Cuidado
+              </h2>
+              <p className="text-lg text-blue-800">
+                Quando você compartilha sua experiência de cuidado através do formulário
+              </p>
+            </div>
+
             {/* What We Don't Collect */}
             <div className="space-y-4">
               <h2 className="text-3xl font-bold text-gray-900">
@@ -399,6 +422,137 @@ export default function PrivacyPage() {
                   Entre em contato: <strong>contact@syvtek.care</strong>
                 </p>
               </div>
+            </div>
+
+            {/* Section Header: Expansion List */}
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-xl p-8 mt-16">
+              <h2 className="text-4xl font-bold text-emerald-900 mb-3">
+                2️⃣ Lista de Expansão do Mapa
+              </h2>
+              <p className="text-lg text-emerald-800">
+                Quando você registra interesse em expandir o mapa para sua região
+              </p>
+            </div>
+
+            {/* Expansion Data Collection */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Dados coletados
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                Para registrar interesse em expandir o mapa, coletamos:
+              </p>
+              <div className="space-y-3">
+                <div className="border-2 border-emerald-300 bg-emerald-50 rounded-lg p-4">
+                  <p className="font-bold text-emerald-900 mb-1">Nome *</p>
+                  <p className="text-sm text-emerald-700">Obrigatório. Identificar você para possível contato</p>
+                </div>
+                <div className="border-2 border-emerald-300 bg-emerald-50 rounded-lg p-4">
+                  <p className="font-bold text-emerald-900 mb-1">Cidade *</p>
+                  <p className="text-sm text-emerald-700">Obrigatório. Região de interesse para expansão</p>
+                </div>
+                <div className="border-2 border-emerald-300 bg-emerald-50 rounded-lg p-4">
+                  <p className="font-bold text-emerald-900 mb-1">Estado *</p>
+                  <p className="text-sm text-emerald-700">Obrigatório. Estado de interesse</p>
+                </div>
+                <div className="border-2 border-blue-200 bg-blue-50 rounded-lg p-4">
+                  <p className="font-semibold text-blue-900 mb-1">WhatsApp (opcional)</p>
+                  <p className="text-sm text-blue-700">Se fornecido, será usado apenas para contato sobre expansão</p>
+                </div>
+                <div className="border-2 border-blue-200 bg-blue-50 rounded-lg p-4">
+                  <p className="font-semibold text-blue-900 mb-1">E-mail (opcional)</p>
+                  <p className="text-sm text-blue-700">Se fornecido, será usado apenas para contato sobre expansão</p>
+                </div>
+                <div className="border-2 border-blue-200 bg-blue-50 rounded-lg p-4">
+                  <p className="font-semibold text-blue-900 mb-1">Tipo de participante (opcional)</p>
+                  <p className="text-sm text-blue-700">Perfil: paciente, profissional, gestor, comunidade ou outro</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Expansion Purpose */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Para que usamos esses dados
+              </h2>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl flex-shrink-0">📧</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">Contato direto</p>
+                    <p className="text-gray-600">Entrar em contato sobre possível expansão do mapa para sua região</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl flex-shrink-0">📊</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">Planejamento</p>
+                    <p className="text-gray-600">Identificar regiões de maior interesse para priorizar expansão</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-2xl flex-shrink-0">🤝</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">Parceria</p>
+                    <p className="text-gray-600">Identificar potenciais parceiros locais (gestores, profissionais, comunidade)</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Expansion Retention */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Período de retenção
+              </h2>
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  <strong>Dados de contato (nome, email, WhatsApp):</strong> Mantidos enquanto o interesse em expansão for válido ou até 2 anos sem contato
+                </p>
+                <p>
+                  <strong>Dados agregados (região, tipo de participante):</strong> Mantidos indefinidamente para planejamento estratégico
+                </p>
+                <p>
+                  <strong>Após exclusão:</strong> Dados são removidos dentro de 30 dias de solicitação
+                </p>
+              </div>
+            </div>
+
+            {/* Expansion Access & Sharing */}
+            <div className="space-y-4 border-t border-gray-200 pt-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Quem pode acessar seus dados
+              </h2>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-3">
+                  <span className="font-bold">•</span>
+                  <span>Equipe SyVtek Care (para contato direto)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold">•</span>
+                  <span>Parceiros potenciais do mapa na sua região (apenas se você consentir em compartilhamento específico)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="font-bold">•</span>
+                  <span>Operadores técnicos (Supabase, Vercel) conforme seus termos de privacidade</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Expansion Revoke Consent */}
+            <div className="space-y-4 border-t border-gray-200 pt-12 bg-red-50 rounded-lg p-6">
+              <h2 className="text-3xl font-bold text-red-900">
+                Como revogar consentimento
+              </h2>
+              <p className="text-gray-800">
+                Você pode, a qualquer momento, revogar o consentimento para contato e solicitar exclusão de seus dados enviando um email para:
+              </p>
+              <p className="text-lg font-bold text-red-700 mt-2">
+                contact@syvtek.care
+              </p>
+              <p className="text-sm text-gray-700 mt-3">
+                Inclua "Revogar Lista de Expansão" no assunto e confirme qual região registrou.
+              </p>
             </div>
 
             {/* Contact */}

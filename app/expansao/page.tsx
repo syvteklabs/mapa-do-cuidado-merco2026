@@ -60,6 +60,38 @@ export default function ExpansionPage() {
               </p>
             </div>
 
+            {/* Privacy Notice - Different from Map Participation */}
+            <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-6">
+              <h3 className="font-bold text-amber-900 text-lg mb-3">
+                ⚠️ Privacidade: Diferente da participação no mapa
+              </h3>
+              <div className="space-y-3 text-sm text-amber-900">
+                <p>
+                  Diferentemente do mapa principal (que não coleta identificação), <strong>a Lista de Expansão coleta seu nome e contato</strong>.
+                </p>
+                <div className="bg-white rounded p-3 border border-amber-200">
+                  <p className="font-semibold mb-2">O que coletamos:</p>
+                  <ul className="space-y-1 text-xs">
+                    <li>• <strong>Nome</strong> - Obrigatório</li>
+                    <li>• <strong>Cidade e Estado</strong> - Obrigatório</li>
+                    <li>• <strong>WhatsApp, Email, Tipo</strong> - Opcional</li>
+                  </ul>
+                </div>
+                <p>
+                  <strong>Para que:</strong> Contato direto sobre expansão do mapa para sua região
+                </p>
+                <p>
+                  <strong>Quanto tempo:</strong> Mantemos até 2 anos ou até você revogar consentimento
+                </p>
+                <p>
+                  <strong>Como revogar:</strong> Email para contact@syvtek.care com "Revogar Lista de Expansão" no assunto
+                </p>
+                <p className="italic">
+                  Leia nossa <a href="/privacidade" className="underline font-semibold text-amber-900 hover:text-amber-800">política de privacidade completa</a> para detalhes.
+                </p>
+              </div>
+            </div>
+
             <div className="space-y-4">
               {/* Nome */}
               <div>
