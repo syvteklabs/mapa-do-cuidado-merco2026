@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ExpansionUnified from "./ExpansionUnified";
 import DemoBanner from "./DemoBanner";
-import TerritorialMap from "./TerritorialMap";
+import TerritorialMapOSM from "./TerritorialMapOSM";
 import MunicipalitiesRanking from "./MunicipalitiesRanking";
 import LiveActivityBar from "./LiveActivityBar";
 import LearningsBlock from "./LearningsBlock";
@@ -547,12 +547,10 @@ export default function DashboardPreview() {
                   height: isTV ? '700px' : 'clamp(400px, 60vh, 600px)',
                   minHeight: '400px'
                 }}>
-                  <TerritorialMap
+                  <TerritorialMapOSM
                     municipiosStats={municipiosStats}
-                    municipiosCategories={municipiosCategories}
                     selectedMunicipio={selectedMunicipio}
                     onMunicipioSelect={setSelectedMunicipio}
-                    dataView={dataView}
                   />
                 </div>
               )}
